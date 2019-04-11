@@ -1,0 +1,26 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       .gitignore
+
+/.vs/
+/Binaries/
+/Import/
+/Installer/
+/KmsDoc/
+/Libraries/
+/Packages/
+/doxygen_en/
+/doxygen_fr/
+/htm/
+
+Debug/
+x64/
+
+/GPU-dpi.VC.VC.opendb
+/GPU-dpi.VC.db
+
+*.bak
+*.o
+*.user

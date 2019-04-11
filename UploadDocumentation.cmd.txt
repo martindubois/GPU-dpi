@@ -1,0 +1,19 @@
+kmsquebe
+KateVoeg99
+binary
+cd public_html
+cd en
+cd GPU-dpi
+mput doxygen_en\html\*.css
+mput doxygen_en\html\*.html
+mput doxygen_en\html\*.png
+cd ..
+cd ..
+cd fr
+cd GPU-dpi
+mput doxygen_fr\html\*.css
+mput doxygen_fr\html\*.html
+mput doxygen_fr\html\*.png
+cd ..
+cd ..
+quit

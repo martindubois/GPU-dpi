@@ -1,0 +1,139 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Includes", "Includes", "{1C3097E5-1A9C-42B5-841B-E3B5E7475E68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GPU_dpi", "GPU_dpi", "{9B430C78-90E4-484F-8EC6-3A8A205446E9}"
+	ProjectSection(SolutionItems) = preProject
+		Includes\GPU_dpi\GPU_dpi.h = Includes\GPU_dpi\GPU_dpi.h
+		Includes\GPU_dpi\SetupTool.h = Includes\GPU_dpi\SetupTool.h
+		Includes\GPU_dpi\Status.h = Includes\GPU_dpi\Status.h
+		Includes\GPU_dpi\System.h = Includes\GPU_dpi\System.h
+		Includes\GPU_dpi\Types.h = Includes\GPU_dpi\Types.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0F259724-DC91-4047-A997-7F7DECCCDA8D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Build.cmd = Build.cmd
+		Build.sh = Build.sh
+		Clean.sh = Clean.sh
+		CopyToTestComputer.sh = CopyToTestComputer.sh
+		CreatePackages.sh = CreatePackages.sh
+		DoxyFile_en.txt = DoxyFile_en.txt
+		DoxyFile_fr.txt = DoxyFile_fr.txt
+		Export.cmd = Export.cmd
+		Export.cmd.txt = Export.cmd.txt
+		Export.sh = Export.sh
+		GPU_dpi.iss = GPU_dpi.iss
+		Import.cmd = Import.cmd
+		Import.sh = Import.sh
+		License.txt = License.txt
+		Make.sh = Make.sh
+		README.md = README.md
+		RunDoxygen.cmd = RunDoxygen.cmd
+		Test.cmd = Test.cmd
+		UpdateDepend.sh = UpdateDepend.sh
+		UploadDocumentation.cmd = UploadDocumentation.cmd
+		UploadDocumentation.cmd.txt = UploadDocumentation.cmd.txt
+		User.mk = User.mk
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DocDev", "_DocDev", "{25D296AA-7575-4C3D-92B0-693461852405}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Procedures", "Procedures", "{AC3B301B-BED0-44F9-AE55-B55F43C3A005}"
+	ProjectSection(SolutionItems) = preProject
+		_DocDev\Procedures\Build.txt = _DocDev\Procedures\Build.txt
+		_DocDev\Procedures\DevComputerPrep.txt = _DocDev\Procedures\DevComputerPrep.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DocUser", "_DocUser", "{B26D7009-644F-4549-80B5-8D607CD9E8C5}"
+	ProjectSection(SolutionItems) = preProject
+		_DocUser\ReadMe.txt = _DocUser\ReadMe.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{75AC51E9-04E9-4BB0-81A3-225A4B7A9DB3}"
+	ProjectSection(SolutionItems) = preProject
+		Common\Version.h = Common\Version.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F7656AE8-2CFD-4DF7-9A68-A73DC6856C4E}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\control = Scripts\control
+		Scripts\CreateTestTree.sh = Scripts\CreateTestTree.sh
+		Scripts\GPU_dpi_Extcap.cmd = Scripts\GPU_dpi_Extcap.cmd
+		Scripts\Import.cmd = Scripts\Import.cmd
+		Scripts\Import.cmd.txt = Scripts\Import.cmd.txt
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPU_dpi", "GPU_dpi\GPU_dpi.vcxproj", "{F41F612D-F193-44C5-8A63-02A7532F4FA1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPU_dpi_Extcap", "GPU_dpi_Extcap\GPU_dpi_Extcap.vcxproj", "{1158388E-2794-435F-A7D0-2F8CF02A793D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1} = {F41F612D-F193-44C5-8A63-02A7532F4FA1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPU_dpi_Setup", "GPU_dpi_Setup\GPU_dpi_Setup.vcxproj", "{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1} = {F41F612D-F193-44C5-8A63-02A7532F4FA1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPU_dpi_Test", "GPU_dpi_Test\GPU_dpi_Test.vcxproj", "{DD43E95E-F212-45DE-9615-55CB6E0B85BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1} = {F41F612D-F193-44C5-8A63-02A7532F4FA1}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Debug|x64.ActiveCfg = Debug|x64
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Debug|x64.Build.0 = Debug|x64
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Debug|x86.ActiveCfg = Debug|Win32
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Debug|x86.Build.0 = Debug|Win32
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Release|x64.ActiveCfg = Release|x64
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Release|x64.Build.0 = Release|x64
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Release|x86.ActiveCfg = Release|Win32
+		{F41F612D-F193-44C5-8A63-02A7532F4FA1}.Release|x86.Build.0 = Release|Win32
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Debug|x64.ActiveCfg = Debug|x64
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Debug|x64.Build.0 = Debug|x64
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Debug|x86.ActiveCfg = Debug|Win32
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Debug|x86.Build.0 = Debug|Win32
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Release|x64.ActiveCfg = Release|x64
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Release|x64.Build.0 = Release|x64
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Release|x86.ActiveCfg = Release|Win32
+		{1158388E-2794-435F-A7D0-2F8CF02A793D}.Release|x86.Build.0 = Release|Win32
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Debug|x64.ActiveCfg = Debug|x64
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Debug|x64.Build.0 = Debug|x64
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Debug|x86.ActiveCfg = Debug|Win32
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Debug|x86.Build.0 = Debug|Win32
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Release|x64.ActiveCfg = Release|x64
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Release|x64.Build.0 = Release|x64
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Release|x86.ActiveCfg = Release|Win32
+		{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}.Release|x86.Build.0 = Release|Win32
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Debug|x64.ActiveCfg = Debug|x64
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Debug|x64.Build.0 = Debug|x64
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Debug|x86.ActiveCfg = Debug|Win32
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Debug|x86.Build.0 = Debug|Win32
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x64.ActiveCfg = Release|x64
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x64.Build.0 = Release|x64
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x86.ActiveCfg = Release|Win32
+		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9B430C78-90E4-484F-8EC6-3A8A205446E9} = {1C3097E5-1A9C-42B5-841B-E3B5E7475E68}
+		{AC3B301B-BED0-44F9-AE55-B55F43C3A005} = {25D296AA-7575-4C3D-92B0-693461852405}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {145E53D8-63A3-41D4-9A82-8103E5A8E1DA}
+	EndGlobalSection
+EndGlobal

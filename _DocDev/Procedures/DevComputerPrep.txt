@@ -1,0 +1,32 @@
+
+Author     KMS - Martin Dubois, ing.
+Copyright  (C) 2019 KMS. All rights reserved.
+Product    GPU_dpi
+File       _DocDev/Procedures/DevComputerPrep.txt
+
+Name               __________________________________________________________
+
+Date and time      20 ______ - ______ - ______                ______ : ______
+
+Computer name      __________________________________________________________
+
+Operating system   [ ] Ubuntu 18.04                            [ ] Windows 10
+
+===== Ubuntu 18.04 ==========================================================
+
+===== Windows 10 ============================================================
+[ ] Install "Visual Studio 2017"
+[ ] Lauch K:\Logiciels\Inno\innosetup-5.6.1.exe
+    - "Select Setup Language" dialog - Click "OK"
+	- "Setup - Inno Setup version 5.6.1" dialog
+		- Page 1 - Select "I accept the agreement" and click "Next >"
+		- Page 2 - Click "Next"
+		- Page 3 - Click "Next"
+		- Page 4 - Click "Next"
+		- Page 5 - Click "Next"
+		- Page 6 - Click "Install"
+		- Page 7 - Click "Finish"
+
+Time and duration  ______ : ______            ______ hours and ______ minutes
+
+Signature          __________________________________________________________

@@ -1,0 +1,14 @@
+
+## Author     KMS - Martin Dubois, ing.
+## Copyright  (C) 2019 KMS. All rights reserved.
+## Product    GPU-dpi
+## File       DoxyFile_en.txt
+
+ENABLED_SECTIONS   = en
+GENERATE_LATEX     = NO
+HIDE_UNDOC_MEMBERS = YES
+INPUT              = Includes Includes/GPU-dpi
+OUTPUT_DIRECTORY   = doxygen_en
+OUTPUT_LANGUAGE    = English
+PROJECT_NAME       = "GPU-dpi"
+SEARCHENGINE       = NO

@@ -1,0 +1,58 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       Export.cmd.txt
+
+. Binaries
+. Includes
+. Libraries
+. Tests
+
+.
+	DoxyFile_en.txt
+	DoxyFile_fr.txt
+	RunDoxygen.cmd
+
+_DocUser .
+	ReadMe.txt
+
+Includes/GPU_dpi
+	GPU_dpi.h
+	SetupTool.h
+	Status.h
+	System.h
+	Types.h
+
+Installer
+# KmsVersion "GPU-dpi_" ".exe" 3
+	GPU-dpi_0.0.0.exe
+
+GPU_dpi/_DocUser GPU_dpi
+	ReadMe.txt
+
+Scripts .
+	Import.cmd
+	Import.cmd.txt
+
+x64/Debug Binaries/Debug_64
+    GPU_dpi.dll
+	GPU_dpi_Extcap.exe
+	GPU_dpi_Setup.exe
+
+x64/Debug Libraries/Debug_64
+	GPU_dpi.lib
+
+x64/Debug Tests/Debug_64
+    GPU_dpi_Test.exe
+
+x64/Release Binaries/Release_64
+    GPU_dpi.dll
+	GPU_dpi_Extcap.exe
+	GPU_dpi_Setup.exe
+
+x64/Release Libraries/Release_64
+	GPU_dpi.lib
+
+x64/Release Tests/Release_64
+    GPU_dpi_Test.exe
