@@ -25,21 +25,25 @@ mkdir $DST_FOLDER/Includes
 mkdir $DST_FOLDER/Includes/GPU_dpi
 mkdir $DST_FOLDER/Libraries
 mkdir $DST_FOLDER/GPU_dpi
+mkdir $DST_FOLDER/GPU_dpi_Extcap
+mkdir $DST_FOLDER/GPU_dpi_Setup
 mkdir $DST_FOLDER/Packages
 mkdir $DST_FOLDER/Scripts
 mkdir %DST_FOLDER/Tests
 
-cp _DocUser/ReadMe.txt         $DST_FOLDER
-cp Binaries/GPU_dpi_Test       $DST_FOLDER/Tests
-cp Binaries/GPU_dpi.so         $DST_FOLDER/Binaries
-cp Binaries/GPU_dpi_Extcap     $DST_FOLDER/Binaries
-cp Binaries/GPU_dpi_Setup      $DST_FOLDER/Binaries
-cp DoxyFile_*.txt              $DST_FOLDER
-cp Includes/GPU_dpi/*.h        $DST_FOLDER/Includes/GPU_dpi
-cp GPU_dpi/_DocUser/ReadMe.txt $DST_FOLDER/GPU_dpi
-cp Packages/*.deb              $DST_FOLDER/Packages
-cp Scripts/GPU_dpi_Extcap.sh   $DST_FOLDER/Binaries
-cp Scripts/GPU_dpi_Setup.sh    $DST_FOLDER/Binaries
+cp _DocUser/ReadMe.txt                $DST_FOLDER
+cp Binaries/GPU_dpi_Test              $DST_FOLDER/Tests
+cp Binaries/GPU_dpi.so                $DST_FOLDER/Binaries
+cp Binaries/GPU_dpi_Extcap            $DST_FOLDER/Binaries
+cp Binaries/GPU_dpi_Setup             $DST_FOLDER/Binaries
+cp DoxyFile_*.txt                     $DST_FOLDER
+cp Includes/GPU_dpi/*.h               $DST_FOLDER/Includes/GPU_dpi
+cp GPU_dpi/_DocUser/ReadMe.txt        $DST_FOLDER/GPU_dpi
+cp GPU_dpi_Extcap/_DocUser/ReadMe.txt $DST_FOLDER/GPU_dpi_Extcap
+cp GPU_dpi_Setup/_DocUser/ReadMe.txt  $DST_FOLDER/GPU_dpi_Setup
+cp Packages/*.deb                     $DST_FOLDER/Packages
+cp Scripts/GPU_dpi_Extcap.sh          $DST_FOLDER/Binaries
+cp Scripts/GPU_dpi_Setup.sh           $DST_FOLDER/Binaries
 
 # ===== End =================================================================
 

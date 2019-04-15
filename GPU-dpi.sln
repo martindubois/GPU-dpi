@@ -56,6 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DocUser", "_DocUser", "{B2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{75AC51E9-04E9-4BB0-81A3-225A4B7A9DB3}"
 	ProjectSection(SolutionItems) = preProject
+		Common\Filter.h = Common\Filter.h
 		Common\Version.h = Common\Version.h
 	EndProjectSection
 EndProject
@@ -83,6 +84,13 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPU_dpi_Test", "GPU_dpi_Test\GPU_dpi_Test.vcxproj", "{DD43E95E-F212-45DE-9615-55CB6E0B85BA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F41F612D-F193-44C5-8A63-02A7532F4FA1} = {F41F612D-F193-44C5-8A63-02A7532F4FA1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CodeGen", "CodeGen\CodeGen.vcxproj", "{B6457769-20D8-48E8-A7D8-EC782E342B1C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CodeGen_Test", "CodeGen_Test\CodeGen_Test.vcxproj", "{40FC41DE-15D3-4710-96CC-B6B6F364C268}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C} = {B6457769-20D8-48E8-A7D8-EC782E342B1C}
 	EndProjectSection
 EndProject
 Global
@@ -125,6 +133,22 @@ Global
 		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x64.Build.0 = Release|x64
 		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x86.ActiveCfg = Release|Win32
 		{DD43E95E-F212-45DE-9615-55CB6E0B85BA}.Release|x86.Build.0 = Release|Win32
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Debug|x64.ActiveCfg = Debug|x64
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Debug|x64.Build.0 = Debug|x64
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Debug|x86.ActiveCfg = Debug|Win32
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Debug|x86.Build.0 = Debug|Win32
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Release|x64.ActiveCfg = Release|x64
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Release|x64.Build.0 = Release|x64
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Release|x86.ActiveCfg = Release|Win32
+		{B6457769-20D8-48E8-A7D8-EC782E342B1C}.Release|x86.Build.0 = Release|Win32
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Debug|x64.ActiveCfg = Debug|x64
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Debug|x64.Build.0 = Debug|x64
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Debug|x86.ActiveCfg = Debug|Win32
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Debug|x86.Build.0 = Debug|Win32
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Release|x64.ActiveCfg = Release|x64
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Release|x64.Build.0 = Release|x64
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Release|x86.ActiveCfg = Release|Win32
+		{40FC41DE-15D3-4710-96CC-B6B6F364C268}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

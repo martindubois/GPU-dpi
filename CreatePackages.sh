@@ -34,6 +34,8 @@ mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/GPU_dpi
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi
+mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi_Extcap
+mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi_Setup
 
 cp _DocUser/ReadMe.txt                    Packages/$PACKAGE_NAME
 cp Binaries/GPU_dpi.so                    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
@@ -41,6 +43,8 @@ cp Binaries/GPU_dpi_Extcap                Packages/$PACKAGE_NAME/usr/local/GPU-d
 cp Binaries/GPU_dpi_Setup                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 cp DoxyFile_*.txt                         Packages/$PACKAGE_NAME_SDK/usr/local/GPU-dpi_$VERSION
 cp GPU_dpi/_DocUser/ReadMe.txt            Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi
+cp GPU_dpi_Extcap/_DocUser/ReadMe.txt     Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi/Extcap
+cp GPU_dpi_Setup/_DocUser/ReadMe.txt      Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi/Setup
 cp Import/Binaries/OpenNet.so             Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 cp Import/Binaries/OpenNet_Tool           Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 cp Import/Includes/OpenNetK/ARP.h         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK

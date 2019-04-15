@@ -26,9 +26,15 @@ Includes/GPU_dpi
 
 Installer
 # KmsVersion "GPU-dpi_" ".exe" 3
-	GPU-dpi_0.0.0.exe
+	GPU-dpi_0.0.1.exe
 
 GPU_dpi/_DocUser GPU_dpi
+	ReadMe.txt
+
+GPU_dpi_Extcap/_DocUser GPU_dpi_Extcap
+	ReadMe.txt
+
+GPU_dpi_Setup/_DocUser GPU_dpi_Setup
 	ReadMe.txt
 
 Scripts .

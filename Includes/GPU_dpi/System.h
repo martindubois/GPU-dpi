@@ -3,7 +3,7 @@
 
 /// \author  KMS - Martin Dubois, ing.
 /// \file    Includes/GPU_dpi/System.h
-/// \brief   GPU-dpi::System (SDK)
+/// \brief   GPU_dpi::System (SDK)
 
 #pragma once
 
@@ -64,14 +64,14 @@ namespace GPU_dpi
 
         /// \cond en
         /// \return  This methode return the configuration of an adapter.
-        /// \param   aIndex  The adapter index
-        /// \param   aInfo   The output buffer
+        /// \param   aIndex   The adapter index
+        /// \param   aConfig  The output buffer
         /// \endcond
         /// \cond fr
         /// \return  Cette m&eacute;thode retourne la configuration d'un
         ///          adaptateurs.
-        /// \param   aIndex  L'index de l'adaptateur
-        /// \param   aInfo   L'espace de sortie
+        /// \param   aIndex   L'index de l'adaptateur
+        /// \param   aConfig  L'espace de sortie
         /// \endcond
         /// \retval  STATUS_OK
         virtual Status Adapter_GetConfig(unsigned int aIndex, AdapterConfig * aConfig) const = 0;
@@ -104,14 +104,14 @@ namespace GPU_dpi
 
         /// \cond en
         /// \return  This methode modify the configuration of an adapter.
-        /// \param   aIndex  The adapter index
-        /// \param   aInfo   The configuration
+        /// \param   aIndex   The adapter index
+        /// \param   aConfig  The configuration
         /// \endcond
         /// \cond fr
         /// \return  Cette m&eacute;thode change la configuration d'un
         ///          adaptateurs.
-        /// \param   aIndex  L'index de l'adaptateur
-        /// \param   aInfo   La configuration
+        /// \param   aIndex   L'index de l'adaptateur
+        /// \param   aConfig  La configuration
         /// \endcond
         /// \retval  STATUS_OK
         virtual Status Adapter_SetConfig(unsigned int aIndex, const AdapterConfig & aConfig) = 0;

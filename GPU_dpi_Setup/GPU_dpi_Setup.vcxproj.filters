@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="_DocUser">
+      <UniqueIdentifier>{bc012b79-41be-4f06-8c62-01a2355178ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -32,5 +35,10 @@
     <ClCompile Include="GPU_dpi_Setup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="_DocUser\ReadMe.txt">
+      <Filter>_DocUser</Filter>
+    </Text>
   </ItemGroup>
 </Project>

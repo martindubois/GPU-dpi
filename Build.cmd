@@ -16,7 +16,7 @@ set OPTIONS="GPU-dpi.sln" /target:rebuild
 
 rem ===== Verification / Verification =======================================
 
-if not exit %INNO_COMPIL32% (
+if not exist %INNO_COMPIL32% (
 	echo FATAL ERROR  %INNO_COMPIL32%  does not exist
 	echo Install Inno 5.6.1
 	pause

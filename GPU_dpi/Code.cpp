@@ -17,9 +17,25 @@
 
 #define EOL "\n"
 
-static const char CODE_NP_A[] = "TODO";
+static const char CODE_NP_A[] =
+    "OPEN_NET_FUNCTION_DECLARE( NoPacket_Allways )"                                        EOL
+    "{"                                                                                    EOL
+    "    OPEN_NET_FUNCTION_BEGIN"                                                          EOL
+                                                                                           EOL
+    "        lPacketInfo->mSendTo = ( 1 << FORWARD_ADAPTER ) | OPEN_NET_PACKET_PROCESSED;" EOL
+                                                                                           EOL
+    "    OPEN_NET_FUNCTION_END( OPEN_NET_BUFFER_EVENT )"                                   EOL
+    "}"                                                                                    EOL;
 
-static const char CODE_AP_N_D[] = "TODO";
+static const char CODE_AP_N_D[] =
+    "OPEN_NET_FUNCTION_DECLARE( AllPackets_Never_Direct )"                                EOL
+    "{"                                                                                   EOL
+    "    OPEN_NET_FUNCTION_BEGIN"                                                         EOL
+                                                                                          EOL
+    "        lPacketInfo->mSendTo = ( 1 << OUTPUT_ADAPTER ) | OPEN_NET_PACKET_PROCESSED;" EOL
+                                                                                          EOL
+    "    OPEN_NET_FUNCTION_END( OPEN_NET_BUFFER_EVENT )"                                  EOL
+    "}"                                                                                   EOL;
 
 static const char CODE_AP_N_F[] =
     "OPEN_NET_FUNCTION_DECLARE( AllPackets_Never_File )"                                EOL
@@ -31,9 +47,25 @@ static const char CODE_AP_N_F[] =
     "    OPEN_NET_FUNCTION_END( OPEN_NET_BUFFER_EVENT )"                                EOL
     "}"                                                                                 EOL;
 
-static const char CODE_AP_A_D[] = "TODO";
+static const char CODE_AP_A_D[] =
+    "OPEN_NET_FUNCTION_DECLARE( AllPackets_Always_Direct )"                                                          EOL
+    "{"                                                                                                              EOL
+    "    OPEN_NET_FUNCTION_BEGIN"                                                                                    EOL
+                                                                                                                     EOL
+    "        lPacketInfo->mSendTo = ( 1 << FORWARD_ADAPTER ) | ( 1 << OUTPUT_ADAPTER ) | OPEN_NET_PACKET_PROCESSED;" EOL
+                                                                                                                     EOL
+    "    OPEN_NET_FUNCTION_END( OPEN_NET_BUFFER_EVENT )"                                                             EOL
+    "}"                                                                                                              EOL;
 
-static const char CODE_AP_A_F[] = "TODO";
+static const char CODE_AP_A_F[] =
+    "OPEN_NET_FUNCTION_DECLARE( AllPackets_Always_File )"                                                          EOL
+    "{"                                                                                                            EOL
+    "    OPEN_NET_FUNCTION_BEGIN"                                                                                  EOL
+                                                                                                                   EOL
+    "        lPacketInfo->mSendTo = ( 1 << FORWARD_ADAPTER ) | OPEN_NET_PACKET_EVENT | OPEN_NET_PACKET_PROCESSED;" EOL
+                                                                                                                   EOL
+    "    OPEN_NET_FUNCTION_END( OPEN_NET_BUFFER_EVENT )"                                                           EOL
+    "}"                                                                                                            EOL;
 
 // Code table
 /////////////////////////////////////////////////////////////////////////////

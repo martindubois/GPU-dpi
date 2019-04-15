@@ -15,7 +15,7 @@ set EXPORT_FOLDER=K:\Export
 rem ===== Dependencies ======================================================
 
 set KMS_BASE="%EXPORT_FOLDER%\KmsBase\3.0.9_KI_Windows"
-set OPEN_NET="%EXPORT_FOLDER%\OpenNet\0.0.15_KI_Windows"
+set OPEN_NET="%EXPORT_FOLDER%\OpenNet\0.0.16_KI_Windows"
 
 rem ===== Constants =========================================================
 

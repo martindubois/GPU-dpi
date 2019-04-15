@@ -27,6 +27,12 @@ Binaries/Release_64
 GPU_dpi
 	ReadMe.txt
 
+GPU_dpi_Extcap
+	ReadMe.txt
+
+GPU_dpi_Setup
+	ReadMe.txt
+
 Includes/GPU-dpi
 	GPU-dpi.h
 	SetupTool.h

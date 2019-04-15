@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{e70281e4-15c3-45bc-9b36-29d41c27a2cc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CodeGen_Test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Filter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_01.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_02.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_03.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_04.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_05.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_06.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_07.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_08.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_09.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_10.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_11.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_12.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_13.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_14.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_15.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_16.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_17.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_18.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_19.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_20.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_21.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_22.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_23.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_24.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_25.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_26.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_27.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_28.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_29.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

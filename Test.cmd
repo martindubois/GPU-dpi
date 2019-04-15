@@ -30,18 +30,32 @@ if not exist "%RELEASE%" (
 
 rem ===== Execution =========================================================
 
+%DEBUG%\CodeGen_Test.exe
+if ERRORLEVEL 1 (
+    echo ERROR  %DEBUG%\CodeGen_Test.exe  failed - %ERRORLEVEL%
+    pause
+    exit /B 3
+)
+
 %DEBUG%\GPU_dpi_Test.exe
 if ERRORLEVEL 1 (
     echo ERROR  %DEBUG%\GPU_dpi_Test.exe  failed - %ERRORLEVEL%
     pause
-    exit /B 3
+    exit /B 4
+)
+
+%RELEASE%\CodeGen_Test.exe
+if ERRORLEVEL 1 (
+    echo ERROR  %RELEASE%\CodeGen_Test.exe  failed - %ERRORLEVEL%
+    pause
+    exit /B 5
 )
 
 %RELEASE%\GPU_dpi_Test.exe
 if ERRORLEVEL 1 (
     echo ERROR  %RELEASE%\GPU_dpi_Test.exe  failed - %ERRORLEVEL%
     pause
-    exit /B 4
+    exit /B 5
 )
 
 rem ===== End ===============================================================

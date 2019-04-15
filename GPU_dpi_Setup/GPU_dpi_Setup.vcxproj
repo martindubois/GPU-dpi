@@ -30,6 +30,9 @@
     </ClCompile>
     <ClCompile Include="OSDep_Windows.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="_DocUser\ReadMe.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7AE95D22-BC32-4DC8-AA16-B8000C5AABDB}</ProjectGuid>

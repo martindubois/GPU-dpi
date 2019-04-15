@@ -7,7 +7,7 @@
 ENABLED_SECTIONS   = en
 GENERATE_LATEX     = NO
 HIDE_UNDOC_MEMBERS = YES
-INPUT              = Includes Includes/GPU-dpi
+INPUT              = Includes Includes/GPU_dpi
 OUTPUT_DIRECTORY   = doxygen_en
 OUTPUT_LANGUAGE    = English
 PROJECT_NAME       = "GPU-dpi"

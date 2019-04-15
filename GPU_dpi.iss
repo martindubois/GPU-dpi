@@ -23,6 +23,9 @@ OutputDir=Installer
 
 [Files]
 Source: "_DocUser\ReadMe.txt";                                    DestDir: "{app}"; Flags: isreadme
+Source: "GPU_dpi\_DocUser\ReadMe.txt";                            DestDir: "{app}\GPU_dpi"
+Source: "GPU_dpi_Extcap\_DocUser\ReadMe.txt";                     DestDir: "{app}\GPU_dpi_Extcap"
+Source: "GPU_dpi_Setup\_DocUser\ReadMe.txt";                      DestDir: "{app}\GPU_dpi_Setup"
 Source: "Import\Binaries\Release_64\OpenNet.dll";                 DestDir: "{app}"
 Source: "Import\Binaries\Release_64\OpenNet_Tool.exe";            DestDir: "{app}"
 Source: "Import\Drivers\Release_64\ONK_Hardware\onk_pro1000.cat"; DestDir: "{app}\Drivers\ONK_Hardware"

@@ -48,6 +48,9 @@
   <ItemGroup>
     <ResourceCompile Include="..\Common\Version.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="_DocUser\ReadMe.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F41F612D-F193-44C5-8A63-02A7532F4FA1}</ProjectGuid>
