@@ -31,18 +31,27 @@ TokenSeq;
 /////////////////////////////////////////////////////////////////////////////
 
 // ===== Seq ================================================================
-static Token * Operator   (Token * aA   , Token * aOperator, Token * aB    );
-static Token * Parenthesis(Token * aOpen, Token * aToken   , Token * aClose);
-static Token * Port_Range (Token * aA   , Token * aOperator, Token * aB    );
+static Token * Brackets_Data (Token * aOpen, Token * aData    , Token * aClose);
+static Token * Brackets_Index(Token * aOpen, Token * aIndx    , Token * aClose);
+static Token * Brackets_Value(Token * aOpen, Token * aValue   , Token * aClose);
+static Token * Index         (Token * aA   , Token * aColon   , Token * aB    );
+static Token * IndexValue    (Token * aA   , Token * aColon   , Token * aB    );
+static Token * Operator      (Token * aA   , Token * aOperator, Token * aB    );
+static Token * Parentheses   (Token * aOpen, Token * aToken   , Token * aClose);
 
 // Constants
 /////////////////////////////////////////////////////////////////////////////
 
 static const TokenSeq SEQ[]
 {
-    { { TOKEN_BOOLEAN         , TOKEN_OPERATOR, TOKEN_BOOLEAN          }, Operator   , "ERROR 2.1 - Invalid and expression" },
-    { { TOKEN_DATA            , TOKEN_DASH    , TOKEN_DATA             }, Port_Range , "ERROR 2.2 - Invalid port range"     },
-    { { TOKEN_PARENTHESIS_OPEN, TOKEN_ANY     , TOKEN_PARENTHESIS_CLOSE}, Parenthesis, "ERROR 2.2 - Invalid parenthesis"    },
+    { { TOKEN_BOOLEAN        , TOKEN_OPERATOR, TOKEN_BOOLEAN         }, Operator      , NULL                                    },
+    { { TOKEN_BRACKET_OPEN   , TOKEN_DATA    , TOKEN_BRACKET_CLOSE   }, Brackets_Data , "ERROR 2.1 - Invalid brackets"          },
+    { { TOKEN_BRACKET_OPEN   , TOKEN_INDEX   , TOKEN_BRACKET_CLOSE   }, Brackets_Index, NULL                                    },
+    { { TOKEN_BRACKET_OPEN   , TOKEN_VALUE   , TOKEN_BRACKET_CLOSE   }, Brackets_Value, NULL                                    },
+    { { TOKEN_DATA           , TOKEN_COLON   , TOKEN_DATA            }, Index         , "ERROR 2.2 - Invalid access expression" },
+    { { TOKEN_VALUE          , TOKEN_COLON   , TOKEN_DATA            }, IndexValue    , "ERROR 2.3 - Invalid access expression" },
+    { { TOKEN_VALUE          , TOKEN_OPERATOR, TOKEN_DATA            }, Operator      , NULL                                    },
+    { { TOKEN_PARENTHESE_OPEN, TOKEN_ANY     , TOKEN_PARENTHESE_CLOSE}, Parentheses   , NULL                                    },
 };
 
 #define SEQ_COUNT ( sizeof( SEQ ) / sizeof( SEQ[ 0 ] ) )
@@ -128,6 +137,117 @@ const char * Phase2(TokenList * aIn, TokenList * aOut)
 
 // ===== Seq3 ===============================================================
 
+Token * Brackets_Data(Token * aOpen, Token * aData, Token * aClose)
+{
+    assert(NULL != aOpen );
+    assert(NULL != aData );
+    assert(NULL != aClose);
+
+    delete aClose;
+    delete aOpen ;
+
+    Token * lResult;
+
+    if (aData->ConvertToIndex())
+    {
+        aData->mId = TOKEN_INDEX;
+        aData->SetAccessSize(1);
+
+        lResult = aData;
+    }
+    else
+    {
+        delete aData;
+        lResult = NULL;
+    }
+
+    return lResult;
+}
+
+Token * Brackets_Index(Token * aOpen, Token * aIndex, Token * aClose)
+{
+    assert(NULL != aOpen );
+    assert(NULL != aIndex);
+    assert(NULL != aClose);
+
+    delete aClose;
+    delete aOpen ;
+
+    return aIndex;
+}
+
+Token * Brackets_Value(Token * aOpen, Token * aValue, Token * aClose)
+{
+    assert(NULL != aOpen );
+    assert(NULL != aValue);
+    assert(NULL != aClose);
+
+    delete aClose;
+    delete aOpen ;
+
+    aValue->mId = TOKEN_INDEX;
+    aValue->ClearValue   ();
+
+    if (!aValue->mData.mFlags.mAccessSize)
+    {
+        aValue->SetAccessSize(1);
+    }
+
+    return aValue;
+}
+
+Token * Index(Token * aA, Token * aIndex, Token * aB)
+{
+    assert(NULL != aA    );
+    assert(NULL != aIndex);
+    assert(NULL != aB    );
+
+    Token * lResult;
+
+    if (aA->ConvertToIndex() && aB->ConvertToAccessSize())
+    {
+        aIndex->SetIndex     (aA->mData.mIndex          );
+        aIndex->SetAccessSize(aB->mData.mAccessSize_byte);
+        aIndex->mId = TOKEN_INDEX;
+        lResult = aIndex;
+    }
+    else
+    {
+        delete aIndex;
+        lResult = NULL;
+    }
+
+    delete aA;
+    delete aB;
+
+    return lResult;
+}
+
+Token * IndexValue(Token * aA, Token * aIndex, Token * aB)
+{
+    assert(NULL != aA    );
+    assert(NULL != aIndex);
+    assert(NULL != aB    );
+
+    Token * lResult;
+
+    if (aB->ConvertToAccessSize())
+    {
+        aA->SetAccessSize(aB->mData.mAccessSize_byte);
+        lResult = aA;
+    }
+    else
+    {
+        delete aA;
+        lResult = NULL;
+    }
+
+    delete aIndex;
+    delete aB    ;
+
+    return lResult;
+}
+
 Token * Operator(Token * aA, Token * aOperator, Token * aB)
 {
     assert(NULL != aA       );
@@ -137,12 +257,10 @@ Token * Operator(Token * aA, Token * aOperator, Token * aB)
     aOperator->SetA(aA);
     aOperator->SetB(aB);
 
-    aOperator->SetBoolean();
-
     return aOperator;
 }
 
-Token * Parenthesis(Token * aOpen, Token * aToken, Token * aClose)
+Token * Parentheses(Token * aOpen, Token * aToken, Token * aClose)
 {
     assert(NULL != aOpen );
     assert(NULL != aToken);
@@ -152,33 +270,4 @@ Token * Parenthesis(Token * aOpen, Token * aToken, Token * aClose)
     delete aClose;
 
     return aToken;
-}
-
-Token * Port_Range(Token * aA, Token * aDash, Token * aB)
-{
-    assert(NULL != aA   );
-    assert(NULL != aDash);
-    assert(NULL != aB   );
-
-    Token * lResult = NULL;
-
-    if (aA->ConvertToUInt16() && aB->ConvertToUInt16())
-    {
-        aDash->mId = TOKEN_PORT_RANGE;
-
-        aDash->mData_UInt16[0] = aA->mData_UInt16[0];
-        aDash->mData_UInt16[1] = aB->mData_UInt16[0];
-
-        lResult = aDash;
-    }
-
-    delete aA;
-    delete aB;
-
-    if (NULL == lResult)
-    {
-        delete aDash;
-    }
-
-    return lResult;
 }

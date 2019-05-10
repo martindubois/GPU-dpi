@@ -59,7 +59,7 @@ static void ValidateArguments(const Arguments & aArgs);
 // ===== Operations =========================================================
 static void Capture   (GPU_dpi::System * aSystem, const Arguments & aArgs);
 static void Config    ();
-static void DLTs      ();
+static void DLTs      (const Arguments & aArgs);
 static void Interfaces(GPU_dpi::System * aSystem);
 
 // Entry point
@@ -81,18 +81,18 @@ int main( int aCount, const char * * aVector )
 
         if      (lArgs.mPresent.mCapture   ) { Capture   (lSystem, lArgs); }
         else if (lArgs.mPresent.mConfig    ) { Config    (); }
-        else if (lArgs.mPresent.mDLTs      ) { DLTs      (); }
+        else if (lArgs.mPresent.mDLTs      ) { DLTs      (lArgs); }
         else if (lArgs.mPresent.mInterfaces) { Interfaces(lSystem); }
     }
     catch (KmsLib::Exception * eE)
     {
-        fprintf(stderr, "ERROR  Exception\n");
+        fprintf(stderr, "ERROR 0  Exception\n");
         eE->Write(stderr);
         lResult = __LINE__;
     }
     catch (...)
     {
-        fprintf(stderr, "ERROR  Unknown exception\n");
+        fprintf(stderr, "ERROR 1  Unknown exception\n");
         lResult = __LINE__;
     }
 
@@ -131,7 +131,7 @@ void ParseArguments(int aCount, const char * * aVector, Arguments * aArgs)
             aArgs->mPresent.mCaptureFilter = true;
 
             i++;
-            if (aCount <= i) { lMsg = "--extcap-capture-filter without filter"; break; }
+            if (aCount <= i) { lMsg = "ERROR 2  --extcap-capture-filter without filter"; break; }
 
             strncpy_s(aArgs->mCaptureFilter, aVector[i], sizeof(aArgs->mCaptureFilter) - 1);
         }
@@ -140,7 +140,7 @@ void ParseArguments(int aCount, const char * * aVector, Arguments * aArgs)
             aArgs->mPresent.mInterface = true;
 
             i++;
-            if (aCount <= i) { lMsg = "--extcap-interface without interface"; break; }
+            if (aCount <= i) { lMsg = "ERROR 3  --extcap-interface without interface"; break; }
 
             strncpy_s(aArgs->mInterface, aVector[i], sizeof(aArgs->mInterface) - 1);
         }
@@ -149,7 +149,7 @@ void ParseArguments(int aCount, const char * * aVector, Arguments * aArgs)
             aArgs->mPresent.mFifo = true;
 
             i++;
-            if (aCount <= i) { lMsg = "--fifo without fifo"; break; }
+            if (aCount <= i) { lMsg = "ERROR 4  --fifo without fifo"; break; }
 
             strncpy_s(aArgs->mFifo, aVector[i], sizeof(aArgs->mFifo) - 1);
         }
@@ -175,36 +175,36 @@ void ValidateArguments(const Arguments & aArgs)
 
     if (aArgs.mPresent.mCapture)
     {
-        if ( aArgs.mPresent.mConfig    ) { lMsg = "--capture with --config"      ; }
-        if ( aArgs.mPresent.mDLTs      ) { lMsg = "--capture with --dlts"        ; }
-        if (!aArgs.mPresent.mFifo      ) { lMsg = "--capture wihtout --fifo"     ; }
-        if (!aArgs.mPresent.mInterface ) { lMsg = "--capture without --interface"; }
-        if ( aArgs.mPresent.mInterfaces) { lMsg = "--capture with --interfaces"  ; }
+        if ( aArgs.mPresent.mConfig    ) { lMsg = "ERROR 5  --capture with --config"      ; }
+        if ( aArgs.mPresent.mDLTs      ) { lMsg = "ERROR 6  --capture with --dlts"        ; }
+        if (!aArgs.mPresent.mFifo      ) { lMsg = "ERROR 7  --capture wihtout --fifo"     ; }
+        if (!aArgs.mPresent.mInterface ) { lMsg = "ERROR 8  --capture without --interface"; }
+        if ( aArgs.mPresent.mInterfaces) { lMsg = "ERROR 9  --capture with --interfaces"  ; }
     }
 
     if (aArgs.mPresent.mCaptureFilter)
     {
-        if (!aArgs.mPresent.mCapture) { lMsg = "--extcap-capture-filter without --capture"; }
+        if (!aArgs.mPresent.mCapture) { lMsg = "ERROR 10  --extcap-capture-filter without --capture"; }
     }
 
     if (aArgs.mPresent.mConfig)
     {
-        if ( aArgs.mPresent.mDLTs      ) { lMsg = "--extcap-config with --dlts"               ; }
-        if ( aArgs.mPresent.mFifo      ) { lMsg = "--extcap-config wiht --fifo"               ; }
-        if (!aArgs.mPresent.mInterface ) { lMsg = "--extcap-config wihtout --extcap-interface"; }
-        if ( aArgs.mPresent.mInterfaces) { lMsg = "--extcap-config with --interfaces"         ; }
+        if ( aArgs.mPresent.mDLTs      ) { lMsg = "ERROR 11  --extcap-config with --dlts"               ; }
+        if ( aArgs.mPresent.mFifo      ) { lMsg = "ERROR 12  --extcap-config wiht --fifo"               ; }
+        if (!aArgs.mPresent.mInterface ) { lMsg = "ERROR 13  --extcap-config wihtout --extcap-interface"; }
+        if ( aArgs.mPresent.mInterfaces) { lMsg = "ERROR 14  --extcap-config with --interfaces"         ; }
     }
 
     if (aArgs.mPresent.mDLTs)
     {
-        if ( aArgs.mPresent.mFifo      ) { lMsg = "--extcap-dlts with --fifo"               ; }
-        if (!aArgs.mPresent.mInterface ) { lMsg = "--extcap-dlts wihtout --extcap-interface"; }
-        if ( aArgs.mPresent.mInterfaces) { lMsg = "--extcap-dlts with --interfaces"         ; }
+        if ( aArgs.mPresent.mFifo      ) { lMsg = "ERROR 15  --extcap-dlts with --fifo"               ; }
+        if (!aArgs.mPresent.mInterface ) { lMsg = "ERROR 16  --extcap-dlts wihtout --extcap-interface"; }
+        if ( aArgs.mPresent.mInterfaces) { lMsg = "ERROR 17  --extcap-dlts with --interfaces"         ; }
     }
 
     if (aArgs.mPresent.mFifo)
     {
-        if (!aArgs.mPresent.mCapture) { lMsg = "--fifo without --capture"; }
+        if (!aArgs.mPresent.mCapture) { lMsg = "ERROR 18  --fifo without --capture"; }
     }
 
     if (NULL != lMsg)
@@ -236,10 +236,20 @@ void Capture(GPU_dpi::System * aSystem, const Arguments & aArgs)
     }
 
     lAC.mBufferQty      = 56;
-    lAC.mFilterType     = GPU_dpi::FILTER_TYPE_ALL_PACKETS;
     lAC.mOutputFileName = aArgs.mFifo;
     lAC.mOutputFormat   = GPU_dpi::OUTPUT_FORMAT_PCAP;
     lAC.mOutputType     = GPU_dpi::OUTPUT_TYPE_FILE;
+
+    if (aArgs.mPresent.mCaptureFilter)
+    {
+        lAC.mFilterCode          = aArgs.mCaptureFilter        ;
+        lAC.mFilterCodeSize_byte = static_cast<unsigned int>(strlen(aArgs.mCaptureFilter));
+        lAC.mFilterType          = GPU_dpi::FILTER_TYPE_FILTER ;
+    }
+    else
+    {
+        lAC.mFilterType = GPU_dpi::FILTER_TYPE_ALL_PACKETS;
+    }
 
     lStatus = aSystem->Adapter_SetConfig(lIndex, lAC);
     if (GPU_dpi::STATUS_OK != lStatus)
@@ -253,7 +263,8 @@ void Capture(GPU_dpi::System * aSystem, const Arguments & aArgs)
     {
         switch (lStatus)
         {
-        case GPU_dpi::STATUS_OPEN_CL_ERROR:
+        case GPU_dpi::STATUS_INVALID_FILTER:
+        case GPU_dpi::STATUS_OPEN_CL_ERROR :
             FILE * lFile;
             if (0 == fopen_s(&lFile, "C:\\Temp\\GPU_dpi_Extcap_BuildLog.txt", "w"))
             {
@@ -270,10 +281,8 @@ void Capture(GPU_dpi::System * aSystem, const Arguments & aArgs)
             "GPU_dpi::System::Start() failed", NULL, __FILE__, __FUNCTION__, __LINE__, lStatus);
     }
 
-    for (;;)
-    {
-        KmsLib::ThreadBase::Sleep_s(1);
-    }
+    lStatus = aSystem->Wait();
+    assert(GPU_dpi::STATUS_OK == lStatus);
 }
 
 void Config()
@@ -281,9 +290,14 @@ void Config()
 
 }
 
-void DLTs()
+// aArgs [---;R--]
+void DLTs(const Arguments & aArgs)
 {
+	assert(NULL != (&aArgs));
 
+	unsigned int lIndex = strtoul(aArgs.mInterface + 8, NULL, 10);
+
+	printf("dlt {number=0}{name=GPU-dpi_%u}{display=GPU-dpi interface %u}\n", lIndex, lIndex);
 }
 
 void Interfaces(GPU_dpi::System * aSystem)
@@ -304,6 +318,6 @@ void Interfaces(GPU_dpi::System * aSystem)
                 "System::Adapter_GetInfo( ,  ) failed", NULL, __FILE__, __FUNCTION__, __LINE__, lStatus);
         }
 
-        printf("interface {value=GPU-dpi_%u}{display=%s}\n", i, lInfo.mName);
+        printf("interface {value=GPU-dpi_%u}{display=GPU-dpi interface %u}\n", i, i);
     }
 }

@@ -12,6 +12,11 @@
 // ===== Includes/OpenNet ===================================================
 #include <GPU_dpi/System.h>
 
+// Constants
+/////////////////////////////////////////////////////////////////////////////
+
+#define TEST_FOLDER "GPU_dpi_Test" SLASH "Tests" SLASH
+
 // Tests
 /////////////////////////////////////////////////////////////////////////////
 
@@ -42,6 +47,13 @@ KMS_TEST_BEGIN(System_Base)
     KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_REFERENCE    , lS0->Adapter_SetConfig(0, *reinterpret_cast<GPU_dpi::AdapterConfig *>(NULL)));
     KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_ADAPTER_INDEX, lS0->Adapter_SetConfig(0, lConfig));
 
+    // ===== ConfigFile_Read ================================================
+    KMS_TEST_COMPARE(GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT, lS0->ConfigFile_Read(NULL));
+    KMS_TEST_COMPARE(GPU_dpi::STATUS_CANNOT_OPEN_CONFIG_FILE  , lS0->ConfigFile_Read("DoNotExist.txt"));
+    KMS_TEST_COMPARE(GPU_dpi::STATUS_OK                       , lS0->ConfigFile_Read(TEST_FOLDER "ConfigFile00.txt"));
+    KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_ADAPTER_INDEX    , lS0->ConfigFile_Read(TEST_FOLDER "ConfigFile01.txt"));
+    KMS_TEST_COMPARE(GPU_dpi::STATUS_NO_ACTIVE_ADAPTER        , lS0->ConfigFile_Read(TEST_FOLDER "ConfigFile02.txt"));
+
     // ===== Display ========================================================
     KMS_TEST_COMPARE(GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT, lS0->Display(NULL  ));
     KMS_TEST_COMPARE(GPU_dpi::STATUS_OK                       , lS0->Display(stdout));
@@ -66,5 +78,19 @@ KMS_TEST_BEGIN(System_Display)
     char lLine[1024];
     KMS_TEST_ASSERT( NULL != fgets(lLine, sizeof(lLine), stdin) );
     KMS_TEST_COMPARE(0, strncmp("y", lLine, 1));
+}
+KMS_TEST_END
+
+KMS_TEST_BEGIN(System_SetupA)
+{
+    // ===== Create =========================================================
+    GPU_dpi::System * lS0 = GPU_dpi::System::Create();
+    KMS_TEST_ASSERT(NULL != lS0);
+
+    // ===== ConfigFile_Read ================================================
+    KMS_TEST_COMPARE(GPU_dpi::STATUS_OK, lS0->ConfigFile_Read(TEST_FOLDER "ConfigFile03.txt"));
+
+    // ===== Delete =========================================================
+    lS0->Delete();
 }
 KMS_TEST_END

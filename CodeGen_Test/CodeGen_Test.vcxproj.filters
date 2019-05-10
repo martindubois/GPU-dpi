@@ -122,5 +122,200 @@
     <ClCompile Include="Tests\Filter_29.c">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\Filter_30.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_31.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_00.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_32.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_33.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_34.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_35.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_36.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_37.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_38.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_39.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_40.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_41.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_42.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_43.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_44.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_45.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_46.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_47.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_48.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_49.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_50.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_51.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_52.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_53.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_54.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_55.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_56.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_57.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_58.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_59.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_60.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_61.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_62.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_63.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_64.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_65.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_66.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_67.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_68.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_69.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_70.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_71.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_72.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_73.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_74.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_75.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_76.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_77.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_78.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_79.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_80.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_81.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_82.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_83.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_84.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_85.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_86.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_87.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_88.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_89.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_90.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_91.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_92.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Filter_93.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

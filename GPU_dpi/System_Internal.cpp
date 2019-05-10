@@ -14,6 +14,7 @@
 // ===== C ==================================================================
 #include <io.h>
 #include <stdint.h>
+#include <string.h>
 
 #ifdef _KMS_WINDOWS_
     // ===== Windows ========================================================
@@ -23,12 +24,18 @@
 // ===== Import/Includes ====================================================
 #include <KmsLib/Exception.h>
 #include <KmsLib/FileHandle.h>
+#include <KmsLib/ThreadBase.h>
 #include <OpenNet/Adapter.h>
+#include <OpenNet/Buffer.h>
 #include <OpenNet/Function.h>
 #include <OpenNet/Kernel.h>
 
+// ===== Common =============================================================
+#include "../Common/Filter.h"
+
 // ===== GPU_dpi ============================================================
 #include "AdapterConfig.h"
+#include "CallbackCaller.h"
 #include "FileWriter_PCAP.h"
 #include "Utils.h"
 
@@ -39,24 +46,32 @@
 
 static GPU_dpi::Status ConvertException    (const KmsLib::Exception * aE);
 
+static bool IsBlank(char aC);
+
 static char * ReadCodeFile(const char * aFileName, unsigned int * aSize_byte);
 
 // ===== Adapter ============================================================
 static void Adapter_Config(OpenNet::Adapter * aAdapter, const GPU_dpi::AdapterConfig & aConfig);
 
-// ===== Generate ===========================================================
-static const char * GenerateFromPatterList             (const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName);
-static const char * GenerateFromBinaryPatternList      (const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName);
-static const char * GenerateFromRegExp                 (const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName);
-static const char * GenerateFromWiresharkFilter        (const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName);
-static const char * GenerateFromCompiledWiresharkFilter(const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName);
+// ===== ConfigFile =========================================================
+
+static GPU_dpi::Status ConfigFile_ConvertFilterType  (const char * aStr, GPU_dpi::FilterType   * aOut);
+static GPU_dpi::Status ConfigFile_ConvertForwardType (const char * aStr, GPU_dpi::ForwardType  * aOut);
+static GPU_dpi::Status ConfigFile_ConvertOutputFormat(const char * aStr, GPU_dpi::OutputFormat * aOut);
+static GPU_dpi::Status ConfigFile_ConvertOutputType  (const char * aStr, GPU_dpi::OutputType   * aOut);
+
+static bool ConfigFile_ReadLine    (FILE * aFile, char * aLine, unsigned int * aNo);
+static bool ConfigFile_ReadLine_Raw(FILE * aFile, char * aLine, unsigned int * aNo);
+
+// ===== Processor ==========================================================
+static void Processor_Config(OpenNet::Processor * aProcessor, const GPU_dpi::AdapterConfig & aConfig);
 
 // Public
 /////////////////////////////////////////////////////////////////////////////
 
 // NOT TESTED  GPU_dpi.System_Internal.Error
 //             OpenNet::System::Create fails
-System_Internal::System_Internal() : mDebugLog("K:\\Dossiers_Actifs\\GPU-dpi\\DebugLog", "System")
+System_Internal::System_Internal() : mDebugLog("K:\\Dossiers_Actifs\\GPU-dpi\\DebugLog", "System"), mState(STATE_INIT)
 {
     for (unsigned int i = 0; i < ADAPTER_QTY; i++)
     {
@@ -101,6 +116,41 @@ GPU_dpi::Status System_Internal::Adapter_GetConfig(unsigned int aIndex, GPU_dpi:
     }
 
     memcpy(aConfig, mAdapter_Configs + aIndex, sizeof(GPU_dpi::AdapterConfig));
+
+    return GPU_dpi::STATUS_OK;
+}
+
+GPU_dpi::Status System_Internal::Adapter_DisplayStatistics(unsigned int aIndex, FILE * aOut) const
+{
+    assert(NULL != mSystem);
+
+    if (NULL == aOut)
+    {
+        return GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT;
+    }
+
+    if (mAdapter_Count <= aIndex)
+    {
+        return GPU_dpi::STATUS_INVALID_ADAPTER_INDEX;
+    }
+
+    OpenNet::Adapter * lA = mSystem->Adapter_Get(aIndex);
+    assert(NULL != lA);
+
+    unsigned int lInfo_byte;
+    unsigned int lS[128];
+
+    OpenNet::Status lStatus = lA->GetStatistics(lS, sizeof(lS), &lInfo_byte);
+    assert(OpenNet::STATUS_OK == lStatus);
+
+    lStatus = lA->DisplayStatistics(lS, lInfo_byte, aOut);
+    assert(OpenNet::STATUS_OK == lStatus);
+
+    EventProcessor * lEP = mAdapter_Data[aIndex].mEventProcessor;
+    if (NULL != lEP)
+    {
+        lEP->DisplayStatistics(aOut);
+    }
 
     return GPU_dpi::STATUS_OK;
 }
@@ -182,11 +232,69 @@ GPU_dpi::Status System_Internal::Adapter_SetConfig(unsigned int aIndex, const GP
     return lResult;
 }
 
+GPU_dpi::Status System_Internal::ConfigFile_Read(const char * aFileName, unsigned int * aLine)
+{
+    if (NULL == aFileName)
+    {
+        return GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT;
+    }
+
+    if (NULL != aLine)
+    {
+        (*aLine) = 0;
+    }
+
+    FILE * lFile;
+
+    int lRet = fopen_s(&lFile, aFileName, "r");
+    if (0 != lRet)
+    {
+        return GPU_dpi::STATUS_CANNOT_OPEN_CONFIG_FILE;
+    }
+
+    GPU_dpi::Status lResult = ConfigFile_Read(lFile, aLine);
+
+    lRet = fclose(lFile);
+    assert(0 == lRet);
+
+    return lResult;
+}
+
 GPU_dpi::Status System_Internal::Display(FILE * aOut) const
 {
     if (NULL == aOut)
     {
         return GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT;
+    }
+
+    return GPU_dpi::STATUS_OK;
+}
+
+GPU_dpi::Status System_Internal::DisplayStatistics(FILE * aOut) const
+{
+    assert(NULL != mSystem);
+
+    if (NULL == aOut)
+    {
+        return GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT;
+    }
+
+    unsigned int lCount = mSystem->Kernel_GetCount();
+    for (unsigned int i = 0; i < lCount; i++)
+    {
+        OpenNet::Kernel * lK = mSystem->Kernel_Get(i);
+        assert(NULL != lK);
+
+        unsigned int lInfo_byte;
+        unsigned int lS[128];
+
+        OpenNet::Status lStatus = lK->GetStatistics(lS, sizeof(lS), &lInfo_byte, false);
+        assert(OpenNet::STATUS_OK == lStatus);
+
+        fprintf(aOut, "----- Kernel %u -----\n", i);
+
+        lStatus = lK->DisplayStatistics(lS, lInfo_byte, aOut);
+        assert(OpenNet::STATUS_OK == lStatus);
     }
 
     return GPU_dpi::STATUS_OK;
@@ -199,6 +307,8 @@ unsigned int System_Internal::Processor_GetCount() const
 
 GPU_dpi::Status System_Internal::Start()
 {
+    mDebugLog.Log(__FILE__, __CLASS__ "Start", __LINE__);
+
     assert(ADAPTER_QTY >= mAdapter_Count);
 
     if (0 >= mAdapter_Count)
@@ -206,20 +316,37 @@ GPU_dpi::Status System_Internal::Start()
         return GPU_dpi::STATUS_NO_ADAPTER;
     }
 
-    mDebugLog.Log(__FILE__, __CLASS__ "Start", __LINE__);
+    Adapters_Cleanup();
 
-    GPU_dpi::Status lResult = Adapters_Connect();
-    if (GPU_dpi::STATUS_OK == lResult)
+    mFilterErrors.clear();
+
+    GPU_dpi::Status lResult = GPU_dpi::STATUS_ASSERT_FAILED;
+
+    switch (mState)
     {
-        lResult = Adapters_Prepare();
+    case STATE_INIT   :
+    case STATE_STOPPED:
+        mState = STATE_STARTING;
+
+        lResult = Adapters_Connect();
         if (GPU_dpi::STATUS_OK == lResult)
         {
-            OpenNet::Status lStatus = mSystem->Start(0);
-            if (OpenNet::STATUS_OK != lStatus)
+            lResult = Adapters_Prepare();
+            if (GPU_dpi::STATUS_OK == lResult)
             {
+                OpenNet::Status lStatus = mSystem->Start(0);
                 lResult = Utl_ConvertOpenNetStatus(lStatus);
             }
         }
+
+        mState = (GPU_dpi::STATUS_OK == lResult) ? mState = STATE_RUNNING : mState = STATE_INIT;
+        break;
+
+    case STATE_RUNNING : lResult = GPU_dpi::STATUS_SYSTEM_RUNNING ; break;
+    case STATE_STARTING: lResult = GPU_dpi::STATUS_SYSTEM_STARTING; break;
+    case STATE_STOPPING: lResult = GPU_dpi::STATUS_SYSTEM_STOPPING; break;
+
+    default: assert(false);
     }
 
     return lResult;
@@ -227,19 +354,70 @@ GPU_dpi::Status System_Internal::Start()
 
 GPU_dpi::Status System_Internal::Stop()
 {
-    assert(NULL != mSystem);
-
-    OpenNet::Status lStatus = mSystem->Stop();
-    if (OpenNet::STATUS_OK != lStatus)
-    {
-        return Utl_ConvertOpenNetStatus(lStatus);
-    }
-
     mDebugLog.Log(__FILE__, __CLASS__ "Stop", __LINE__);
 
-    Adapters_Cleanup();
+    assert(NULL != mSystem);
 
-    return GPU_dpi::STATUS_OK;
+    GPU_dpi::Status lResult = GPU_dpi::STATUS_ASSERT_FAILED;
+
+    switch (mState)
+    {
+    case STATE_INIT   : lResult = GPU_dpi::STATUS_SYSTEM_NOT_STARTED; break;
+
+    case STATE_RUNNING:
+        mState = STATE_STOPPING;
+
+        OpenNet::Status lStatus;
+
+        lStatus = mSystem->Stop();
+        lResult = Utl_ConvertOpenNetStatus(lStatus);
+
+        mState = STATE_STOPPED;
+        break;
+
+    case STATE_STARTING: lResult = GPU_dpi::STATUS_SYSTEM_STARTING; break;
+    case STATE_STOPPED : lResult = GPU_dpi::STATUS_SYSTEM_STOPPED ; break;
+    case STATE_STOPPING: lResult = GPU_dpi::STATUS_SYSTEM_STOPPING; break;
+
+    default: assert(false);
+    }
+
+    return lResult;
+}
+
+GPU_dpi::Status System_Internal::Wait()
+{
+    for(;;)
+    {
+        KmsLib::ThreadBase::Sleep_ms(500);
+
+        switch (mState)
+        {
+        case STATE_RUNNING :
+            for (unsigned int i = 0; i < mAdapter_Count; i++)
+            {
+                EventProcessor * lEP = mAdapter_Data[i].mEventProcessor;
+                if (NULL != lEP)
+                {
+                    if (0 < lEP->GetErrorCount())
+                    {
+                        return Stop();
+                    }
+                }
+            }
+            break;
+
+        case STATE_STARTING:
+        case STATE_STOPPING:
+            break;
+
+        case STATE_STOPPED: return GPU_dpi::STATUS_OK;
+
+        default:
+            assert(false);
+            return GPU_dpi::STATUS_ASSERT_FAILED;
+        }
+    }
 }
 
 GPU_dpi::Status System_Internal::WriteBuildLog(FILE * aOut)
@@ -247,6 +425,16 @@ GPU_dpi::Status System_Internal::WriteBuildLog(FILE * aOut)
     if (NULL == aOut)
     {
         return GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT;
+    }
+
+    unsigned int lIndex = 0;
+
+    for (std::list<std::string>::iterator lIt = mFilterErrors.begin(); lIt != mFilterErrors.end(); lIt++)
+    {
+        fprintf(aOut, "\n\n========== Filter error %u ==========\n", lIndex);
+        fprintf(aOut, "%s\n", lIt->c_str());
+
+        lIndex++;
     }
 
     unsigned int lCount = mSystem->Kernel_GetCount();
@@ -257,9 +445,9 @@ GPU_dpi::Status System_Internal::WriteBuildLog(FILE * aOut)
         OpenNet::Kernel * lKernel = mSystem->Kernel_Get(i);
         assert(NULL != lKernel);
 
-        lKernel->Display(aOut);
+        // lKernel->Display(aOut);
 
-        // fprintf(aOut, "%s", lKernel->GetBuildLog());
+        fprintf(aOut, "%s", lKernel->GetBuildLog());
     }
 
     return GPU_dpi::STATUS_OK;
@@ -271,6 +459,10 @@ GPU_dpi::Status System_Internal::WriteBuildLog(FILE * aOut)
 System_Internal::~System_Internal()
 {
     assert(NULL != mSystem);
+
+    Adapters_Cleanup();
+
+    ConfigFile_ReleaseBuffers();
 
     mSystem->Delete();
 }
@@ -326,6 +518,11 @@ void System_Internal::Adapter_Cleanup(unsigned int aIndex)
         delete lAD->mFunction;
     }
 
+    if (NULL != lAD->mEventProcessor)
+    {
+        delete lAD->mEventProcessor;
+    }
+
     memset(lAD, 0, sizeof(Adapter_Data));
 }
 
@@ -367,10 +564,17 @@ GPU_dpi::Status System_Internal::Adapter_Prepare(unsigned int aIndex)
         OpenNet::Status lStatus = lA->SetInputFilter(lSC);
         if (OpenNet::STATUS_OK == lStatus)
         {
-            if (GPU_dpi::OUTPUT_TYPE_FILE == lAC.mOutputType)
-            {
-                Adapter_Data * lAD = mAdapter_Data + aIndex;
+            Adapter_Data * lAD = mAdapter_Data + aIndex;
 
+            switch ( lAC.mOutputType )
+            {
+            case GPU_dpi::OUTPUT_TYPE_CALLBACK:
+                lAD->mEventProcessor = new CallbackCaller(lAC.mOutputCallback, lAC.mOutputCallback_Context);
+                break;
+
+            case GPU_dpi::OUTPUT_TYPE_DIRECT: break;
+
+            case GPU_dpi::OUTPUT_TYPE_FILE :
                 switch (lAC.mOutputFormat)
                 {
                 case GPU_dpi::OUTPUT_FORMAT_PCAP:
@@ -380,7 +584,7 @@ GPU_dpi::Status System_Internal::Adapter_Prepare(unsigned int aIndex)
 
                     try
                     {
-                        lAD->mFileWriter = new FileWriter_PCAP(lAC.mOutputFileName);
+                        lAD->mEventProcessor = new FileWriter_PCAP(lAC.mOutputFileName);
                     }
                     catch (KmsLib::Exception * eE)
                     {
@@ -393,14 +597,21 @@ GPU_dpi::Status System_Internal::Adapter_Prepare(unsigned int aIndex)
 
                 default: assert(false);
                 }
+                break;
 
-                if (GPU_dpi::STATUS_OK == lResult)
+            default: assert(false);
+            }
+
+            if (GPU_dpi::STATUS_OK == lResult)
+            {
+                if (NULL != lAD->mEventProcessor)
                 {
-                    assert(NULL != lAD->mFileWriter);
-
-                    lStatus = lA->Event_RegisterCallback(lAD->mFileWriter->GetEventCallback(), lAD->mFileWriter);
+                    lStatus = lA->Event_RegisterCallback(lAD->mEventProcessor->GetEventCallback(), lAD->mEventProcessor);
                     assert(OpenNet::STATUS_OK == lStatus);
                 }
+
+                lStatus = lA->ResetStatistics();
+                assert(OpenNet::STATUS_OK == lStatus);
             }
         }
         else
@@ -420,6 +631,8 @@ GPU_dpi::Status System_Internal::Adapter_Prepare(unsigned int aIndex)
 //               OpenNet::SourceCode instance here
 GPU_dpi::Status System_Internal::Adapter_Prepare_Constant(unsigned int aIndex, const Code_Info & aCI, OpenNet::SourceCode * * aSC)
 {
+    mDebugLog.Log(__FILE__, __CLASS__ "Adapter_Prepare_Constant", __LINE__);
+
     assert(ADAPTER_QTY >  aIndex);
     assert(NULL        != (&aCI));
     assert(NULL        != aSC   );
@@ -450,6 +663,8 @@ GPU_dpi::Status System_Internal::Adapter_Prepare_Constant(unsigned int aIndex, c
 //               OpenNet::SourceCode instance here
 GPU_dpi::Status System_Internal::Adapter_Prepare_Generated(unsigned int aIndex, const Code_Info & aCI, OpenNet::SourceCode * * aSC)
 {
+    mDebugLog.Log(__FILE__, __CLASS__ "Adapter_Prepare_Generated", __LINE__);
+
     assert(ADAPTER_QTY >  aIndex);
     assert(NULL        != (&aCI));
     assert(NULL        != aSC   );
@@ -474,40 +689,48 @@ GPU_dpi::Status System_Internal::Adapter_Prepare_Generated(unsigned int aIndex, 
         assert(   0 <  lInSize_byte);
     }
 
-    const char * lCode          = NULL;
-    unsigned int lCodeSize_byte =    0;
-    const char * lFunctionName  = NULL;
-
-    switch (lAC.mFilterType)
-    {
-    case GPU_dpi::FILTER_TYPE_PATTERN_LIST       : lCode = GenerateFromPatterList             (lAC, lIn, lInSize_byte, &lCodeSize_byte, &lFunctionName); break;
-    case GPU_dpi::FILTER_TYPE_PATTERN_LIST_BINARY: lCode = GenerateFromBinaryPatternList      (lAC, lIn, lInSize_byte, &lCodeSize_byte, &lFunctionName); break;
-    case GPU_dpi::FILTER_TYPE_REG_EXP            : lCode = GenerateFromRegExp                 (lAC, lIn, lInSize_byte, &lCodeSize_byte, &lFunctionName); break;
-    case GPU_dpi::FILTER_TYPE_WIRESHARK          : lCode = GenerateFromWiresharkFilter        (lAC, lIn, lInSize_byte, &lCodeSize_byte, &lFunctionName); break;
-    case GPU_dpi::FILTER_TYPE_WIRESHARK_COMPILED : lCode = GenerateFromCompiledWiresharkFilter(lAC, lIn, lInSize_byte, &lCodeSize_byte, &lFunctionName); break;
-
-    default: assert(false);
-    };
-
-    lAD->mFunction = new OpenNet::Function();
-    assert(NULL != lAD->mFunction);
-
-    OpenNet::Status lStatus = lAD->mFunction->SetCode(lCode, lCodeSize_byte);
-    assert(OpenNet::STATUS_OK == lStatus);
-
-    lStatus = lAD->mFunction->SetFunctionName(lFunctionName);
-    assert(OpenNet::STATUS_OK == lStatus);
-
-    delete[] lCode;
+    Filter * lFilter = Filter::Create(lAC.mOutputType, lAC.mForwardType, lIn);
 
     if (lAC.mFilterCode != lIn)
     {
         delete[] lIn;
     }
 
-    (*aSC) = lAD->mFunction;
+    GPU_dpi::Status lResult;
 
-    return GPU_dpi::STATUS_OK;
+    const char * lErrMsg = lFilter->GetErrorMessage();
+    if (NULL == lErrMsg)
+    {
+        lAD->mFunction = new OpenNet::Function();
+        assert(NULL != lAD->mFunction);
+
+        OpenNet::Status lStatus = lAD->mFunction->SetCode(lFilter->GetCode(), lFilter->GetCodeSize());
+        if (OpenNet::STATUS_OK == lStatus)
+        {
+            lStatus = lAD->mFunction->SetFunctionName(lFilter->GetFunctionName());
+            assert(OpenNet::STATUS_OK == lStatus);
+
+            (*aSC) = lAD->mFunction;
+
+            lResult = GPU_dpi::STATUS_OK;
+        }
+        else
+        {
+            delete lAD->mFunction;
+            lAD->mFunction = NULL;
+
+            lResult = Utl_ConvertOpenNetStatus(lStatus);
+        }
+    }
+    else
+    {
+        mFilterErrors.push_back(lErrMsg);
+        lResult = GPU_dpi::STATUS_INVALID_FILTER;
+    }
+
+    lFilter->Delete();
+
+    return lResult;
 }
 
 // aIndex        Index of the adapter to prepare using user provided code
@@ -516,6 +739,8 @@ GPU_dpi::Status System_Internal::Adapter_Prepare_Generated(unsigned int aIndex, 
 //               OpenNet::SourceCode instance here
 GPU_dpi::Status System_Internal::Adapter_Prepare_User(unsigned int aIndex, const Code_Info & aCI, OpenNet::SourceCode * * aSC)
 {
+    mDebugLog.Log(__FILE__, __CLASS__ "Adapter_Prepare_User", __LINE__);
+
     assert(ADAPTER_QTY >  aIndex);
     assert(NULL        != (&aCI));
     assert(NULL        != aSC   );
@@ -638,6 +863,7 @@ GPU_dpi::Status System_Internal::Adapters_Connect()
                 assert(OpenNet::STATUS_OK == lStatus);
 
                 Adapter_Config(lA, lAC);
+                Processor_Config(lP, lAC);
             }
 
             lStatus = mSystem->Adapter_Connect(lA);
@@ -672,6 +898,156 @@ GPU_dpi::Status System_Internal::Adapters_Prepare()
     }
 
     return GPU_dpi::STATUS_OK;
+}
+
+void System_Internal::ConfigFile_Duplicate(const char * aStr, char * * aOut)
+{
+    assert(NULL != aStr);
+    assert(NULL != aOut);
+
+    unsigned int lSize_byte = static_cast<unsigned int>(strlen(aStr) + 1);
+    char       * lPtr       = new char[lSize_byte];
+
+    assert(   2 <= lSize_byte);
+    assert(NULL != lPtr      );
+
+    strcpy_s(lPtr SIZE_INFO(lSize_byte), aStr);
+
+    mConfigFile_Buffers.push_back(lPtr);
+
+    (*aOut) = lPtr;
+}
+
+GPU_dpi::Status System_Internal::ConfigFile_Read(FILE * aFile, unsigned int * aLine)
+{
+    assert(NULL != aFile);
+
+    if (NULL != aLine)
+    {
+        (*aLine) = 0;
+    }
+
+    char lLine[1024];
+
+    GPU_dpi::AdapterConfig lAC;
+    unsigned int           lAI = 0xffffffff;
+    GPU_dpi::Status        lResult = GPU_dpi::STATUS_OK;
+
+    while ((lResult == GPU_dpi::STATUS_OK) && ConfigFile_ReadLine(aFile, lLine, aLine))
+    {
+        char         lStr[1024];
+        unsigned int lStr_byte = sizeof(lStr);
+        unsigned int lValue;
+
+        if (1 == sscanf_s(lLine, "Adapter %u", &lValue))
+        {
+            if (0xffffffff != lAI)
+            {
+                lResult = Adapter_SetConfig(lAI, lAC);
+                lAI     = 0xffffffff;
+            }
+
+            if (GPU_dpi::STATUS_OK == lResult)
+            {
+                lAI     = lValue;
+                lResult = Adapter_GetConfig(lAI, &lAC);
+            }
+        }
+        else
+        {
+            if (0xffffffff == lAI)
+            {
+                return GPU_dpi::STATUS_NO_ACTIVE_ADAPTER;
+            }
+
+            if      (1 == sscanf_s(lLine, "FilterCode = %[^\n\r]"           , lStr SIZE_INFO(lStr_byte))) { ConfigFile_Duplicate(lStr , const_cast<char * *>(&lAC.mFilterCode        )); lAC.mFilterCodeSize_byte = static_cast<unsigned int>(strlen(lStr)); }
+            else if (1 == sscanf_s(lLine, "FilterFunctionName = %[^ \n\r\t]", lStr SIZE_INFO(lStr_byte))) { ConfigFile_Duplicate(lStr , const_cast<char * *>(&lAC.mFilterFunctionName)); lAC.mFilterType          = GPU_dpi::FILTER_TYPE_OPEN_NET_FUNCTION; }
+            else if (1 == sscanf_s(lLine, "OutputFileName = %[^\n\r\t]"     , lStr SIZE_INFO(lStr_byte))) { ConfigFile_Duplicate(lStr , const_cast<char * *>(&lAC.mOutputFileName    )); lAC.mOutputType          = GPU_dpi::OUTPUT_TYPE_FILE; }
+            else if (1 == sscanf_s(lLine, "FilterFileName = %[^\n\r\t]"     , lStr SIZE_INFO(lStr_byte))) { ConfigFile_Duplicate(lStr , const_cast<char * *>(&lAC.mFilterFileName    )); }
+            else if (0 == strncmp (lLine, "FilterCode"                      , 10                       )) { lResult = ConfigFile_ReadCode(aFile, const_cast<char * *>(&lAC.mFilterCode), &lAC.mFilterCodeSize_byte, aLine); }
+            else if (1 == sscanf_s(lLine, "ProfilingEnable = %u"            , &lValue                  )) { lAC.mFlags.mProfilingEnabled = (0 != lValue); }
+            else if (1 == sscanf_s(lLine, "BufferQty = %u"                  , &lValue                  )) { lAC.mBufferQty               =       lValue ; }
+            else if (1 == sscanf_s(lLine, "ForwardAdapter = %u"             , &lValue                  )) { lAC.mForwardAdapter          =       lValue ; }
+            else if (1 == sscanf_s(lLine, "OutputAdapter = %u"              , &lValue                  )) { lAC.mOutputAdapter           =       lValue ; lAC.mOutputType = GPU_dpi::OUTPUT_TYPE_DIRECT; }
+            else if (1 == sscanf_s(lLine, "OutputPacketSize = %u"           , &lValue                  )) { lAC.mOutputPacketSize_byte   =       lValue ; }
+            else if (1 == sscanf_s(lLine, "ProcessorIndex = %u"             , &lValue                  )) { lAC.mProcessorIndex          =       lValue ; }
+            else if (1 == sscanf_s(lLine, "FilterType = %[_A-Z]"            , lStr SIZE_INFO(lStr_byte))) { lResult = ConfigFile_ConvertFilterType  (lStr, &lAC.mFilterType  ); }
+            else if (1 == sscanf_s(lLine, "ForwardType = %[_A-Z]"           , lStr SIZE_INFO(lStr_byte))) { lResult = ConfigFile_ConvertForwardType (lStr, &lAC.mForwardType ); }
+            else if (1 == sscanf_s(lLine, "OutputFormat = %[_A-Z]"          , lStr SIZE_INFO(lStr_byte))) { lResult = ConfigFile_ConvertOutputFormat(lStr, &lAC.mOutputFormat); }
+            else if (1 == sscanf_s(lLine, "OutputType = %[_A-Z]"            , lStr SIZE_INFO(lStr_byte))) { lResult = ConfigFile_ConvertOutputType  (lStr, &lAC.mOutputType  ); }
+            else
+            {
+                return GPU_dpi::STATUS_INVALID_CONFIG_FILE;
+            }
+        }
+    }
+
+    if ((GPU_dpi::STATUS_OK == lResult) && (0xffffffff != lAI))
+    {
+        lResult = Adapter_SetConfig(lAI, lAC);
+    }
+
+    return lResult;
+}
+
+GPU_dpi::Status System_Internal::ConfigFile_ReadCode(FILE * aFile, char * * aCode, unsigned int * aCodeSize_byte, unsigned int * aLine)
+{
+    assert(NULL != aFile         );
+    assert(NULL != aCode         );
+    assert(NULL != aCodeSize_byte);
+
+    char            lLine[1024];
+    char          * lPtr       = new char[16384];
+    GPU_dpi::Status lResult    = GPU_dpi::STATUS_OK;
+    unsigned int    lSize_byte = 0;
+
+    assert(NULL != lPtr);
+
+    memset(lPtr, 0, 16384);
+
+    while ((GPU_dpi::STATUS_OK == lResult) && ConfigFile_ReadLine_Raw(aFile, lLine, aLine))
+    {
+        if (0 == strncmp("END", lLine, 3))
+        {
+            break;
+        }
+
+        unsigned int lLineSize_byte = static_cast<unsigned int>(strlen(lLine));
+        unsigned int lNewSize_byte  = lSize_byte + lLineSize_byte;
+
+        if (16384 <= lNewSize_byte)
+        {
+            lResult = GPU_dpi::STATUS_CODE_TOO_LONG;
+            break;
+        }
+
+        memcpy(lPtr + lSize_byte, lLine, lLineSize_byte);
+        lSize_byte = lNewSize_byte;
+    }
+
+    if (GPU_dpi::STATUS_OK == lResult)
+    {
+        (*aCode         ) = lPtr      ;
+        (*aCodeSize_byte) = lSize_byte;
+
+        mConfigFile_Buffers.push_back(lPtr);
+    }
+    else
+    {
+        delete[] lPtr;
+    }
+
+    return lResult;
+}
+
+void System_Internal::ConfigFile_ReleaseBuffers()
+{
+    for (BufferList::iterator lIt = mConfigFile_Buffers.begin(); lIt != mConfigFile_Buffers.end(); lIt++)
+    {
+        delete[](*lIt);
+    }
+
+    mConfigFile_Buffers.clear();
 }
 
 // aSC   [---;RW-] The OpenNet::SourceCode instance
@@ -740,6 +1116,25 @@ GPU_dpi::Status ConvertException(const KmsLib::Exception * aE)
     return GPU_dpi::STATUS_UNEXPECTED_EXCEPTION_CODE;
 }
 
+// aC
+//
+// Return
+//  false  C is not a blank
+//  true   C is a blank
+bool IsBlank(char aC)
+{
+    switch (aC)
+    {
+    case ' '  :
+    case '\n' :
+    case '\r' :
+    case '\t' :
+        return true;
+    }
+
+    return false;
+}
+
 // aFileName  [---;R--]
 // aSize_byte [---;-W-]
 //
@@ -797,67 +1192,168 @@ void Adapter_Config(OpenNet::Adapter * aAdapter, const GPU_dpi::AdapterConfig & 
     assert(OpenNet::STATUS_OK == lStatus);
 }
 
-// ===== Generate ===========================================================
-// aConfig        [---;R--]
-// aIn            [---;R--]
-// aInSize_byte
-// aCodeSize_byte [---;-W-]
-// aFunctionName  [---;-W-]
+// ===== ConfigFile =========================================================
+
+// aStr [---;R--] The string to convert
+// aOut [---;RW-] The output buffer
 //
-// Return  These function return the generated code. The caller is
-//         responsible for releasing this code using delete[].
-
-const char * GenerateFromPatterList(const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName)
+// Return
+//  STATUS_OK
+//  STATUS_INVALID_FILTER_TYPE
+GPU_dpi::Status ConfigFile_ConvertFilterType(const char * aStr, GPU_dpi::FilterType * aOut)
 {
-    assert(NULL != (&aConfig)    );
-    assert(NULL != aIn           );
-    assert(   0 <  aInSize_byte  );
-    assert(NULL != aCodeSize_byte);
-    assert(NULL != aFunctionName );
+    assert(NULL != aStr);
+    assert(NULL != aOut);
 
-    return NULL;
+    if (0 == strncmp("ALL_PACKETS"      , aStr, 11)) { (*aOut) = GPU_dpi::FILTER_TYPE_ALL_PACKETS      ; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("FILTER"           , aStr,  6)) { (*aOut) = GPU_dpi::FILTER_TYPE_FILTER           ; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("NO_PACKET"        , aStr,  9)) { (*aOut) = GPU_dpi::FILTER_TYPE_NO_PACKET        ; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("OPEN_NET_FUNCTION", aStr, 17)) { (*aOut) = GPU_dpi::FILTER_TYPE_OPEN_NET_FUNCTION; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("OPEN_NET_KERNEL"  , aStr, 15)) { (*aOut) = GPU_dpi::FILTER_TYPE_OPEN_NET_KERNEL  ; return GPU_dpi::STATUS_OK; }
+
+    return GPU_dpi::STATUS_INVALID_FILTER_TYPE;
 }
 
-const char * GenerateFromBinaryPatternList(const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName)
+// aStr [---;R--] The string to convert
+// aOut [---;RW-] The output buffer
+//
+// Return
+//  STATUS_OK
+//  STATUS_INVALID_FORWARD_TYPE
+GPU_dpi::Status ConfigFile_ConvertForwardType(const char * aStr, GPU_dpi::ForwardType * aOut)
 {
-    assert(NULL != (&aConfig)    );
-    assert(NULL != aIn           );
-    assert(   0 <  aInSize_byte  );
-    assert(NULL != aCodeSize_byte);
-    assert(NULL != aFunctionName );
+    assert(NULL != aStr);
+    assert(NULL != aOut);
 
-    return NULL;
+    if (0 == strncmp("ALWAYS"      , aStr,  6)) { (*aOut) = GPU_dpi::FORWARD_TYPE_ALWAYS      ; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("FILTERED"    , aStr,  8)) { (*aOut) = GPU_dpi::FORWARD_TYPE_FILTERED    ; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("NEVER"       , aStr,  5)) { (*aOut) = GPU_dpi::FORWARD_TYPE_NEVER       ; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("NOT_FILTERED", aStr, 12)) { (*aOut) = GPU_dpi::FORWARD_TYPE_NOT_FILTERED; return GPU_dpi::STATUS_OK; }
+
+    return GPU_dpi::STATUS_INVALID_FORWARD_TYPE;
 }
 
-const char * GenerateFromRegExp(const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName)
+// aStr [---;R--] The string to convert
+// aOut [---;RW-] The output buffer
+//
+// Return
+//  STATUS_OK
+//  STATUS_INVALID_OUTPUT_FORMAT
+GPU_dpi::Status ConfigFile_ConvertOutputFormat(const char * aStr, GPU_dpi::OutputFormat * aOut)
 {
-    assert(NULL != (&aConfig)    );
-    assert(NULL != aIn           );
-    assert(   0 <  aInSize_byte  );
-    assert(NULL != aCodeSize_byte);
-    assert(NULL != aFunctionName );
+    assert(NULL != aStr);
+    assert(NULL != aOut);
 
-    return NULL;
+    if (0 == strncmp("NONE", aStr, 4)) { (*aOut) = GPU_dpi::OUTPUT_FORMAT_NONE; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("PCAP", aStr, 4)) { (*aOut) = GPU_dpi::OUTPUT_FORMAT_PCAP; return GPU_dpi::STATUS_OK; }
+
+    return GPU_dpi::STATUS_INVALID_OUTPUT_FORMAT;
 }
 
-const char * GenerateFromWiresharkFilter(const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName)
+// aStr [---;R--] The string to convert
+// aOut [---;RW-] The output buffer
+//
+// Return
+//  STATUS_OK
+//  STATUS_INVALID_OUTPUT_TYPE
+GPU_dpi::Status ConfigFile_ConvertOutputType(const char * aStr, GPU_dpi::OutputType * aOut)
 {
-    assert(NULL != (&aConfig)    );
-    assert(NULL != aIn           );
-    assert(   0 <  aInSize_byte  );
-    assert(NULL != aCodeSize_byte);
-    assert(NULL != aFunctionName );
+    assert(NULL != aStr);
+    assert(NULL != aOut);
 
-    return NULL;
+    if (0 == strncmp("DIRECT", aStr, 6)) { (*aOut) = GPU_dpi::OUTPUT_TYPE_DIRECT; return GPU_dpi::STATUS_OK; }
+    if (0 == strncmp("FILE"  , aStr, 4)) { (*aOut) = GPU_dpi::OUTPUT_TYPE_FILE  ; return GPU_dpi::STATUS_OK; }
+
+    return GPU_dpi::STATUS_INVALID_OUTPUT_TYPE;
 }
 
-const char * GenerateFromCompiledWiresharkFilter(const GPU_dpi::AdapterConfig & aConfig, const char * aIn, unsigned int aInSize_byte, unsigned int * aCodeSize_byte, const char * * aFunctionName)
+// aFile [---;RW-] The stream to read from
+// aLine [---;-W-] The output buffer
+// aNo   [--O;RW-] The line number to increment
+//
+// Return
+//  false  No more line
+//  true   OK
+bool ConfigFile_ReadLine(FILE * aFile, char * aLine, unsigned int * aNo)
 {
-    assert(NULL != (&aConfig)    );
-    assert(NULL != aIn           );
-    assert(   0 <  aInSize_byte  );
-    assert(NULL != aCodeSize_byte);
-    assert(NULL != aFunctionName );
+    assert(NULL != aFile);
+    assert(NULL != aLine);
 
-    return NULL;
+    for(;;)
+    {
+        char lLine[1024];
+
+        if (!ConfigFile_ReadLine_Raw(aFile, lLine, aNo))
+        {
+            return false;
+        }
+
+        unsigned int lIndex = 0;
+        while (IsBlank(lLine[lIndex]))
+        {
+            lIndex++;
+        }
+
+        if (('\0' != lLine[lIndex]) && ('#' != lLine[lIndex]) && ('\n' != lLine[lIndex]) && ('\r' != lLine[lIndex]))
+        {
+            char * lPtr = strpbrk(aLine, "#\n\r");
+            if (NULL == lPtr)
+            {
+                strcat_s(lLine, "\n");
+            }
+            else
+            {
+                strcpy_s(lPtr SIZE_INFO(2), "\n");
+            }
+
+            strcpy_s(aLine SIZE_INFO( 1024 ), lLine + lIndex);
+
+            break;
+        }
+    }
+
+    return true;
+}
+
+// aFile [---;RW-] The stream to read from
+// aLine [---;-W-] The output buffer
+// aNo   [--O;RW-] The line number to increment
+//
+// Return
+//  false  No more line
+//  true   OK
+bool ConfigFile_ReadLine_Raw(FILE * aFile, char * aLine, unsigned int * aNo)
+{
+    assert(NULL != aFile);
+    assert(NULL != aLine);
+
+    if (NULL == fgets(aLine, 1024, aFile))
+    {
+        return false;
+    }
+
+    if (NULL != aNo)
+    {
+        (*aNo)++;
+    }
+
+    return true;
+}
+
+// ===== Processor ==========================================================
+
+void Processor_Config(OpenNet::Processor * aProcessor, const GPU_dpi::AdapterConfig & aConfig)
+{
+    assert(NULL != aProcessor);
+    assert(NULL != (&aConfig));
+
+    OpenNet::Processor::Config lConfig;
+
+    OpenNet::Status lStatus = aProcessor->GetConfig(&lConfig);
+    assert(OpenNet::STATUS_OK == lStatus);
+
+    lConfig.mFlags.mProfilingEnabled = aConfig.mFlags.mProfilingEnabled;
+
+    lStatus = aProcessor->SetConfig(lConfig);
+    assert(OpenNet::STATUS_OK == lStatus);
 }

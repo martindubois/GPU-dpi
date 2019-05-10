@@ -46,7 +46,7 @@ bool AdapterConfig_IsSendingTo(const GPU_dpi::AdapterConfig & aThis, unsigned in
     switch (aThis.mForwardType)
     {
     case GPU_dpi::FORWARD_TYPE_ALWAYS      :
-    case GPU_dpi::FORWARD_TYPE_FITERED     :
+    case GPU_dpi::FORWARD_TYPE_FILTERED    :
     case GPU_dpi::FORWARD_TYPE_NOT_FILTERED:
         if (aThis.mForwardAdapter == aTo)
         {
@@ -68,8 +68,9 @@ bool AdapterConfig_IsSendingTo(const GPU_dpi::AdapterConfig & aThis, unsigned in
         }
         break;
 
-    case GPU_dpi::OUTPUT_TYPE_FILE:
-    case GPU_dpi::OUTPUT_TYPE_NONE:
+    case GPU_dpi::OUTPUT_TYPE_CALLBACK:
+    case GPU_dpi::OUTPUT_TYPE_FILE    :
+    case GPU_dpi::OUTPUT_TYPE_NONE    :
         break;
 
     default: assert(false);
@@ -117,17 +118,13 @@ GPU_dpi::Status AdapterConfig_Verify(const GPU_dpi::AdapterConfig & aThis)
     case GPU_dpi::FILTER_TYPE_NO_PACKET  :
         break;
 
-    case GPU_dpi::FILTER_TYPE_OPEN_NET_FUNCTION  :
-        if (NULL != aThis.mFilterFunctionName) { return GPU_dpi::STATUS_NO_FILTER_FUNCTION_NAME; }
-        // no break;
-
-    case GPU_dpi::FILTER_TYPE_OPEN_NET_KERNEL    :
-    case GPU_dpi::FILTER_TYPE_PATTERN_LIST       :
-    case GPU_dpi::FILTER_TYPE_PATTERN_LIST_BINARY:
-    case GPU_dpi::FILTER_TYPE_REG_EXP            :
-    case GPU_dpi::FILTER_TYPE_WIRESHARK          :
-    case GPU_dpi::FILTER_TYPE_WIRESHARK_COMPILED :
+    case GPU_dpi::FILTER_TYPE_FILTER         :
+    case GPU_dpi::FILTER_TYPE_OPEN_NET_KERNEL:
         if ((NULL == aThis.mFilterCode) && (NULL == aThis.mFilterFileName)) { return GPU_dpi::STATUS_NO_FILTER_DATA; }
+        break;
+
+    case GPU_dpi::FILTER_TYPE_OPEN_NET_FUNCTION  :
+        if (NULL == aThis.mFilterFunctionName) { return GPU_dpi::STATUS_NO_FILTER_FUNCTION_NAME; }
         break;
 
     default: return GPU_dpi::STATUS_INVALID_FILTER_TYPE;
@@ -152,23 +149,37 @@ GPU_dpi::Status AdapterConfig_Verify(const GPU_dpi::AdapterConfig & aThis)
 
     switch (aThis.mOutputType)
     {
-    case GPU_dpi::OUTPUT_TYPE_DIRECT :
-        if (GPU_dpi::OUTPUT_FORMAT_NONE != aThis.mOutputFormat         ) { return GPU_dpi::STATUS_UNSUPPORTED_OUTPUT_FORMAT ; }
-        if (                          0 >= aThis.mOutputPacketSize_byte) { return GPU_dpi::STATUS_INVALID_OUTPUT_PACKET_SIZE; }
-        // no break;
+    case GPU_dpi::OUTPUT_TYPE_CALLBACK :
+        if (NULL                        == aThis.mOutputCallback        ) { return GPU_dpi::STATUS_NO_OUTPUT_CALLBACK             ; }
+        if (NULL                        != aThis.mOutputFileName        ) { return GPU_dpi::STATUS_USELESS_OUTPUT_FILE_NAME       ; }
+        if (GPU_dpi::OUTPUT_FORMAT_NONE != aThis.mOutputFormat          ) { return GPU_dpi::STATUS_UNSUPPORTED_OUTPUT_FORMAT      ; }
+        break;
 
-    case GPU_dpi::OUTPUT_TYPE_NONE   :
-        if (NULL                        != aThis.mOutputFileName       ) { return GPU_dpi::STATUS_USELESS_OUTPUT_FILE_NAME  ; }
+    case GPU_dpi::OUTPUT_TYPE_DIRECT :
+        if (NULL                        != aThis.mOutputCallback        ) { return GPU_dpi::STATUS_USELESS_OUTPUT_CALLBACK        ; }
+        if (NULL                        != aThis.mOutputCallback_Context) { return GPU_dpi::STATUS_USELESS_OUTPUT_CALLBACK_CONTEXT; }
+        if (NULL                        != aThis.mOutputFileName        ) { return GPU_dpi::STATUS_USELESS_OUTPUT_FILE_NAME       ; }
+        if (GPU_dpi::OUTPUT_FORMAT_NONE != aThis.mOutputFormat          ) { return GPU_dpi::STATUS_UNSUPPORTED_OUTPUT_FORMAT      ; }
         break;
 
     case GPU_dpi::OUTPUT_TYPE_FILE :
-        if (NULL                        == aThis.mOutputFileName       ) { return GPU_dpi::STATUS_NO_OUTPUT_FILE_NAME       ; }
-        if (GPU_dpi::OUTPUT_FORMAT_PCAP != aThis.mOutputFormat         ) { return GPU_dpi::STATUS_UNSUPPORTED_OUTPUT_FORMAT ; }
-        if (                          0 >= aThis.mOutputPacketSize_byte) { return GPU_dpi::STATUS_INVALID_OUTPUT_PACKET_SIZE; }
+        if (NULL                        != aThis.mOutputCallback        ) { return GPU_dpi::STATUS_USELESS_OUTPUT_CALLBACK        ; }
+        if (NULL                        != aThis.mOutputCallback_Context) { return GPU_dpi::STATUS_USELESS_OUTPUT_CALLBACK_CONTEXT; }
+        if (NULL                        == aThis.mOutputFileName        ) { return GPU_dpi::STATUS_NO_OUTPUT_FILE_NAME            ; }
+        if (GPU_dpi::OUTPUT_FORMAT_PCAP != aThis.mOutputFormat          ) { return GPU_dpi::STATUS_UNSUPPORTED_OUTPUT_FORMAT      ; }
+        break;
+
+    case GPU_dpi::OUTPUT_TYPE_NONE   :
+        if (NULL                        != aThis.mOutputCallback        ) { return GPU_dpi::STATUS_USELESS_OUTPUT_CALLBACK        ; }
+        if (NULL                        != aThis.mOutputCallback_Context) { return GPU_dpi::STATUS_USELESS_OUTPUT_CALLBACK_CONTEXT; }
+        if (NULL                        != aThis.mOutputFileName        ) { return GPU_dpi::STATUS_USELESS_OUTPUT_FILE_NAME       ; }
+        if (GPU_dpi::OUTPUT_FORMAT_NONE != aThis.mOutputFormat          ) { return GPU_dpi::STATUS_UNSUPPORTED_OUTPUT_FORMAT      ; }
         break;
 
     default: return GPU_dpi::STATUS_INVALID_OUTPUT_TYPE;
     }
+
+    if (0 >= aThis.mOutputPacketSize_byte) { return GPU_dpi::STATUS_INVALID_OUTPUT_PACKET_SIZE; }
 
     if (AdapterConfig_IsCapturing(aThis))
     {

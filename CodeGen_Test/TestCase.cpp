@@ -28,7 +28,14 @@ bool TestCase_Verify(const TestCase & aTestCase, Filter * aFilter)
     const char * lC       = aFilter->GetCode        ();
     unsigned int lCS_byte = aFilter->GetCodeSize    ();
     const char * lEM      = aFilter->GetErrorMessage();
+    const char * lFName   = aFilter->GetFunctionName();
     bool         lResult  = true;
+
+    if (0 != strcmp("FilterFunction", lFName))
+    {
+        printf("TEST ERROR  Invalid function name\n");
+        return false;
+    }
 
     if (NULL == aTestCase.mErrorMessage)
     {

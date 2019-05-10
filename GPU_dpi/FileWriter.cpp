@@ -26,11 +26,6 @@
 // ===== GPU_dpi ============================================================
 #include "FileWriter.h"
 
-// Static function declaration
-/////////////////////////////////////////////////////////////////////////////
-
-static void ProcessEvent(void * aContext, OpenNetK::Event_Type aType, uint64_t aTimestamp_us, uint32_t aData0, void * aData1);
-
 // Public
 /////////////////////////////////////////////////////////////////////////////
 
@@ -46,57 +41,25 @@ FileWriter::~FileWriter()
     #endif
 }
 
-OpenNet::Adapter::Event_Callback FileWriter::GetEventCallback()
+// ===== EventProcessor =====================================================
+
+// aOut [---;RW-] The output stream
+void FileWriter::DisplayStatistics(FILE * aOut) const
 {
-    return ::ProcessEvent;
-}
+    assert(NULL != aOut);
 
-// Internal
-/////////////////////////////////////////////////////////////////////////////
+    EventProcessor::DisplayStatistics(aOut);
 
-void FileWriter::ProcessEvent(OpenNetK::Event_Type aType, uint64_t aTimestamp_us, uint32_t aData0, void * aData1)
-{
-    switch (aType)
-    {
-    case OpenNetK::EVENT_TYPE_BUFFER:
-        assert(NULL != aData1);
-
-        OpenNet::Buffer * lBuffer    = reinterpret_cast<OpenNet::Buffer *>(aData1);
-        unsigned int      lIndex     = 0;
-        unsigned int      lSize_byte = 0;
-        OpenNet::Status   lStatus;
-
-        while (0xffffffff != (lIndex = lBuffer->GetPacketEvent(lIndex)))
-        {
-            unsigned int lPacketSize_byte = lBuffer->GetPacketSize(lIndex);
-
-            lSize_byte += WritePacketHeader(mBuffer + lSize_byte, lBuffer->GetPacketSize(lIndex), aTimestamp_us);
-
-            lStatus = lBuffer->ReadPacket(lIndex, mBuffer + lSize_byte, lPacketSize_byte);
-            assert(OpenNet::STATUS_OK == lStatus);
-
-            lIndex++;
-            lSize_byte += lPacketSize_byte;
-
-            assert(sizeof(mBuffer) >= lSize_byte);
-        }
-
-        lStatus = lBuffer->ClearEvent();
-        assert(OpenNet::STATUS_OK == lStatus);
-
-        lStatus = lBuffer->Wait();
-        assert(OpenNet::STATUS_OK == lStatus);
-
-        Write(mBuffer, lSize_byte);
-
-        break;
-    }
+    fprintf(aOut, "%8u writes\n", mWrites);
 }
 
 // Protected
 /////////////////////////////////////////////////////////////////////////////
 
+// aFileName [---;R--] The file to write data to
 FileWriter::FileWriter(const char * aFileName)
+    : mSize_byte(0)
+    , mWrites   (0)
 {
     #ifdef _KMS_WINDOWS_
 
@@ -114,6 +77,8 @@ FileWriter::FileWriter(const char * aFileName)
     #endif
 }
 
+// aIn [---;R--] The data to write
+// aInSize_byte
 void FileWriter::Write(const void * aIn, unsigned int aInSize_byte)
 {
     assert(NULL != aIn         );
@@ -123,21 +88,43 @@ void FileWriter::Write(const void * aIn, unsigned int aInSize_byte)
 
         DWORD lInfo_byte;
 
-        BOOL lRetB = WriteFile(mHandle, aIn, aInSize_byte, &lInfo_byte, NULL);
-        assert(lRetB                     );
-        assert(aInSize_byte == lInfo_byte);
+        if (WriteFile(mHandle, aIn, aInSize_byte, &lInfo_byte, NULL))
+        {
+            assert(aInSize_byte == lInfo_byte);
+
+            mWrites++;
+        }
+        else
+        {
+            mErrors++;
+        }
 
     #endif
 }
 
-// Static function
-/////////////////////////////////////////////////////////////////////////////
+// ===== EventProcessor =================================================
 
-void ProcessEvent(void * aContext, OpenNetK::Event_Type aType, uint64_t aTimestamp_us, uint32_t aData0, void * aData1)
+void FileWriter::ProcessBufferEvent_End(OpenNet::Buffer * aBuffer)
 {
-    assert(NULL != aContext);
+    if (0 < mSize_byte)
+    {
+        Write(mBuffer, mSize_byte);
+        mSize_byte = 0;
+    }
+}
 
-    FileWriter * lThis = reinterpret_cast<FileWriter *>(aContext);
+void FileWriter::ProcessPacketEvent(OpenNet::Buffer * aBuffer, unsigned int aPacket, uint64_t aTimestamp_us)
+{
+    assert(NULL != aBuffer);
 
-    lThis->ProcessEvent(aType, aTimestamp_us, aData0, aData1);
+    unsigned int lPacketSize_byte = aBuffer->GetPacketSize(aPacket);
+
+    mSize_byte += WritePacketHeader(mBuffer + mSize_byte, aBuffer->GetPacketSize(aPacket), aTimestamp_us);
+
+    OpenNet::Status lStatus = aBuffer->ReadPacket(aPacket, mBuffer + mSize_byte, lPacketSize_byte);
+    assert(OpenNet::STATUS_OK == lStatus);
+
+    mSize_byte += lPacketSize_byte;
+
+    assert(sizeof(mBuffer) >= mSize_byte);
 }

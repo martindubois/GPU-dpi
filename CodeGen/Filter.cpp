@@ -32,7 +32,12 @@ Filter * Filter::Create(GPU_dpi::OutputType aOutputType, GPU_dpi::ForwardType aF
 
     TokenList lTokenList0;
 
-    Phase0(aIn, &lTokenList0);
+    const char * lErrMsg = Phase0(aIn, &lTokenList0);
+    if (NULL != lErrMsg)
+    {
+        lResult->SetErrorMessage(lErrMsg);
+        return lResult;
+    }
 
     if (0 == lTokenList0.size())
     {
@@ -46,7 +51,7 @@ Filter * Filter::Create(GPU_dpi::OutputType aOutputType, GPU_dpi::ForwardType aF
     {
         size_t lCount = lTokenList0.size();
 
-        const char * lErrMsg = Phase1(&lTokenList0, &lTokenList1);
+        lErrMsg = Phase1(&lTokenList0, &lTokenList1);
         if (NULL != lErrMsg)
         {
             lResult->SetErrorMessage(lErrMsg);

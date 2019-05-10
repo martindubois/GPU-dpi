@@ -24,12 +24,23 @@ public:
 
     void SetErrorMessage(const char * aErrMsg);
 
-    void Append(const char * aLine);
-    void Begin ();
-    void End   ();
+    void Append     (const char * aLine);
+    void AppendCode (const char * aCode);
+    void Begin      ();
+    void End        ();
 
     void Indent_Inc();
     void Indent_Dec();
+
+    // ===== C ==============================================================
+    void C_break     ();
+    void C_case      (const char * aValue    );
+    void C_else      ();
+    void C_for_End   ();
+    void C_if        (const char * aCondition);
+    void C_if_End    ();
+    void C_switch    (const char * aValue    );
+    void C_switch_End();
 
     // ===== Filter =========================================================
     virtual const char * GetCode        () const;
@@ -43,8 +54,6 @@ protected:
     virtual ~Filter_Internal();
 
 private:
-
-    void AppendElse();
 
     void VerifySize(unsigned int aSize_byte);
 

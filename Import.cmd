@@ -15,7 +15,7 @@ set EXPORT_FOLDER=K:\Export
 rem ===== Dependencies ======================================================
 
 set KMS_BASE="%EXPORT_FOLDER%\KmsBase\3.0.9_KI_Windows"
-set OPEN_NET="%EXPORT_FOLDER%\OpenNet\0.0.16_KI_Windows"
+set OPEN_NET="%EXPORT_FOLDER%\OpenNet\0.0.21_Test_Windows"
 
 rem ===== Constants =========================================================
 
@@ -57,6 +57,34 @@ if ERRORLEVEL 1 (
 	echo ERROR  call Import.cmd %DST_FOLDER%  failed - %ERRORLEVEL%
 	pause
 	exit /B 4
+)
+
+copy Import\Binaries\Debug_64\OpenNet.dll x64\Debug
+if ERRORLEVEL 1 (
+	echo ERROR  copy Import\Binaries\Debug_64\OpenNet.dll x64\Debug  failed - %ERRORLEVEL%
+	pause
+	exit /B 5
+)
+
+copy Import\Binaries\Debug_64\OpenNet_Tool.exe x64\Debug
+if ERRORLEVEL 1 (
+	echo ERROR  copy Import\Binaries\Debug_64\OpenNet_Tool.exe x64\Debug  failed - %ERRORLEVEL%
+	pause
+	exit /B 6
+)
+
+copy Import\Binaries\Release_64\OpenNet.dll x64\Release
+if ERRORLEVEL 1 (
+	echo ERROR  copy Import\Binaries\Release_64\OpenNet.dll x64\Release  failed - %ERRORLEVEL%
+	pause
+	exit /B 7
+)
+
+copy Import\Binaries\Release_64\OpenNet_Tool.exe x64\Release
+if ERRORLEVEL 1 (
+	echo ERROR  copy Import\Binaries\Release_64\OpenNet_Tool.exe x64\Release  failed - %ERRORLEVEL%
+	pause
+	exit /B 8
 )
 
 rem  ===== End ==============================================================

@@ -12,23 +12,21 @@
 // ===== Import/Includes ====================================================
 #include <OpenNet/Adapter.h>
 
+// ===== GPU_dpi ============================================================
+#include "EventProcessor.h"
+
 // Class
 /////////////////////////////////////////////////////////////////////////////
 
-class FileWriter
+class FileWriter : public EventProcessor
 {
 
 public:
 
     virtual ~FileWriter();
 
-    OpenNet::Adapter::Event_Callback GetEventCallback();
-
-    virtual unsigned int WritePacketHeader(void * aOut, unsigned int aSize_byte, uint64_t aTimestamp_us) = 0;
-
-// internal:
-
-    void ProcessEvent(OpenNetK::Event_Type aType, uint64_t aTimestamp_us, uint32_t aData0, void * aData1);
+    // ===== EventProcessor =================================================
+    virtual void DisplayStatistics(FILE * aOut) const;
 
 protected:
 
@@ -36,11 +34,19 @@ protected:
 
     void Write(const void * aIn, unsigned int aInSize_byte);
 
+    virtual unsigned int WritePacketHeader(void * aOut, unsigned int aSize_byte, uint64_t aTimestamp_us) = 0;
+
+    // ===== EventProcessor =================================================
+    virtual void ProcessBufferEvent_End(OpenNet::Buffer * aBuffer);
+    virtual void ProcessPacketEvent    (OpenNet::Buffer * aBuffer, unsigned int aPacket, uint64_t aTimestamp_us);
+
 private:
 
     uint8_t mBuffer[16 * 1024 * 64];
 
-    OpenNet::Adapter::Event_Callback mEventCallback;
+    unsigned int mSize_byte;
+
+    unsigned int mWrites;
 
     #ifdef _KMS_WINDOWS_
         HANDLE mHandle;

@@ -1,0 +1,14 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU_dpi_Test/Tests/ConfigFile03.txt
+
+Adapter 0
+	FilterCode = udp
+	ProfilingEnable = 1
+	BufferQty = 56
+	FilterType = FILTER
+	FordwardType = NEVER
+	OutputAdapter = 1
+	OutputType = DIRECT

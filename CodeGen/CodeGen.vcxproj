@@ -25,6 +25,8 @@
     <ClCompile Include="Phase1.cpp" />
     <ClCompile Include="Phase2.cpp" />
     <ClCompile Include="Phase3.cpp" />
+    <ClCompile Include="SearchElement.cpp" />
+    <ClCompile Include="SearchList.cpp" />
     <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +36,8 @@
     <ClInclude Include="Phase1.h" />
     <ClInclude Include="Phase2.h" />
     <ClInclude Include="Phase3.h" />
+    <ClInclude Include="SearchElement.h" />
+    <ClInclude Include="SearchList.h" />
     <ClInclude Include="Token.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

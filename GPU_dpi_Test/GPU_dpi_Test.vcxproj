@@ -19,12 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Filter.cpp" />
     <ClCompile Include="GPU_dpi_Test.cpp" />
     <ClCompile Include="SetupTool.cpp" />
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="TestCase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />
+    <ClInclude Include="TestCase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tests\ConfigFile00.txt" />
+    <Text Include="Tests\ConfigFile01.txt" />
+    <Text Include="Tests\ConfigFile02.txt" />
+    <Text Include="Tests\ConfigFile03.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -106,8 +115,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GPU_dpi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Import\Libraries\Debug_64_DLL</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GPU_dpi.lib;KmsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

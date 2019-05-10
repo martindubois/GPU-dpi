@@ -41,14 +41,10 @@ namespace GPU_dpi
     {
         FILTER_TYPE_NO_PACKET = 0,
 
-        FILTER_TYPE_ALL_PACKETS        ,
-        FILTER_TYPE_OPEN_NET_FUNCTION  ,
-        FILTER_TYPE_OPEN_NET_KERNEL    ,
-        FILTER_TYPE_PATTERN_LIST       ,
-        FILTER_TYPE_PATTERN_LIST_BINARY,
-        FILTER_TYPE_REG_EXP            ,
-        FILTER_TYPE_WIRESHARK          ,
-        FILTER_TYPE_WIRESHARK_COMPILED ,
+        FILTER_TYPE_ALL_PACKETS      ,
+        FILTER_TYPE_FILTER           ,
+        FILTER_TYPE_OPEN_NET_FUNCTION,
+        FILTER_TYPE_OPEN_NET_KERNEL  ,
 
         FILTER_TYPE_QTY
     }
@@ -67,12 +63,20 @@ namespace GPU_dpi
         FORWARD_TYPE_NEVER = 0,
 
         FORWARD_TYPE_ALWAYS      ,
-        FORWARD_TYPE_FITERED     ,
+        FORWARD_TYPE_FILTERED    ,
         FORWARD_TYPE_NOT_FILTERED,
 
         FORWARD_TYPE_QTY
     }
     ForwardType;
+
+    /// \cond en
+    /// \brief  Output callback
+    /// \endcond
+    /// \cond fr
+    /// \brief  Fonction de sortie
+    /// \endcond
+    typedef void(*OutputCallback)(void * aContext, const void * aData, unsigned int aSize_byte);
 
     /// \cond en
     /// \brief  Output format
@@ -104,8 +108,9 @@ namespace GPU_dpi
     {
         OUTPUT_TYPE_NONE = 0,
 
-        OUTPUT_TYPE_DIRECT,
-        OUTPUT_TYPE_FILE  ,
+        OUTPUT_TYPE_CALLBACK,
+        OUTPUT_TYPE_DIRECT  ,
+        OUTPUT_TYPE_FILE    ,
 
         OUTPUT_TYPE_QTY
     }
@@ -121,10 +126,20 @@ namespace GPU_dpi
     /// \endcond
     typedef struct
     {
-        const char * mFilterCode        ;
-        const char * mFilterFunctionName;
-        const char * mFilterFileName    ;
-        const char * mOutputFileName    ;
+        const char   * mFilterCode            ;
+        const char   * mFilterFunctionName    ;
+        const char   * mFilterFileName        ;
+        OutputCallback mOutputCallback        ;
+        void         * mOutputCallback_Context;
+        const char   * mOutputFileName        ;
+
+        struct
+        {
+            unsigned mProfilingEnabled : 1;
+
+            unsigned mReserved0 : 31;
+        }
+        mFlags;
 
         unsigned int mBufferQty            ;
         unsigned int mFilterCodeSize_byte  ;
@@ -134,10 +149,10 @@ namespace GPU_dpi
         unsigned int mOutputAdapter        ;
         OutputFormat mOutputFormat         ;
         unsigned int mOutputPacketSize_byte;
-        unsigned int mOutputType           ;
+        OutputType   mOutputType           ;
         unsigned int mProcessorIndex       ;
 
-        unsigned char mReserved0[68];
+        unsigned char mReserved0[48];
     }
     AdapterConfig;
 

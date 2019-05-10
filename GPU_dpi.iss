@@ -34,9 +34,12 @@ Source: "Import\Drivers\Release_64\ONK_Hardware\ONK_Pro1000.sys"; DestDir: "{app
 Source: "Import\Includes\OpenNetK\ARP.h";                         DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Ethernet.h";                    DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\IPv4.h";                        DestDir: "{app}\Includes\OpenNetK"
+Source: "Import\Includes\OpenNetK\IPv6.h";                        DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Kernel.h";                      DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Kernel_OpenCL.h";               DestDir: "{app}\Includes\OpenNetK"
+Source: "Import\Includes\OpenNetK\TCP.h";                         DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Types.h";                       DestDir: "{app}\Includes\OpenNetK"
+Source: "Import\Includes\OpenNetK\UDP.h";                         DestDir: "{app}\Includes\OpenNetK"
 Source: "Includes\GPU_dpi\GPU_dpi.h";                             DestDir: "{app}\Includes\GPU_dpi"
 Source: "Includes\GPU_dpi\SetupTool.h";                           DestDir: "{app}\Includes\GPU_dpi"
 Source: "Includes\GPU_dpi\Status.h";                              DestDir: "{app}\Includes\GPU_dpi"
@@ -49,7 +52,7 @@ Source: "x64\Release\GPU_dpi_Extcap.exe";                         DestDir: "{app
 Source: "x64\Release\GPU_dpi_Setup.exe";                          DestDir: "{app}"
 
 [Run]
-Filename: "{app}\GPU_dpi_Setup.exe"; Parameters: "-i"
+Filename: "{app}\GPU_dpi_Setup.exe"; Parameters: "install"
 
 [UninstallRun]
-Filename: "{app}\GPU_dpi_Setup.exe"; Parameters: "-u"
+Filename: "{app}\GPU_dpi_Setup.exe"; Parameters: "uninstall"

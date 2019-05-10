@@ -55,6 +55,19 @@ namespace GPU_dpi
         virtual void Delete();
 
         /// \cond en
+        /// \brief  Display statistics
+        /// \param  aIndex  The adapter index
+        /// \param  aOut    The output stream
+        /// \endcond
+        /// \cond fr
+        /// \brief  Afficher les statistiques
+        /// \param  aIndex  L'index de l'adaptateur
+        /// \retval aOut    Le fichier de sortie
+        /// \endcond
+        /// \retval STATUS_OK
+        virtual Status Adapter_DisplayStatistics(unsigned int aIndex, FILE * aOut) const = 0;
+
+        /// \cond en
         /// \return  This methode return the number of adapters.
         /// \endcond
         /// \cond fr
@@ -117,6 +130,20 @@ namespace GPU_dpi
         virtual Status Adapter_SetConfig(unsigned int aIndex, const AdapterConfig & aConfig) = 0;
 
         /// \cond en
+        /// \return  This methode read a configuration file.
+        /// \param   aFileName  The name of the file to read
+        /// \param   aLine      If an error occure, the error line is returner here
+        /// \endcond
+        /// \cond fr
+        /// \return  Cette m&eacute;thode lit un fichier de configuration.
+        /// \param   aFileName  Le nom du fichier &agrave; lire
+        /// \param   aLine      Si une erreur survient, le num&eacute;ro de
+        ///                     la ligne est retourn&eacute; ici.
+        /// \endcond
+        /// \retval  STATUS_OK
+        virtual Status ConfigFile_Read(const char * aFileName, unsigned int * aLine = NULL) = 0;
+
+        /// \cond en
         /// \brief  Display
         /// \param  aOut  The output stream
         /// \endcond
@@ -125,7 +152,18 @@ namespace GPU_dpi
         /// \retval aOut  Le fichier de sortie
         /// \endcond
         /// \retval STATUS_OK
-        virtual Status Display(FILE * aOut)const = 0;
+        virtual Status Display(FILE * aOut) const = 0;
+
+        /// \cond en
+        /// \brief  Display statistics
+        /// \param  aOut  The output stream
+        /// \endcond
+        /// \cond fr
+        /// \brief  Afficher les statistiques
+        /// \retval aOut  Le fichier de sortie
+        /// \endcond
+        /// \retval STATUS_OK
+        virtual Status DisplayStatistics(FILE * aOut) const = 0;
 
         /// \cond en
         /// \return  This methode return the number of processors.
@@ -154,6 +192,16 @@ namespace GPU_dpi
         /// \retval STATUS_OK
         /// \sa     Start
         virtual Status Stop() = 0;
+
+        /// \cond en
+        /// \brief  Wait
+        /// \endcond
+        /// \cond fr
+        /// \brief  Attendre
+        /// \endcond
+        /// \retval STATUS_OK
+        /// \sa     Start
+        virtual Status Wait() = 0;
 
         /// \cond en
         /// \brief   This method writes the build log into a file.

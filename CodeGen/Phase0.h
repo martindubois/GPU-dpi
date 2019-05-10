@@ -15,4 +15,4 @@ class TokenList;
 // Function
 /////////////////////////////////////////////////////////////////////////////
 
-extern void Phase0(const char * aIn, TokenList * aOut);
+extern const char * Phase0(const char * aIn, TokenList * aOut);
