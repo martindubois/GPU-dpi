@@ -1,0 +1,22 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_TG/Tests/0068.txt
+
+# UDP packet on VLAN 2
+
+ff ff ff ff ff ff # Ethernet
+00 01 02 03 04 05
+8100
+0002
+0800
+
+45 00 0032 # IPv4  Length = 68 - 18 = 50
+0000 0000
+10 11 0000
+c0 a8 00 01
+c0 a8 00 10
+
+000a 000b # UDP
+001e 0000 # Length = 50 - 20 = 30

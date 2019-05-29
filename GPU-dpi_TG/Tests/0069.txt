@@ -1,0 +1,20 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_TG/Tests/0069.txt
+
+# IPv4 UPD packet
+
+01 00 5e 00 0a 0a # Ethernet
+00 01 02 06 07 08
+0800
+
+45 00 0037 # IPv4  Length = 69 - 14 = 55
+0000 0000
+10 11 0000
+c0 a8 00 45
+ea 00 0a 0a
+
+0008 0009 # UDP
+0023 0000 # Length = 55 - 20 = 35

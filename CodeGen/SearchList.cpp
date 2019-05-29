@@ -76,7 +76,8 @@ const char * SearchList::Generate(const char * aResultName, Filter_Internal * aO
 
     char lLine[1024];
 
-    sprintf_s(lLine, "for ( unsigned int i = 0; ( i < lPacketInfo->mSize_byte ) && ( ! %s ); i ++ )" EOL, aResultName);
+    aOut->Append("unsigned int i;" EOL);
+    sprintf_s(lLine, "for ( i = 0; ( i < lDataSize_byte ) && ( ! %s ); i ++ )" EOL, aResultName);
     aOut->Append(lLine);
     aOut->Append("{" EOL);
     aOut->Indent_Inc();
@@ -84,6 +85,8 @@ const char * SearchList::Generate(const char * aResultName, Filter_Internal * aO
         GenerateCodes(aOut, aResultName);
 
     aOut->C_for_End();
+
+    GenerateEnds(aOut, aResultName);
 
     return NULL;
 }
@@ -103,6 +106,38 @@ void SearchList::GenerateCodes(Filter_Internal * aOut, const char * aResultName)
     {
         lIt->GenerateCode(aOut, aResultName, lIndex);
         lIndex++;
+    }
+}
+
+void SearchList::GenerateEnds(Filter_Internal * aOut, const char * aResultName)
+{
+    assert(NULL != aOut);
+    assert(NULL != aResultName);
+
+    ElementList::iterator lIt;
+
+    bool lNeeded = false;
+
+    for (lIt = mElements.begin(); (lIt != mElements.end()) && (!lNeeded); lIt++)
+    {
+        lNeeded = lIt->IsEndNeeded();
+    }
+
+    if (lNeeded)
+    {
+        char lCond[1024];
+
+        sprintf_s(lCond, "! %s", aResultName);
+        aOut->C_if(lCond);
+
+            unsigned int lIndex = 0;
+            for (lIt = mElements.begin(); lIt != mElements.end(); lIt++)
+            {
+                lIt->GenerateEnd(aOut, aResultName, lIndex);
+                lIndex++;
+            }
+
+        aOut->C_if_End();
     }
 }
 

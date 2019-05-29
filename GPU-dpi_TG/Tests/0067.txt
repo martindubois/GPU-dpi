@@ -1,0 +1,20 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_TG/Tests/0067.txt
+
+# IPv4 ARP request
+
+ff ff ff ff ff ff # Ethernet
+00 01 02 03 04 05
+0806
+
+0001 # ARP
+0800
+06 04
+0001
+00 01 02 03 04 05
+c0 a8 00 01
+00 00 00 00 00 00
+c0 a8 00 02

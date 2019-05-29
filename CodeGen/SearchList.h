@@ -36,6 +36,7 @@ private:
     typedef std::list<SearchElement> ElementList;
 
     void GenerateCodes    (Filter_Internal * aOut, const char * aResultName);
+    void GenerateEnds     (Filter_Internal * aOut, const char * aResultName);
     void GenerateVariables(Filter_Internal * aOut);
 
     ElementList mElements;

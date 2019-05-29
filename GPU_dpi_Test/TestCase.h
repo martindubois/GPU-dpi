@@ -23,7 +23,7 @@ public:
     typedef struct
     {
         const char   * mFilter ;
-        unsigned short mPackets[ 2 ];
+        unsigned short mPackets[ 5 ];
     }
     Info;
 

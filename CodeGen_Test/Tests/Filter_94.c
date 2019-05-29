@@ -45,31 +45,27 @@ OPEN_NET_FUNCTION_DECLARE( FilterFunction )
 
         int lR;
         lR = 0;
-        OPEN_NET_GLOBAL unsigned short * lA;
-
-        switch( lEthernet_Type_nh )
+        OPEN_NET_GLOBAL unsigned char * lData = Ethernet_Data( lBase, lPacketInfo );
+        unsigned int lDataSize_byte = Ethernet_DataSize( lBase, lPacketInfo );
+        if ( (                           16384 - 14 ) < lDataSize_byte ) { lDataSize_byte = (                           16384 - 14 ); }
+        if ( ( aBufferHeader->mPacketSize_byte - 14 ) < lDataSize_byte ) { lDataSize_byte = ( aBufferHeader->mPacketSize_byte - 14 ); }
+        OPEN_NET_CONSTANT unsigned char lA_Data[ 11 ] = { 0x10, 0x11, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x01, 0x02, 0x03 };
+        unsigned short    lA_Index = 0;
+        unsigned int i;
+        for ( i = 0; ( i < lDataSize_byte ) && ( ! lR ); i ++ )
         {
-        case ARP_ETHERNET_TYPE_nh :
-            switch( ARP_Protocol( lEthernet) )
-            {
-            case IPv4_ETHERNET_TYPE_nh :
-                lA = ARP_Destination( lEthernet );
-                if ( ( 0x9ec0 == lA[ 0 ] ) && ( ( 0x0000 & 0x00ff ) == ( lA[ 1 ] & 0x00ff ) ) ) { lR = 1; }
-                break;
-            }
-            break;
-        case IPv4_ETHERNET_TYPE_nh :
-            lA = IPv4_Destination( lEthernet );
-            if ( ( 0x9ec0 == lA[ 0 ] ) && ( ( 0x0000 & 0x00ff ) == ( lA[ 1 ] & 0x00ff ) ) ) { lR = 1; }
-            break;
+            if ( lA_Data[ lA_Index ] == lData[ i ] ) { lA_Index ++; }
+            else { lA_Index = ( ( lA_Data[ 0 ] == lData[ i ] ) ? 1 : 0 ); }
+            if ( 11 <= lA_Index ) { lR = 1; }
         }
         if ( lR )
         {
-            lPacketInfo->mSendTo = ( 1 << OUTPUT_ADAPTER ) | OPEN_NET_PACKET_PROCESSED;
+            lPacketInfo->mSendTo = OPEN_NET_PACKET_EVENT | OPEN_NET_PACKET_PROCESSED;
+            lEvents |= OPEN_NET_BUFFER_EVENT;
         }
         else
         {
-            lPacketInfo->mSendTo = ( 1 << FORWARD_ADAPTER ) | OPEN_NET_PACKET_PROCESSED;
+            lPacketInfo->mSendTo = OPEN_NET_PACKET_PROCESSED;
         }
 
     OPEN_NET_FUNCTION_END

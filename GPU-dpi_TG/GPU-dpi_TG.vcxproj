@@ -154,7 +154,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Import\Libraries\Release_64_DLL;$(SolutionDir)Import\Libraries\Release_64</AdditionalLibraryDirectories>
       <AdditionalDependencies>GPU_dpi.lib;OpenNet.lib;KmsLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -163,6 +163,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Tests\0065.txt" />
+    <Text Include="Tests\0066.txt" />
+    <Text Include="Tests\0067.txt" />
+    <Text Include="Tests\0068.txt" />
+    <Text Include="Tests\0069.txt" />
+    <Text Include="Tests\0070.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -463,6 +463,8 @@ void IPv4_Network(const char * aResultName, Filter_Internal * aOut, const char *
     sprintf_s(lLine, "lA = %s;" EOL, aValue);
     aOut->Append(lLine);
 
+    unsigned short lMask = MASK[aToken.mData.mNetMaskLen % 16];
+
     if (32 == aToken.mData.mNetMaskLen)
     {
         sprintf_s(lLine,
@@ -473,9 +475,9 @@ void IPv4_Network(const char * aResultName, Filter_Internal * aOut, const char *
     else if (16 < aToken.mData.mNetMaskLen)
     {
         sprintf_s(lLine,
-            "if ( ( 0x%02x%02x == lA[ 0 ] ) && ( 0x%02x%02x == ( lA[ 1 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
+            "if ( ( 0x%02x%02x == lA[ 0 ] ) && ( ( 0x%02x%02x & 0x%04x ) == ( lA[ 1 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
             aToken.mData.mIPv4[1], aToken.mData.mIPv4[0],
-            aToken.mData.mIPv4[3], aToken.mData.mIPv4[2], MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            aToken.mData.mIPv4[3], aToken.mData.mIPv4[2], lMask, lMask, aResultName);
 
     }
     else if (16 == aToken.mData.mNetMaskLen)
@@ -487,8 +489,8 @@ void IPv4_Network(const char * aResultName, Filter_Internal * aOut, const char *
     else
     {
         sprintf_s(lLine,
-            "if ( 0x%02x%02x == ( lA[ 0 ] & 0x%04x ) ) { %s = 1; }" EOL,
-            aToken.mData.mIPv4[1], aToken.mData.mIPv4[0], MASK[aToken.mData.mNetMaskLen], aResultName);
+            "if ( ( 0x%02x%02x & 0x%04x ) == ( lA[ 0 ] & 0x%04x ) ) { %s = 1; }" EOL,
+            aToken.mData.mIPv4[1], aToken.mData.mIPv4[0], lMask, lMask, aResultName);
     }
 
     aOut->Append(lLine);
@@ -525,6 +527,8 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
     sprintf_s(lLine, "lA = %s;" EOL, aValue);
     aOut->Append(lLine);
 
+    unsigned short lMask = MASK[aToken.mData.mNetMaskLen % 16];
+
     if (128 == aToken.mData.mNetMaskLen)
     {
         sprintf_s(lLine,
@@ -537,7 +541,7 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == lA[ 1 ] ) && ( 0x%04x == lA[ 2 ] ) && ( 0x%04x == lA[ 3 ] ) && ( 0x%04x == lA[ 4 ] ) && ( 0x%04x == lA[ 5 ] ) && ( 0x%04x == lA[ 6 ] ) && ( 0x%04x == ( lA[ 7 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
             SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), SwapBytes(aToken.mData.mIPv6[3]),
-            SwapBytes(aToken.mData.mIPv6[4]), SwapBytes(aToken.mData.mIPv6[5]), SwapBytes(aToken.mData.mIPv6[6]), SwapBytes(aToken.mData.mIPv6[7]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[4]), SwapBytes(aToken.mData.mIPv6[5]), SwapBytes(aToken.mData.mIPv6[6]), SwapBytes(aToken.mData.mIPv6[7]) & lMask, lMask, aResultName);
     }
     else if (112 == aToken.mData.mNetMaskLen)
     {
@@ -551,7 +555,7 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == lA[ 1 ] ) && ( 0x%04x == lA[ 2 ] ) && ( 0x%04x == lA[ 3 ] ) && ( 0x%04x == lA[ 4 ] ) && ( 0x%04x == lA[ 5 ] ) && (0x%04x == ( lA[ 6 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
             SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), SwapBytes(aToken.mData.mIPv6[3]),
-            SwapBytes(aToken.mData.mIPv6[4]), SwapBytes(aToken.mData.mIPv6[5]), SwapBytes(aToken.mData.mIPv6[6]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[4]), SwapBytes(aToken.mData.mIPv6[5]), SwapBytes(aToken.mData.mIPv6[6]) & lMask, lMask, aResultName);
     }
     else if (96 == aToken.mData.mNetMaskLen)
     {
@@ -565,7 +569,7 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == lA[ 1 ] ) && ( 0x%04x == lA[ 2 ] ) && ( 0x%04x == lA[ 3 ] ) && ( 0x%04x == lA[ 4 ] ) && (0x%04x == ( lA[ 5 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
             SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), SwapBytes(aToken.mData.mIPv6[3]),
-            SwapBytes(aToken.mData.mIPv6[4]), SwapBytes(aToken.mData.mIPv6[5]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[4]), SwapBytes(aToken.mData.mIPv6[5]) & lMask, lMask, aResultName);
     }
     else if (80 == aToken.mData.mNetMaskLen)
     {
@@ -579,7 +583,7 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == lA[ 1 ] ) && ( 0x%04x == lA[ 2 ] ) && ( 0x%04x == lA[ 3 ] ) && (0x%04x == ( lA[ 4 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
             SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), SwapBytes(aToken.mData.mIPv6[3]),
-            SwapBytes(aToken.mData.mIPv6[4]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[4]) & lMask, lMask, aResultName);
     }
     else if (64 == aToken.mData.mNetMaskLen)
     {
@@ -592,8 +596,8 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
     {
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == lA[ 1 ] ) && ( 0x%04x == lA[ 2 ] ) && ( 0x%04x == ( lA[ 3 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
-            SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), SwapBytes(aToken.mData.mIPv6[3]),
-            MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), SwapBytes(aToken.mData.mIPv6[3]) & lMask,
+            lMask, aResultName);
     }
     else if (48 == aToken.mData.mNetMaskLen)
     {
@@ -605,7 +609,7 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
     {
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == lA[ 1 ] ) && ( 0x%04x == ( lA[ 2 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
-            SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), SwapBytes(aToken.mData.mIPv6[2]) & lMask, lMask, aResultName);
     }
     else if (32 == aToken.mData.mNetMaskLen)
     {
@@ -617,7 +621,7 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
     {
         sprintf_s(lLine,
             "if ( ( 0x%04x == lA[ 0 ] ) && ( 0x%04x == ( lA[ 1 ] & 0x%04x ) ) ) { %s = 1; }" EOL,
-            SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+            SwapBytes(aToken.mData.mIPv6[0]), SwapBytes(aToken.mData.mIPv6[1]) & lMask, lMask, aResultName);
     }
     else if (16 == aToken.mData.mNetMaskLen)
     {
@@ -627,9 +631,9 @@ void IPv6_Network(const char * aResultName, Filter_Internal * aOut, const char *
     }
     else
     {
-    sprintf_s(lLine,
-        "if ( 0x%04x == ( lA[ 0 ] & 0x%04x ) ) { %s = 1; }" EOL,
-        SwapBytes(aToken.mData.mIPv6[0]), MASK[aToken.mData.mNetMaskLen % 16], aResultName);
+        sprintf_s(lLine,
+            "if ( 0x%04x == ( lA[ 0 ] & 0x%04x ) ) { %s = 1; }" EOL,
+            SwapBytes(aToken.mData.mIPv6[0]) & lMask, lMask, aResultName);
     }
 
     aOut->Append(lLine);
@@ -773,7 +777,7 @@ void ArpDstHost(const Token & aArpDstHost, const char * aResultName, Filter_Inte
 
                 if (aArpDstHost.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Address(aResultName, aOut, "ARP_Destination( lEthernet )", aArpDstHost);
                     aOut->C_break();
                 }
@@ -807,7 +811,7 @@ void ArpHost(const Token & aArpHost, const char * aResultName, Filter_Internal *
 
                 if (aArpHost.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Address(aResultName, aOut, "ARP_Destination( lEthernet )", aArpHost);
                         SpecialElse(aOut);
                             IPv6_Address(aResultName, aOut, "ARP_Source( lEthernet )", aArpHost);
@@ -841,7 +845,7 @@ void ArpSrcHost(const Token & aArpSrcHost, const char * aResultName, Filter_Inte
 
                 if (aArpSrcHost.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Address(aResultName, aOut, "ARP_Source( lEthernet )", aArpSrcHost);
                     aOut->C_break();
                 }
@@ -883,7 +887,7 @@ void DstHost(const Token & aDstHost, const char * aResultName, Filter_Internal *
 
                 if (aDstHost.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Address(aResultName, aOut, "ARP_Destination( lEthernet )", aDstHost);
                     aOut->C_break();
                 }
@@ -900,7 +904,7 @@ void DstHost(const Token & aDstHost, const char * aResultName, Filter_Internal *
 
         if (aDstHost.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Address(aResultName, aOut, "IPv6_Destination( lEthernet )", aDstHost);
             aOut->C_break();
         }
@@ -928,7 +932,7 @@ void DstNet(const Token & aDstNet, const char * aResultName, Filter_Internal * a
 
                 if (aDstNet.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Network(aResultName, aOut, "ARP_Destination( lEthernet )", aDstNet);
                     aOut->C_break();
                 }
@@ -945,7 +949,7 @@ void DstNet(const Token & aDstNet, const char * aResultName, Filter_Internal * a
 
         if (aDstNet.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Network(aResultName, aOut, "IPv6_Destination( lEthernet )", aDstNet);
             aOut->C_break();
         }
@@ -1072,7 +1076,7 @@ void Host(const Token & aHost, const char * aResultName, Filter_Internal * aOut)
 
                 if (aHost.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Address(aResultName, aOut, "ARP_Destination( lEthernet )", aHost);
                         SpecialElse(aOut);
                             IPv6_Address(aResultName, aOut, "ARP_Source( lEthernet )", aHost);
@@ -1095,7 +1099,7 @@ void Host(const Token & aHost, const char * aResultName, Filter_Internal * aOut)
 
         if (aHost.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Address(aResultName, aOut, "IPv6_Destination( lEthernet )", aHost);
                 SpecialElse(aOut);
                     IPv6_Address(aResultName, aOut, "IPv6_Source( lEthernet )", aHost);
@@ -1112,6 +1116,12 @@ void InEthernet(const Token & aInEthernet, const char * aResultName, Filter_Inte
     assert(NULL != aOut          );
 
     aOut->Append("OPEN_NET_GLOBAL unsigned char * lData = Ethernet_Data( lBase, lPacketInfo );" EOL);
+    aOut->Append("unsigned int lDataSize_byte = Ethernet_DataSize( lBase, lPacketInfo );"       EOL);
+
+    // TODO  CodeGen.Phase3
+    //       Remove these security when no longer needed!
+    aOut->Append("if ( (                           16384 - 14 ) < lDataSize_byte ) { lDataSize_byte = (                           16384 - 14 ); }" EOL);
+    aOut->Append("if ( ( aBufferHeader->mPacketSize_byte - 14 ) < lDataSize_byte ) { lDataSize_byte = ( aBufferHeader->mPacketSize_byte - 14 ); }" EOL);
 
     In(aInEthernet, aResultName, aOut);
 }
@@ -1124,7 +1134,13 @@ void InIp(const Token & aInIp, const char * aResultName, Filter_Internal * aOut)
 
     aOut->C_if("0 != lIP");
 
-        aOut->Append("OPEN_NET_GLOBAL char * lData = lIP;" EOL);
+        aOut->Append("OPEN_NET_GLOBAL char * lData = lIP;"              EOL);
+        aOut->Append("unsigned int lDataSize_byte = lIP_DataSize_byte;" EOL);
+
+        // TODO  CodeGen.Phase3
+        //       Remove these security when no longer needed!
+        aOut->Append("if ( (                           16384 - 34 ) < lDataSize_byte ) { lDataSize_byte = (                           16384 - 34 ); }" EOL);
+        aOut->Append("if ( ( aBufferHeader->mPacketSize_byte - 34 ) < lDataSize_byte ) { lDataSize_byte = ( aBufferHeader->mPacketSize_byte - 34 ); }" EOL);
 
         In(aInIp, aResultName, aOut);
 
@@ -1144,7 +1160,13 @@ void InTcp(const Token & aInTcp, const char * aResultName, Filter_Internal * aOu
 
     aOut->C_if("( 0 != lIP ) && ( TCP_IP_PROTOCOL == lIP_Protocol )");
 
-        aOut->Append("OPEN_NET_GLOBAL char * lData = TCP_Data( lIP );" EOL);
+        aOut->Append("OPEN_NET_GLOBAL unsigned char * lData = TCP_Data( lIP );"                EOL);
+        aOut->Append("unsigned int lDataSize_byte = lIP_DataSize_byte - TCP_HEADER_SIZE_byte;" EOL);
+
+        // TODO  CodeGen.Phase3
+        //       Remove these security when no longer needed!
+        aOut->Append("if ( (                           16384 - 54 ) < lDataSize_byte ) { lDataSize_byte = (                           16384 - 54 ); }" EOL);
+        aOut->Append("if ( ( aBufferHeader->mPacketSize_byte - 54 ) < lDataSize_byte ) { lDataSize_byte = ( aBufferHeader->mPacketSize_byte - 54 ); }" EOL);
 
         In(aInTcp, aResultName, aOut);
 
@@ -1164,7 +1186,11 @@ void InUdp(const Token & aInUdp, const char * aResultName, Filter_Internal * aOu
 
     aOut->C_if("( 0 != lIP ) && ( UDP_IP_PROTOCOL == lIP_Protocol )");
 
-        aOut->Append("OPEN_NET_GLOBAL char * lData = UDP_Data( lIP );" EOL);
+        aOut->Append("OPEN_NET_GLOBAL char * lData = UDP_Data( lIP );"                         EOL);
+        aOut->Append("unsigned int lDataSize_byte = lIP_DataSize_byte - UDP_HEADER_SIZE_byte;" EOL);
+
+        aOut->Append("if ( (                           16384 - 42 ) < lDataSize_byte ) { lDataSize_byte = (                           16384 - 42 ); }" EOL);
+        aOut->Append("if ( ( aBufferHeader->mPacketSize_byte - 42 ) < lDataSize_byte ) { lDataSize_byte = ( aBufferHeader->mPacketSize_byte - 42 ); }" EOL);
 
         In(aInUdp, aResultName, aOut);
 
@@ -1322,7 +1348,7 @@ void Ip6DstHost(const Token & aIp6DstHost, const char * aResultName, Filter_Inte
     aOut->C_switch("lEthernet_Type_nh");
         if (aIp6DstHost.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Address(aResultName, aOut, "IPv6_Destination( lEthernet )", aIp6DstHost);
             aOut->C_break();
         }
@@ -1340,7 +1366,7 @@ void Ip6Host(const Token & aIp6Host, const char * aResultName, Filter_Internal *
     aOut->C_switch("lEthernet_Type_nh");
         if (aIp6Host.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Address(aResultName, aOut, "IPv6_Destination( lEthernet )", aIp6Host);
                 SpecialElse(aOut);
                     IPv6_Address(aResultName, aOut, "IPv6_Source( lEthernet )", aIp6Host);
@@ -1359,7 +1385,7 @@ void Ip6Multicast(const Token & aIp6Multicast, const char * aResultName, Filter_
     aOut->Append("OPEN_NET_GLOBAL unsigned short * lA;" EOL);
     aOut->Append(                                       EOL);
     aOut->C_switch("lEthernet_Type_nh");
-        aOut->C_case("IPv6_ETHERNET_TYPE");
+        aOut->C_case("IPv6_ETHERNET_TYPE_nh");
             aOut->Append("lA = IPv6_Destination(lEthernet);" EOL);
             OneLineIf(aOut, aResultName, "( 0x1eff == lA[ 0 ] ) && ( 0x0000 == lA[ 1 ] ) && ( 0x0000 == lA[ 2 ] ) && ( 0x0000 == lA[ 3 ] ) && ( 0x0000 == lA[ 4 ] ) && ( 0x0000 == lA[ 5 ] )");
         aOut->C_break();
@@ -1380,7 +1406,7 @@ void Ip6Net(const Token & aIp6Net, const char * aResultName, Filter_Internal * a
 
                 if (aIp6Net.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Network(aResultName, aOut, "ARP_Destination( lEthernet )", aIp6Net);
                         SpecialElse(aOut);
                             IPv6_Network(aResultName, aOut, "ARP_Source( lEthernet )", aIp6Net);
@@ -1393,7 +1419,7 @@ void Ip6Net(const Token & aIp6Net, const char * aResultName, Filter_Internal * a
 
         if (aIp6Net.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Network(aResultName, aOut, "IPv6_Destination( lEthernet )", aIp6Net);
                 SpecialElse(aOut);
                     IPv6_Network(aResultName, aOut, "IPv6_Source( lEthernet )", aIp6Net);
@@ -1426,7 +1452,7 @@ void Ip6SrcHost(const Token & aIp6SrcHost, const char * aResultName, Filter_Inte
     aOut->C_switch("lEthernet_Type_nh");
         if (aIp6SrcHost.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Address(aResultName, aOut, "IPv6_Source( lEthernet )", aIp6SrcHost);
             aOut->C_break();
         }
@@ -1452,7 +1478,7 @@ void Multicast(const Token & aMulticast, const char * aResultName, Filter_Intern
     assert(NULL != aOut         );
 
     aOut->Append("OPEN_NET_GLOBAL unsigned short * lA = Ethernet_Destination( lBase, lPacketInfo );" EOL);
-    OneLineIf(aOut, aResultName, "( ( 0x0100 == lA[ 0 ] ) && ( 0x005e == ( lA[ 1 ] & 0x80ff ) ) ) || ( 0x3333 == lA[ 0 ] )");
+    OneLineIf(aOut, aResultName, "( ( 0x0001 == lA[ 0 ] ) && ( 0x005e == ( lA[ 1 ] & 0x80ff ) ) ) || ( 0x3333 == lA[ 0 ] )");
 }
 
 void Net(const Token & aNet, const char * aResultName, Filter_Internal * aOut)
@@ -1479,7 +1505,7 @@ void Net(const Token & aNet, const char * aResultName, Filter_Internal * aOut)
 
                 if (aNet.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Network(aResultName, aOut, "ARP_Destination( lEthernet )", aNet);
                         SpecialElse(aOut);
                             IPv6_Network(aResultName, aOut, "ARP_Source( lEthernet )", aNet);
@@ -1502,7 +1528,7 @@ void Net(const Token & aNet, const char * aResultName, Filter_Internal * aOut)
 
         if (aNet.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Network(aResultName, aOut, "IPv6_Destination( lEthernet )", aNet);
                 SpecialElse(aOut);
                     IPv6_Network(aResultName, aOut, "IPv6_Source( lEthernet )", aNet);
@@ -1646,7 +1672,7 @@ void SrcHost(const Token & aSrcHost, const char * aResultName, Filter_Internal *
 
                 if (aSrcHost.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Address(aResultName, aOut, "ARP_Source( lEthernet )", aSrcHost);
                     aOut->C_break();
                 }
@@ -1663,7 +1689,7 @@ void SrcHost(const Token & aSrcHost, const char * aResultName, Filter_Internal *
 
         if (aSrcHost.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Address(aResultName, aOut, "IPv6_Source( lEthernet )", aSrcHost);
             aOut->C_break();
         }
@@ -1691,7 +1717,7 @@ void SrcNet(const Token & aSrcNet, const char * aResultName, Filter_Internal * a
 
                 if (aSrcNet.mData.mFlags.mIPv6)
                 {
-                    aOut->C_case("IPv6_ETHERNET_TYPE");
+                    aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                         IPv6_Network(aResultName, aOut, "ARP_Source( lEthernet )", aSrcNet);
                     aOut->C_break();
                 }
@@ -1708,7 +1734,7 @@ void SrcNet(const Token & aSrcNet, const char * aResultName, Filter_Internal * a
 
         if (aSrcNet.mData.mFlags.mIPv6)
         {
-            aOut->C_case("IPv6_ETHERNET_TYPE");
+            aOut->C_case("IPv6_ETHERNET_TYPE_nh");
                 IPv6_Network(aResultName, aOut, "IPv6_Source( lEthernet )", aSrcNet);
             aOut->C_break();
         }

@@ -1,0 +1,19 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_TG/Tests/0070.txt
+
+# IPv6 UDP packet
+
+ff ff ff ff ff ff # Ethernet
+00 01 02 06 07 08
+86dd
+
+60 00 00 00 # IPv6
+000f 11 10 # Length = 69 - 14 - 40 = 15
+00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f
+0f 0e 0d 0c 0b 0a 09 08 07 06 05 04 03 02 01 00
+
+0008 0009 # UDP
+000f 0000 # Length = 55 - 40 = 15

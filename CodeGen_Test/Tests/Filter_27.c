@@ -2,6 +2,7 @@
 #include <OpenNetK/Ethernet.h>
 #include <OpenNetK/IPv4.h>
 #include <OpenNetK/IPv6.h>
+#include <OpenNetK/RegEx.h>
 #include <OpenNetK/TCP.h>
 #include <OpenNetK/UDP.h>
 
@@ -24,17 +25,20 @@ OPEN_NET_FUNCTION_DECLARE( FilterFunction )
         unsigned short                  lEthernet_Type_nh = Ethernet_Type( lBase, lPacketInfo );
 
         OPEN_NET_GLOBAL unsigned char * lIP;
+        unsigned int                    lIP_DataSize_byte;
         unsigned char                   lIP_Protocol;
 
         switch( lEthernet_Type_nh )
         {
         case IPv4_ETHERNET_TYPE_nh :
-            lIP          = IPv4_Data    ( lEthernet );
-            lIP_Protocol = IPv4_Protocol( lEthernet );
+            lIP               = IPv4_Data    ( lEthernet );
+            lIP_DataSize_byte = IPv4_DataSize( lEthernet );
+            lIP_Protocol      = IPv4_Protocol( lEthernet );
             break;
         case IPv6_ETHERNET_TYPE_nh :
-            lIP          = IPv6_Data    ( lEthernet );
-            lIP_Protocol = IPv6_Protocol( lEthernet );
+            lIP               = IPv6_Data    ( lEthernet );
+            lIP_DataSize_byte = IPv6_DataSize( lEthernet );
+            lIP_Protocol      = IPv6_Protocol( lEthernet );
             break;
         default : lIP = 0;
         }
@@ -45,7 +49,7 @@ OPEN_NET_FUNCTION_DECLARE( FilterFunction )
 
         switch( lEthernet_Type_nh )
         {
-        case IPv6_ETHERNET_TYPE :
+        case IPv6_ETHERNET_TYPE_nh :
             lA = IPv6_Destination(lEthernet);
             if ( ( 0x1eff == lA[ 0 ] ) && ( 0x0000 == lA[ 1 ] ) && ( 0x0000 == lA[ 2 ] ) && ( 0x0000 == lA[ 3 ] ) && ( 0x0000 == lA[ 4 ] ) && ( 0x0000 == lA[ 5 ] ) ) { lR = 1; }
             break;

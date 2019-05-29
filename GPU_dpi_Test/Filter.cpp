@@ -20,87 +20,88 @@
 
 static const TestCase::Info TESTS[]
 {
-    { "portrange 1-2"                                        , { 65, 0 } }, // 0
-    { "ether[11] = 5"                                        , { 65, 0 } }, // 1
-    { "host 1.2.3.4"                                         , { 65, 0 } }, // 2
-    { "ip host 1.2.3.4"                                      , { 65, 0 } }, // 3
-    { "ether proto 0x0800 and host 1.2.3.4"                  , { 65, 0 } }, // 4
- // { "ether host 00:01:02:03:04:05 and not host 192.168.0.1", { 65, 0 } }, ??? (0)
- // { "tcp src port 0x0a0a"                                  , { 0 } },     TODO
- // { "greater 65"                                           , { 65, 0 } }, Later
-    { "len <= 65"                                            , { 65, 0 } }, // 5
-    { "port 1"                                               , { 65, 0 } }, // 6
-    { "ether[6:4] = 0x00010203"                              , { 65, 0 } }, // 7
- // { "in_ether { BIN \"10 11 00 00 01 02 03 04 01 02 03\" }", { 65, 0 } }, ???
- /* { "arp dst host 192.158.0.1"                             , { 0 } },
-    { "arp host localhost"                                   , { 0 } },
-    { "arp src host localhost"                               , { 0 } }, */
-    { "dst net 1.2.3"                                        , { 65, 0 } }, // 8
-    { "dst port 1"                                           , { 65, 0 } }, // 9
-    { "dst portrange 1-2"                                    , { 65, 0 } }, // 10
- // { "ether dst ff-ff-ff-ff-ff-ff"                          , { 65, 1024, 0 } }, Impossible
- // { "ether src 00.01.02.03.04.05"                          , { 65, 0 } }, ??? (0)
-    { "ip dst host 01.02.03.04"                              , { 65, 0 } }, // 11
- // { "ip multicast"                                         , { 0 } }      Later
-    { "ip proto 17"                                          , { 65, 0 } }, // 12
-    { "ip src host 1.2.3.4"                                  , { 65, 0 } }, // 13
- // { "ip6 dst host 1:2:3:4:5:6:7:8"                         , { 0 } },     Later
- // { "ip6 host localhost"                                   , { 0 } },     Later
- // { "ip6 multicast"                                        , { 0 } },     Later
- // { "ip6 proto 0x10"                                       , { 0 } },     Later
- // { "ip6 src host 1:2:3:4:5:6:7:8"                         , { 0 } },     Later
- // { "proto ah"                                             , { 0 } },     Later
- // { "proto esp"                                            , { 0 } },     Later
- // { "proto icmp6"                                          , { 0 } },     Later
- // { "proto igmp"                                           , { 0 } },     Later
- // { "proto pim"                                            , { 0 } },     Later
- // { "proto vrrp"                                           , { 0 } },     Later
-    { "src net 1"                                            , { 65, 0 } }, // 14
-    { "src portrange 0-1"                                    , { 65, 0 } }, // 15
- // { "tcp dst port 1"                                       , { 0 } },     Later
- // { "tcp dst portrange 1-2"                                , { 0 } },     Later
- // { "tcp port 1"                                           , { 0 } },     Later
- // { "tcp portrange 1-2"                                    , { 0 } },     Later
- // { "tcp src portrange 1-2"                                , { 0 } },     Later
-    { "udp dst port 1"                                       , { 65, 0 } }, // 16
-    { "udp dst portrange 1-2"                                , { 65, 0 } }, // 17
-    { "udp port 1"                                           , { 65, 0 } }, // 18
-    { "udp portrange 1-2"                                    , { 65, 0 } }, // 19
-    { "udp src port 0"                                       , { 65, 0 } }, // 20
-    { "udp src portrange 0-1"                                , { 65, 0 } }, // 21
- // { "ether broadcast"                                      , { 65, 1024, 0 } }, Impossible
- // { "vlan 100"                                             , { 0 } },     Later
- // { "ether[len - 2] != 0"                                  , { 0 } },     Later
- // { "ether[len - 2 : 2] != 0"                              , { 0 } },     Later
-    { "udp"                                                  , { 65, 0 } }, // 22
-    { "net 1.2.3.4"                                          , { 65, 0 } }, // 23
-    { "net 1.2"                                              , { 65, 0 } }, // 24
- // { "ip6 net 01:02:03:04:05:06:07:08"                      , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/127"                  , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/112"                  , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/110"                  , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/96"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/93"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/80"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/76"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/64"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/59"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/48"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/42"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/32"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/25"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/16"                   , { 0 } },     Later
- // { "ip6 net 01:02:03:04:05:06:07:08/8"                    , { 0 } },     Later
-    { "dst host 1.2.3.4"                                     , { 65, 0 } }, // 25
- // { "multicast"                                            , { 0 } },     Later
-    { "port 1 or port 3"                                     , { 65, 0 } }, // 26
-    { "src host 1.2.3.4"                                     , { 65, 0 } }, // 27
-    { "src port 0"                                           , { 65, 0 } }, // 28
- // { "vlan"                                                 , { 0 } },     Later
-    { "ip net 1.2.3.0/28"                                    , { 65, 0 } }, // 29
-    { "ip net 1.2.0/22"                                      , { 65, 0 } }, // 30
-    { "ip net 1.2/15"                                        , { 65, 0 } }, // 31
-    { "ip net 0/7"                                           , { 65, 0 } }, // 32
+    { "arp dst host 192.168.0.2"                             , { 67,             0 } }, //  0
+    { "arp host 192.168.0.1"                                 , { 67,             0 } },
+    { "arp src host 192.168.0.1"                             , { 67,             0 } },
+    { "dst host 1.2.3.4"                                     , { 65, 66,         0 } },
+    { "dst net 1.2.3"                                        , { 65, 66,         0 } },
+    { "dst port 1"                                           , { 65,             0 } }, //  5  Filter_17
+    { "dst portrange 1-2"                                    , { 65,             0 } }, //  6  Filter_18
+    { "ether host 00:01:02:03:04:05 and not host 192.168.0.1", { 65, 66,         0 } }, //  7  Filter_05 <== 68 received but not expected
+    { "ether proto 0x0800 and host 1.2.3.4"                  , { 65, 66,         0 } },
+    { "ether src 00.01.02.03.04.05"                          , { 65, 66, 67, 68, 0 } },
+    { "ether[6:4] = 0x00010203"                              , { 65, 66, 67, 68, 0 } }, // 10
+    { "ether[11] = 5"                                        , { 65, 66, 67, 68, 0 } },
+    { "greater 1024"                                         , { 1024,           0 } },
+    { "host 1.2.3.4"                                         , { 65, 66,         0 } },
+    { "in_ether { BIN \"10 11 00 00 01 02 03 04 01 02 03\" }", { 65,             0 } }, // 14  Filter_94
+    { "in_ip { TEXT \"KMS\" }"                               , { 65,             0 } },
+    { "in_tcp { REGEX \"\\d{3}-\\d{3}-\\d{4}\" }"            , { 66,             0 } }, // 16  Filter_84
+    { "ip dst host 01.02.03.04"                              , { 65, 66,         0 } },
+    { "ip host 1.2.3.4"                                      , { 65, 66,         0 } },
+    { "ip multicast"                                         , { 69,             0 } },
+    { "ip net 0/7"                                           , { 65, 66,         0 } }, // 20
+    { "ip net 1.2/15"                                        , { 65, 66,         0 } },
+    { "ip net 1.2.0/22"                                      , { 65, 66,         0 } },
+    { "ip net 1.2.3.0/28"                                    , { 65, 66,         0 } },
+    { "ip proto 17"                                          , { 65, 68, 69,     0 } },
+    { "ip src host 1.2.3.4"                                  , { 65, 66,         0 } }, // 25
+    { "ip6 dst host f0e:d0c:b0a:908:706:504:302:100"         , { 70,             0 } },
+    { "ip6 host 1:203:405:607:809:a0b:c0d:e0f"               , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f"                , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/16"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/110"            , { 70,             0 } }, // 30
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/112"            , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/127"            , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/25"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/32"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/42"             , { 70,             0 } }, // 35
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/48"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/59"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/64"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/76"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/8"              , { 70,             0 } }, // 40
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/80"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/93"             , { 70,             0 } },
+    { "ip6 net 1:203:405:607:809:a0b:c0d:e0f/96"             , { 70,             0 } },
+    { "ip6 proto 0x11"                                       , { 70,             0 } },
+    { "ip6 src host 1:203:405:607:809:a0b:c0d:e0f"           , { 70,             0 } }, // 45
+    { "len <= 65"                                            , { 65,             0 } },
+    { "multicast"                                            , { 69,             0 } },
+    { "net 1.2"                                              , { 65, 66,         0 } },
+    { "net 1.2.3.4"                                          , { 65, 66,         0 } },
+    { "port 1"                                               , { 65,             0 } }, // 50  Filter_09
+    { "port 1 or port 3"                                     , { 65, 66,         0 } },
+    { "portrange 1-2"                                        , { 65, 66,         0 } }, // 52  Filter_00
+    { "src host 1.2.3.4"                                     , { 65, 66,         0 } },
+    { "src net 1"                                            , { 65, 66,         0 } },
+    { "src port 0"                                           , { 65,             0 } }, // 55
+    { "src portrange 0-1"                                    , { 65,             0 } },
+    { "tcp dst port 3"                                       , { 66,             0 } },
+    { "tcp dst portrange 3-4"                                , { 66,             0 } },
+    { "tcp port 2"                                           , { 66,             0 } },
+    { "tcp portrange 2-3"                                    , { 66,             0 } }, // 60
+    { "tcp src port 0x0002"                                  , { 66,             0 } },
+    { "tcp src portrange 1-2"                                , { 66,             0 } },
+    { "udp"                                                  , { 65, 68, 69, 70, 0 } }, // 63 Filter_53
+    { "udp dst port 1"                                       , { 65,             0 } },
+    { "udp dst portrange 1-2"                                , { 65,             0 } }, // 65
+    { "udp port 1"                                           , { 65,             0 } },
+    { "udp portrange 1-2"                                    , { 65,             0 } },
+    { "udp src port 0"                                       , { 65,             0 } },
+    { "udp src portrange 0-1"                                , { 65,             0 } },
+    { "vlan"                                                 , { 68,             0 } },
+    { "vlan 2"                                               , { 68,             0 } }, // 71
+
+ // { "ip6 multicast"                                        , {         0 } }, |
+ // { "proto ah"                                             , {         0 } }, TODO  ah packet
+ // { "proto esp"                                            , {         0 } }, TODO  esp packet
+ // { "proto icmp6"                                          , {         0 } }, TODO  icmp6 packet
+ // { "proto igmp"                                           , {         0 } }, TODO  igmp packet
+ // { "proto pim"                                            , {         0 } }, TODO  pim packet
+ // { "proto vrrp"                                           , {         0 } }, TODO  vrrp packet
+ // { "ether[len - 2] != 0"                                  , {         0 } }, Later
+ // { "ether[len - 2 : 2] != 0"                              , {         0 } }, Later
 };
 
 #define TEST_COUNT  ( sizeof( TESTS ) / sizeof( TESTS[ 0 ] ) )
@@ -122,7 +123,7 @@ KMS_TEST_BEGIN(Filter_SetupB)
 
         KMS_TEST_COMPARE(GPU_dpi::STATUS_OK, lS0->Adapter_GetConfig(0, &lConfig));
 
-        lConfig.mBufferQty              = 56;
+        lConfig.mBufferQty              = 14;
         lConfig.mFilterCode             = TESTS[i].mFilter;
         lConfig.mFilterCodeSize_byte    = static_cast<unsigned int>(strlen(lConfig.mFilterCode));
         lConfig.mFilterType             = GPU_dpi::FILTER_TYPE_FILTER;

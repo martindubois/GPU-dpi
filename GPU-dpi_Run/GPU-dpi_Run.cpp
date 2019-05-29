@@ -104,7 +104,7 @@ void Help()
     printf("  -h    Display this help message\n");
     printf("  -?    Display this help message\n");
     printf("  help  Display this help message\n");
-    printf("  ingo  Display system information\n");
+    printf("  info  Display system information\n");
 }
 
 void Info()

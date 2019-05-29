@@ -96,6 +96,23 @@ const char * SearchElement::Init(const char * aCode)
     return NULL;
 }
 
+bool SearchElement::IsEndNeeded() const
+{
+    switch (mType)
+    {
+    case TYPE_BIN :
+    case TYPE_TEXT:
+        break;
+
+    case TYPE_REGEX:
+        return true;
+
+    default: assert(false);
+    }
+
+    return false;
+}
+
 // aOut [---;RW-]
 // aIndex         The state index
 void SearchElement::GenerateState(Filter_Internal * aOut, unsigned int aIndex)
@@ -162,6 +179,8 @@ void SearchElement::GenerateCode(Filter_Internal * aOut, const char * aResultNam
         case TYPE_TEXT:
             sprintf_s(lLine, "if ( l%c_Data[ l%c_Index ] == lData[ i ] ) { l%c_Index ++; }" EOL, lLetter, lLetter, lLetter);
             aOut->Append(lLine);
+            sprintf_s(lLine, "else { l%c_Index = ( ( l%c_Data[ 0 ] == lData[ i ] ) ? 1 : 0 ); }" EOL, lLetter, lLetter);
+            aOut->Append(lLine);
             sprintf_s(lLine, "if ( %u <= l%c_Index )", mStringSize_byte, lLetter);
             break;
 
@@ -179,6 +198,28 @@ void SearchElement::GenerateCode(Filter_Internal * aOut, const char * aResultNam
     if (lIf) { aOut->C_if_End(); }
 }
 
+void SearchElement::GenerateEnd(Filter_Internal * aOut, const char * aResultName, unsigned int aIndex)
+{
+    assert(NULL != aOut       );
+    assert(NULL != aResultName);
+
+    switch (mType)
+    {
+    case TYPE_BIN :
+    case TYPE_TEXT:
+        break;
+
+    case TYPE_REGEX:
+        char lLine[1024];
+
+        sprintf_s(lLine, "if ( RegEx_End( & l%c_RegEx ) ) { %s = 1; }" EOL, 'A' + aIndex, aResultName);
+        aOut->Append(lLine);
+        break;
+
+    default: assert(false);
+    }
+}
+
 // aOut [---;RW-]
 // aIndex         The element index into the list
 void SearchElement::GenerateVariables(Filter_Internal * aOut, unsigned int aIndex)
@@ -191,7 +232,7 @@ void SearchElement::GenerateVariables(Filter_Internal * aOut, unsigned int aInde
     switch (mType)
     {
     case TYPE_BIN:
-        sprintf_s(lLine, "OPEN_NET_CONSTANT unsigned char * l%c_Data  = ", 'A' + aIndex);
+        sprintf_s(lLine, "OPEN_NET_CONSTANT unsigned char l%c_Data[ %u ] = ", 'A' + aIndex, mStringSize_byte );
         aOut->Append(lLine);
 
         aOut->AppendCode("{ ");

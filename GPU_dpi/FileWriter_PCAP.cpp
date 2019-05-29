@@ -56,8 +56,8 @@ unsigned int FileWriter_PCAP::WritePacketHeader(void * aOut, unsigned int aSize_
 
     lPH->mIncludedSize_byte = aSize_byte          ;
     lPH->mSize_byte         = aSize_byte          ;
-    lPH->mTimestamp_s       = static_cast<uint32_t>(aTimestamp_us / 1000);
-    lPH->mTimestamp_us      = aTimestamp_us % 1000;
+    lPH->mTimestamp_s       = static_cast<uint32_t>(aTimestamp_us / 1000000);
+    lPH->mTimestamp_us      = aTimestamp_us % 1000000;
 
     return sizeof(PCap_PacketHeader);
 }

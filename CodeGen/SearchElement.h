@@ -50,7 +50,10 @@ public:
 
     const char * Init(const char * aCode);
 
+    bool IsEndNeeded() const;
+
     void GenerateCode     (Filter_Internal * aOut, const char * aResultName, unsigned int aIndex);
+    void GenerateEnd      (Filter_Internal * aOut, const char * aResultName, unsigned int aIndex);
     void GenerateVariables(Filter_Internal * aOut, unsigned int aIndex);
 
 private:

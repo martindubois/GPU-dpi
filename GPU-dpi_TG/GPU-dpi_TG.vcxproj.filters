@@ -26,5 +26,20 @@
     <Text Include="Tests\0065.txt">
       <Filter>Tests</Filter>
     </Text>
+    <Text Include="Tests\0066.txt">
+      <Filter>Tests</Filter>
+    </Text>
+    <Text Include="Tests\0067.txt">
+      <Filter>Tests</Filter>
+    </Text>
+    <Text Include="Tests\0068.txt">
+      <Filter>Tests</Filter>
+    </Text>
+    <Text Include="Tests\0069.txt">
+      <Filter>Tests</Filter>
+    </Text>
+    <Text Include="Tests\0070.txt">
+      <Filter>Tests</Filter>
+    </Text>
   </ItemGroup>
 </Project>

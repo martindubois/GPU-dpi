@@ -101,7 +101,7 @@ static const TestCase TEST_CASES[] =
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip net 192.168/15"                                    , NULL, "Filter_81" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip net 192/7"                                         , NULL, "Filter_82" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_ip { TEXT \"Totot\"; BIN \"01 02 03\" 1 }"         , NULL, "Filter_83" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_tcp { REGEX \"\\d{3}-\\d{3}-\\d{4}\" }"            , NULL, "Filter_84" },
+    { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER       , "in_tcp { REGEX \"\\d{3}-\\d{3}-\\d{4}\" }"            , NULL, "Filter_84" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_udp { REGEX \"\\d{3,}\\D\\t\" }"                   , NULL, "Filter_85" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_udp { REGEX \"\\d{3,4}\\S\\$\" }"                  , NULL, "Filter_86" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_udp { REGEX \"(ab)+\\W.\" }"                       , NULL, "Filter_87" },
@@ -111,6 +111,7 @@ static const TestCase TEST_CASES[] =
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_udp { REGEX \"^a-d\\w$\" }"                        , NULL, "Filter_91" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_ip { TEXT \"Totot\"; BIN \"a 0A 0\" 1 2 }"         , NULL, "Filter_92" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_udp { REGEX \"[a-d]*e\" }"                         , NULL, "Filter_93" },
+    { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER       , "in_ether { BIN \"10 11 00 00 01 02 03 04 01 02 03\" }", NULL, "Filter_94" },
 
     { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER, "( portrange 1-2 )", NULL, "Filter_00" },
 

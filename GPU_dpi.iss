@@ -12,13 +12,13 @@ AppName=GPU-dpi
 AppPublisher=KMS
 AppPublisherURL=http://www.kms-quebec.com
 AppSupportURL=http://www.kms-quebec.com
-AppVersion=0.0.1
+AppVersion=1.0.0
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 DefaultDirName={pf}\GPU-dpi
 LicenseFile=License.txt
 MinVersion=10.0
-OutputBaseFilename=GPU-dpi_0.0.1
+OutputBaseFilename=GPU-dpi_1.0.0
 OutputDir=Installer
 
 [Files]

@@ -1,0 +1,25 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_TG/Tests/0066.txt
+
+# IPv4 TCP packet
+
+ff ff ff ff ff ff # Ethernet
+00 01 02 03 04 05
+0800
+
+45 00 0034 # IPv4  Length 66 - 14 = 52
+0000 0000
+10 06 0000
+01 02 03 04
+01 02 03 04
+
+0002 0003 # TCP
+00000000
+00000000
+5000 1000
+0000 0000
+
+34 31 38 2d 38 33 32 2d 31 32 30 38 # 418-832-1208

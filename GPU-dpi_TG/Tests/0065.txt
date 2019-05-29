@@ -2,17 +2,19 @@
 # Author     KMS - Martin Dubois, ing.
 # Copyright  (C) 2019 KMS. All rights reserved.
 # Product    GPU-dpi
-# File       GPU-dpi_TG/Tests/0064.txt
+# File       GPU-dpi_TG/Tests/0065.txt
 
-ff ff ff ff ff ff
+ff ff ff ff ff ff # Ethernet
 00 01 02 03 04 05
 0800
 
-45 00 0033 # Length 65 - 14 = 51 
+45 00 0033 # IPv4  Length 65 - 14 = 51
 0000 0000
 10 11 0000
 01 02 03 04
 01 02 03 04
 
-0000 0001
+0000 0001 # UDP
 001f 0000 # Length 51 - 20 = 31
+
+4B 4D 53 # KMS
