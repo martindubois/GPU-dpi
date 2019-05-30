@@ -12,13 +12,13 @@ AppName=GPU-dpi
 AppPublisher=KMS
 AppPublisherURL=http://www.kms-quebec.com
 AppSupportURL=http://www.kms-quebec.com
-AppVersion=1.0.0
+AppVersion=1.0.1
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 DefaultDirName={pf}\GPU-dpi
 LicenseFile=License.txt
 MinVersion=10.0
-OutputBaseFilename=GPU-dpi_1.0.0
+OutputBaseFilename=GPU-dpi_1.0.1
 OutputDir=Installer
 
 [Files]
@@ -32,11 +32,13 @@ Source: "Import\Drivers\Release_64\ONK_Hardware\onk_pro1000.cat"; DestDir: "{app
 Source: "Import\Drivers\Release_64\ONK_Hardware\ONK_Pro1000.inf"; DestDir: "{app}\Drivers\ONK_Hardware"
 Source: "Import\Drivers\Release_64\ONK_Hardware\ONK_Pro1000.sys"; DestDir: "{app}\Drivers\ONK_Hardware"
 Source: "Import\Includes\OpenNetK\ARP.h";                         DestDir: "{app}\Includes\OpenNetK"
+Source: "Import\Includes\OpenNetK\ByteOrder.h"                  ; DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Ethernet.h";                    DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\IPv4.h";                        DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\IPv6.h";                        DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Kernel.h";                      DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Kernel_OpenCL.h";               DestDir: "{app}\Includes\OpenNetK"
+Source: "Import\Includes\OpenNetK\RegEx.h";                       DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\TCP.h";                         DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Types.h";                       DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\UDP.h";                         DestDir: "{app}\Includes\OpenNetK"

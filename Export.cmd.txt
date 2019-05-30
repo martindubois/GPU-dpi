@@ -26,7 +26,7 @@ Includes/GPU_dpi
 
 Installer
 # KmsVersion "GPU-dpi_" ".exe" 3
-	GPU-dpi_1.0.0.exe
+	GPU-dpi_1.0.1.exe
 
 GPU_dpi/_DocUser GPU_dpi
 	ReadMe.txt
@@ -44,21 +44,27 @@ Scripts .
 x64/Debug Binaries/Debug_64
     GPU_dpi.dll
 	GPU_dpi_Extcap.exe
+	GPU-dpi_Run.exe
 	GPU_dpi_Setup.exe
+	GPU-dpi_TG.exe
 
 x64/Debug Libraries/Debug_64
 	GPU_dpi.lib
 
 x64/Debug Tests/Debug_64
+	CodeGen_Test.exe
     GPU_dpi_Test.exe
 
 x64/Release Binaries/Release_64
     GPU_dpi.dll
 	GPU_dpi_Extcap.exe
+	GPU-dpi_Run.exe
 	GPU_dpi_Setup.exe
+	GPU-dpi_TG.exe
 
 x64/Release Libraries/Release_64
 	GPU_dpi.lib
 
 x64/Release Tests/Release_64
+	CodeGen_Test.exe
     GPU_dpi_Test.exe
