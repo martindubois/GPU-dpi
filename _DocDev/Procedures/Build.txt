@@ -33,7 +33,10 @@ Version            ______ . ______ - ______
 ===== Windows only ==========================================================
 [ ] Tool "PowerShell" - In the product folder
 	    .\RunDoxygen.cmd
+[ ] Connect the signing key to the computer
+[ ] Tool "PowerShell" - In the product folder - Already open
 	    .\Build.cmd
+[ ] Disconnect the signing key from the computer
 
 [ ] Tool "Git"
 	- Commit the modified files
