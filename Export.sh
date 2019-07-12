@@ -10,7 +10,7 @@ echo Executing  Export.sh $1  ...
 
 # ===== Initialisation ======================================================
 
-DST_FOLDER=~/Export/GPU-dpi/$1_Linux
+DST_FOLDER=~/Export/GPU-dpi/$1_Linux_$(uname -r)
 
 # ===== Execution ===========================================================
 

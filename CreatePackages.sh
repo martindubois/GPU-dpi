@@ -22,6 +22,8 @@ PACKAGE_NAME=kms-gpu-dpi_$PACKAGE_VERSION
 
 # ===== Execution ===========================================================
 
+rm Packages/*.deb
+
 echo Creating  kms-gpu-dpi  ...
 
 mkdir Packages

@@ -24,10 +24,16 @@ if [ 0 != $? ] ; then
     exit 2
 fi
 
+./CreatePackage.sh
+if [ 0 != $? ] ; then
+    echo ERROR  ./Test.sh  failed
+    exit 3
+fi
+
 ./Export.sh $1
 if [ 0 != $? ] ; then
     echo ERROR  ./Export.sh $1  failed
-    exit 3
+    exit 4
 fi
 
 # ===== End =================================================================
