@@ -18,10 +18,16 @@ if [ 0 != $? ] ; then
     exit 1
 fi
 
+./Test.sh
+if [ 0 != $? ] ; then
+    echo ERROR  ./Test.sh  failed
+    exit 2
+fi
+
 ./Export.sh $1
 if [ 0 != $? ] ; then
     echo ERROR  ./Export.sh $1  failed
-    exit 1
+    exit 3
 fi
 
 # ===== End =================================================================

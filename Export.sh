@@ -10,7 +10,7 @@ echo Executing  Export.sh $1  ...
 
 # ===== Initialisation ======================================================
 
-DST_FOLDER=~/Export/GPU_dpi/$1_Linux
+DST_FOLDER=~/Export/GPU-dpi/$1_Linux
 
 # ===== Execution ===========================================================
 
@@ -29,11 +29,11 @@ mkdir $DST_FOLDER/GPU-dpi_Extcap
 mkdir $DST_FOLDER/GPU-dpi_Setup
 mkdir $DST_FOLDER/Packages
 mkdir $DST_FOLDER/Scripts
-mkdir %DST_FOLDER/Tests
+mkdir $DST_FOLDER/Tests
 
 cp _DocUser/ReadMe.txt                $DST_FOLDER
 cp Binaries/CodeGen_Test              $DST_FOLDER/Tests
-cp Binaries/GPU-dpi.so                $DST_FOLDER/Binaries
+cp Binaries/libGPU-dpi.so             $DST_FOLDER/Binaries
 cp Binaries/GPU-dpi_Extcap            $DST_FOLDER/Binaries
 cp Binaries/GPU-dpi_Setup             $DST_FOLDER/Binaries
 cp Binaries/GPU-dpi_Test              $DST_FOLDER/Tests
