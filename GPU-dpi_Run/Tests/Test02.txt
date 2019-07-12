@@ -1,0 +1,16 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_Run/Tests/Test02.txt
+
+Adapter 0
+	FilterCode = portrange 1-2
+	OutputFileName = /tmp/Data.pcap
+	ProfilingEnable = 1
+	BufferQty = 56
+	ProcessorIndex = 0
+	FilterType = FILTER
+	ForwardType = NEVER
+	OutputFormat = PCAP
+	OutputType = FILE

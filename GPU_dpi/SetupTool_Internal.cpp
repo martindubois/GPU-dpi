@@ -12,12 +12,15 @@
 #include "Component.h"
 
 // ===== C ==================================================================
-#include <io.h>
 #include <memory.h>
 
 #ifdef _KMS_WINDOWS_
+
+    #include <io.h>
+
     // ===== Windows ========================================================
     #include <Windows.h>
+
 #endif
 
 // ===== Import/Includes ====================================================
@@ -31,9 +34,9 @@
 // Constants
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef _KMS_LINUX
-    #define EXT_CAP_FILE
-    #define WIRESHARK_INSTALL
+#ifdef _KMS_LINUX_
+    #define EXT_CAP_FILE      "GPU-dpi_Extcap.sh"
+    #define WIRESHARK_INSTALL "/usr/lib/x86_64-linux-gnu/wireshark"
 #endif
 
 #ifdef _KMS_WINDOWS_

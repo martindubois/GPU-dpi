@@ -4,6 +4,8 @@
 // Product    GPU-dpi
 // File       GPU_dpi/Status.cpp
 
+// CODE REVIEW  2019-07-12  KMS - Martin Dubois, ing.
+
 // Includes
 /////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +36,7 @@ static const StatusInfo STATUS_INFO[GPU_dpi::STATUS_QTY] =
     { "CODE_TOO_LONG"                   , "The code is too long"             },
     { "FILE_ERROR"                      , "File error"                       },
     { "INVALID_ADAPTER_INDEX"           , "Invalid adapter index"            },
-    { "INVALID_BINARY_SEARCH_STRING"    , "Invalid binary search string"     },
+    { "RESERVED_6"                      , "Reserved 6"                       },
     { "INVALID_BUTTON_INDEX"            , "Invalid button index"             },
     { "INVALID_COMMAND_INDEX"           , "Invalid command index"            },
     { "INVALID_CONFIG_FILE"             , "Invalid configuration file"       },
@@ -45,7 +47,7 @@ static const StatusInfo STATUS_INFO[GPU_dpi::STATUS_QTY] =
     { "INVALID_FILTER_TYPE"             , "Invalid filter type"              },
     { "INVALID_FORWARD_ADAPTER"         , "Invalid forward adapter"          },
     { "INVALID_FORWARD_TYPE"            , "Invalid forward type"             },
-    { "INVALID_INDEX"                   , "Invalid index"                    },
+    { "RESERVED_17"                     , "Reserved 17"                      },
     { "INVALID_OUTPUT_FORMAT"           , "Invalid output format"            },
     { "INVALID_OUTPUT_PACKET_SIZE"      , "Invalid output packet size"       },
     { "INVALID_OUTPUT_TYPE"             , "Invalid output type"              }, // 20
@@ -54,8 +56,8 @@ static const StatusInfo STATUS_INFO[GPU_dpi::STATUS_QTY] =
     { "INVALID_PAGE_INDEX"              , "Invalid page index"               },
     { "INVALID_PROCESSOR_INDEX"         , "Invalid proessor index"           },
     { "INVALID_REFERENCE"               , "Invalid reference"                },
-    { "INVALID_SEARCH_ELEMENT"          , "Invalid search element"           },
-    { "INVALID_SEARCH_ELEMENT_TYPE"     , "Invalid search element type"      },
+    { "RESERVED_26"                     , "Reserved 26"                      },
+    { "RESERVED_27"                     , "Reserved 27"                      },
     { "INVALID_STATUS"                  , "Invalid status"                   }, 
     { "IO_ERROR"                        , "IO error"                         }, 
     { "NO_ACTIVE_ADAPTER"               , "No active adapter"                }, // 30 
@@ -76,12 +78,16 @@ static const StatusInfo STATUS_INFO[GPU_dpi::STATUS_QTY] =
     { "SYSTEM_STOPPING"                 , "The system is stopping"           }, 
     { "UNEXPECTED_EXCEPTION_CODE"       , "Unexpected exception code"        }, 
     { "UNEXPECTED_OPEN_NET_STATUS"      , "Unexpected OpenNet status"        }, 
-    { "UNKNOWN_EXCEPTION"               , "Unknown exception"                },
+    { "RESERVED_48"                     , "Reserved 48"                      },
     { "UNSUPPORTED_OUTPUT_FORMAT"       , "Unsupported output format"        }, 
     { "USELESS_FILTER_CODE_OR_FILE_NAME", "Useless filter code or file name" }, // 50 
     { "USELESS_OUTPUT_CALLBACK"         , "Useless output callback"          }, 
     { "USELESS_OUTPUT_CALLBACK_CONTEXT" , "Useless output callback context"  }, 
     { "USELESS_OUTPUT_FILE_NAME"        , "Useless output file name"         }, // 53
+    // 1.0.0
+
+    { "ADAPTER_ALREADY_CONNECTED", "The adapter is already connected" }, // 54
+    { "CUDA_ERROR"               , "CUDA error"                       }, // 55
 };
 
 namespace GPU_dpi

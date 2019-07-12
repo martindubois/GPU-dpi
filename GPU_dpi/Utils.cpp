@@ -4,8 +4,6 @@
 // Product    GPU-dpi
 // File       GPU_dpi/Utils.cpp
 
-// TEST COVERAGE  2019-04-09  KMS - Martin Dubois, ing.
-
 // Includes
 /////////////////////////////////////////////////////////////////////////////
 
@@ -23,6 +21,9 @@ GPU_dpi::Status Utl_ConvertOpenNetStatus(OpenNet::Status aStatus)
     {
     case OpenNet::STATUS_OK: return GPU_dpi::STATUS_OK;
 
+    case OpenNet::STATUS_ADAPTER_ALREADY_CONNECTED: return GPU_dpi::STATUS_ADAPTER_ALREADY_CONNECTED;
+
+    case OpenNet::STATUS_CUDA_ERROR        : return GPU_dpi::STATUS_CUDA_ERROR        ;
     case OpenNet::STATUS_NOT_ADMINISTRATOR : return GPU_dpi::STATUS_NOT_ADMINISTRATOR ;
     case OpenNet::STATUS_OPEN_CL_ERROR     : return GPU_dpi::STATUS_OPEN_CL_ERROR     ;
     case OpenNet::STATUS_SYSTEM_NOT_STARTED: return GPU_dpi::STATUS_SYSTEM_NOT_STARTED;

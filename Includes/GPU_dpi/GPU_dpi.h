@@ -5,6 +5,8 @@
 /// \copyright  Copyright &copy; 2019 KMS. All rights reserved.
 /// \file       Includes/GPU_dpi/GPU_dpi.h
 
+// CODE REVIEW  2019-06-11  KMS - Martin Dubois, ing.
+
 #pragma once
 
 // Macros
@@ -17,7 +19,9 @@
         #define GPU_DPI_PUBLIC __declspec( dllimport )
     #endif
 #else
-    // TODO  GPU-dpi
-    //       Normal - On Linux, Do not export all symbols
-    #define GPU_DPI_PUBLIC
+    #ifdef GPU_DPI_EXPORTS
+        #define GPU_DPI_PUBLIC __attribute__ ( ( visibility ( "default" ) ) )
+    #else
+        #define GPU_DPI_PUBLIC
+    #endif
 #endif

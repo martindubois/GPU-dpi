@@ -68,7 +68,7 @@ bool TestCase_Verify(const TestCase & aTestCase, Filter * aFilter)
             size_t lSize_byte;
             int    lRet      ;
 
-            sprintf_s(lFileName, "CodeGen_Test\\Tests\\%s.c", aTestCase.mResultFile);
+            sprintf_s(lFileName, "CodeGen_Test" SLASH "Tests" SLASH "%s.c", aTestCase.mResultFile);
 
             if (0 == fopen_s(&lFile, lFileName, "r"))
             {

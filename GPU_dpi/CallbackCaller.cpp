@@ -1,7 +1,7 @@
 
 // Author     KMS - Martin Dubois, ing.
 // Copyright  (C) 2019 KMS. All rights reserved
-// Product    GPU_dpi
+// Product    GPU-dpi
 // File       FPU_dpi/CallbackCaller.cpp
 
 #define __CLASS__ "CallbackCaller::"
@@ -16,7 +16,7 @@
 
 #ifdef _KMS_WINDOWS_
     // ===== Windows ========================================================
-#include <Windows.h>
+    #include <Windows.h>
 #endif
 
 // ===== Import/Includes ====================================================

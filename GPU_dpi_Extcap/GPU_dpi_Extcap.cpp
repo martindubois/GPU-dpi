@@ -263,6 +263,7 @@ void Capture(GPU_dpi::System * aSystem, const Arguments & aArgs)
     {
         switch (lStatus)
         {
+        case GPU_dpi::STATUS_CUDA_ERROR    :
         case GPU_dpi::STATUS_INVALID_FILTER:
         case GPU_dpi::STATUS_OPEN_CL_ERROR :
             FILE * lFile;

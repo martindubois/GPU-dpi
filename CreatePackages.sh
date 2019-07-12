@@ -12,9 +12,9 @@ echo Excuting  CreatePackages.sh  ...
 
 KERNEL=$(uname -r)
 
-PACKAGE_VERSION=0.0-0
+PACKAGE_VERSION=1.0-0
 
-VERSION=0.0
+VERSION=1.0
 
 # ===== Initialisation ======================================================
 
@@ -26,6 +26,12 @@ echo Creating  kms-gpu-dpi  ...
 
 mkdir Packages
 mkdir Packages/$PACKAGE_NAME
+mkdir Packages/$PACKAGE_NAME/lib
+mkdir Packages/$PACKAGE_NAME/lib/modules
+mkdir Packages/$PACKAGE_NAME/lib/modules/$KERNEL
+mkdir Packages/$PACKAGE_NAME/lib/modules/$KERNEL/kernel
+mkdir Packages/$PACKAGE_NAME/lib/modules/$KERNEL/kernel/drivers
+mkdir Packages/$PACKAGE_NAME/lib/modules/$KERNEL/kernel/drivers/pci
 mkdir Packages/$PACKAGE_NAME/usr
 mkdir Packages/$PACKAGE_NAME/usr/local
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
@@ -33,34 +39,43 @@ mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/GPU_dpi
 mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
-mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi
-mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi_Extcap
-mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi_Setup
+mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU-dpi
+mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU-dpi_Extcap
+mkdir Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU-dpi_Setup
 
-cp _DocUser/ReadMe.txt                    Packages/$PACKAGE_NAME
-cp Binaries/GPU_dpi.so                    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
-cp Binaries/GPU_dpi_Extcap                Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
-cp Binaries/GPU_dpi_Setup                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
-cp DoxyFile_*.txt                         Packages/$PACKAGE_NAME_SDK/usr/local/GPU-dpi_$VERSION
-cp GPU_dpi/_DocUser/ReadMe.txt            Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi
-cp GPU_dpi_Extcap/_DocUser/ReadMe.txt     Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi/Extcap
-cp GPU_dpi_Setup/_DocUser/ReadMe.txt      Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU_dpi/Setup
-cp Import/Binaries/OpenNet.so             Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp _DocUser/ReadMe.txt                    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp Binaries/libGPU-dpi.so                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp Binaries/GPU-dpi_Extcap                Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp Binaries/GPU-dpi_Run                   Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp Binaries/GPU-dpi_Setup                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp Binaries/GPU-dpi_TG                    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp DoxyFile_*.txt                         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp GPU_dpi/_DocUser/ReadMe.txt            Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU-dpi
+cp GPU_dpi_Extcap/_DocUser/ReadMe.txt     Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU-dpi/Extcap
+cp GPU_dpi_Setup/_DocUser/ReadMe.txt      Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/GPU-dpi/Setup
+cp Import/Binaries/libOpenNet.so          Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 cp Import/Binaries/OpenNet_Tool           Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 cp Import/Includes/OpenNetK/ARP.h         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/Includes/OpenNetK/ByteOrder.h   Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/Ethernet.h    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/IPv4.h        Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/Includes/OpenNetK/IPv6.h        Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/Kernel.h      Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/Kernel_CUDA.h Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/Includes/OpenNetK/RegEx.h       Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/Includes/OpenNetK/TCP.h         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/Types.h       Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/Includes/OpenNetK/UDP.h         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/Modules/ONK_Pro1000.ko          Packages/$PACKAGE_NAME/lib/modules/$KERNEL/kernel/drivers/pci
 cp Includes/GPU_dpi/*.h                   Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/GPU_dpi
-cp Scripts/GPU_dpi_Extcap.sh              Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
-cp Scripts/GPU_dpi_Setup.sh               Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp Scripts/GPU-dpi_Extcap.sh              Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
+cp Scripts/GPU-dpi_Setup.sh               Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 
 mkdir Packages/$PACKAGE_NAME/DEBIAN
 
 cp Scripts/control     Packages/$PACKAGE_NAME/DEBIAN/control
 cp Scripts/postinst.sh Packages/$PACKAGE_NAME/DEBIAN/postinst
+cp Scripts/prerm.sh    Packages/$PACKAGE_NAME/DEBIAN/prerm
 
 dpkg-deb --build Packages/$PACKAGE_NAME
 

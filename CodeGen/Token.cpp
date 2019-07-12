@@ -9,9 +9,25 @@
 
 #include "Component.h"
 
-// ===== Windows ============================================================
-#include <WinSock2.h>
-#include <WS2tcpip.h>
+// ===== C ==================================================================
+#include <stdint.h>
+#include <stdio.h>
+
+#ifdef _KMS_LINUX_
+
+    #include <netdb.h>
+
+    // ===== System =========================================================
+    #include <sys/socket.h>
+    #include <sys/types.h>
+
+#endif
+
+#ifdef _KMS_WINDOWS_
+    // ===== Windows ========================================================
+    #include <WinSock2.h>
+    #include <WS2tcpip.h>
+#endif
 
 // ===== CodeGen ============================================================
 #include "Token.h"

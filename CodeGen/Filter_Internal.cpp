@@ -109,7 +109,7 @@ void Filter_Internal::Begin()
     //       Move these 2 function into OpenNetK/Utils.h
 
     Append(                                                  EOL);
-    Append("unsigned short SwapUInt16( unsigned short aIn )" EOL);
+    Append("OPEN_NET_DEVICE unsigned short SwapUInt16( unsigned short aIn )" EOL);
     Append("{"                                               EOL);
     Indent_Inc();
         Append("return ( ( aIn >> 8 ) | ( aIn << 8 ) );" EOL);
@@ -117,10 +117,10 @@ void Filter_Internal::Begin()
     Append("}" EOL);
 
     Append(                                              EOL);
-    Append("unsigned int SwapUInt32( unsigned int aIn )" EOL);
+    Append("OPEN_NET_DEVICE unsigned int ReadUInt32( OPEN_NET_GLOBAL unsigned short * aAddr )" EOL);
     Append("{"                                           EOL);
     Indent_Inc();
-        Append("return ( ( aIn >> 24 ) | ( ( aIn >> 8 ) & 0x0000ff00 ) | ( ( aIn << 8 ) & 0x00ff0000 ) | ( aIn << 24 ) );" EOL);
+        Append("return ( ( SwapUInt16( aAddr[ 0 ] ) << 16 ) | SwapUInt16( aAddr[ 1 ] ) );" EOL);
     Indent_Dec();
     Append("}" EOL);
     Append(    EOL);

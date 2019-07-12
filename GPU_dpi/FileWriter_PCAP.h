@@ -1,7 +1,7 @@
 
 // Author     KMS - Martin Dubois, ing.
 // Copyright  (C) 2019 KMS. All rights reserved
-// Product    GPU_dpi
+// Product    GPU-dpi
 // File       FPU_dpi/FileWriter_PCAP.h
 
 #pragma once

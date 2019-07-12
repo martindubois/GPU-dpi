@@ -248,22 +248,22 @@ static const Abbreviation ABBREVIATION[]
 
 static const unsigned short MASK[16] =
 {
-    { 0x0000 },
-    { 0x0080 },
-    { 0x00c0 },
-    { 0x00e0 },
-    { 0x00f0 },
-    { 0x00f8 },
-    { 0x00fc },
-    { 0x00fe },
-    { 0x00ff },
-    { 0x80ff },
-    { 0xc0ff },
-    { 0xe0ff },
-    { 0xf0ff },
-    { 0xf8ff },
-    { 0xfcff },
-    { 0xfeff },
+    0x0000,
+    0x0080,
+    0x00c0,
+    0x00e0,
+    0x00f0,
+    0x00f8,
+    0x00fc,
+    0x00fe,
+    0x00ff,
+    0x80ff,
+    0xc0ff,
+    0xe0ff,
+    0xf0ff,
+    0xf8ff,
+    0xfcff,
+    0xfeff,
 };
 
 // Function
@@ -1134,7 +1134,7 @@ void InIp(const Token & aInIp, const char * aResultName, Filter_Internal * aOut)
 
     aOut->C_if("0 != lIP");
 
-        aOut->Append("OPEN_NET_GLOBAL char * lData = lIP;"              EOL);
+        aOut->Append("OPEN_NET_GLOBAL char * lData = ( OPEN_NET_GLOBAL char * )( lIP );" EOL);
         aOut->Append("unsigned int lDataSize_byte = lIP_DataSize_byte;" EOL);
 
         // TODO  CodeGen.Phase3
@@ -2026,7 +2026,7 @@ void EtherIndex(const Token & aEtherIndex, Filter_Internal * aOut)
     {
     case 1: aOut->AppendCode("( * ( lBase + lPacketInfo->mOffset_byte + ( "); break;
     case 2:	aOut->AppendCode("SwapUInt16( * ( ( OPEN_NET_GLOBAL unsigned short * )( lBase + lPacketInfo->mOffset_byte + ( "); break;
-    case 4: aOut->AppendCode("SwapUInt32( * ( ( OPEN_NET_GLOBAL unsigned int * )( lBase + lPacketInfo->mOffset_byte + ( "  ); break;
+    case 4: aOut->AppendCode("ReadUInt32(   ( ( OPEN_NET_GLOBAL unsigned short * )( lBase + lPacketInfo->mOffset_byte + ( "); break;
     default: assert(false);
     }
 

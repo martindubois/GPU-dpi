@@ -2,7 +2,7 @@
 // Author     KMS - Martin Dubois, ing.
 // Copyright  (C) 2019 KMS. All right reserved.
 // Product    GPU-dpi
-// File       GPU-dpi_TG/GPU-dpi_Run.cpp
+// File       GPU-dpi_Run/GPU-dpi_Run.cpp
 
 // Includes
 /////////////////////////////////////////////////////////////////////////////
@@ -181,6 +181,7 @@ int Run(const char * aFileName, bool aStatistics)
 
             switch ( lStatus )
             {
+            case GPU_dpi::STATUS_CUDA_ERROR    :
             case GPU_dpi::STATUS_INVALID_FILTER:
             case GPU_dpi::STATUS_OPEN_CL_ERROR :
                 lStatus = lSystem->WriteBuildLog(stdout);

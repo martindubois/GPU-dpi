@@ -6,9 +6,19 @@
 # File       Clean.sh
 # Usage      ./Clean.sh
 
+# CODE REVIEW  2019-06-11  KMS - Martin Dubois, ing.
+
 echo Excuting  Clean.sh  ...
 
 # ===== Execution ===========================================================
+
+cd CodeGen
+./Clean.sh
+cd ..
+
+cd CodeGen_Test
+./Clean.sh
+cd ..
 
 cd GPU_dpi
 ./Clean.sh
@@ -18,11 +28,19 @@ cd GPU_dpi_Extcap
 ./Clean.sh
 cd ..
 
-cd GP_dpi_Setup
-./Clean.h
+cd GPU_dpi_Setup
+./Clean.sh
 cd ..
 
 cd GPU_dpi_Test
+./Clean.sh
+cd ..
+
+cd GPU-dpi_Run
+./Clean.sh
+cd ..
+
+cd GPU-dpi_TG
 ./Clean.sh
 cd ..
 

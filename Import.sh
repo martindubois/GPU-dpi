@@ -6,12 +6,14 @@
 # File       Import.sh
 # Usage      ./Import.sh
 
+# CODE REVIEW  2019-07-12  KMS - Martin Dubois, ing.
+
 echo Excuting  Import.sh  ...
 
 # ===== Dependencies =========================================================
 
 KMS_BASE=~/Export/KmsBase/3.0.8_KI_Linux
-OPEN_NET=~/Export/OpenNet/0.0.14.KI_Linux
+OPEN_NET=~/Export/OpenNet/1.0.8_Linux_4.15.0-54-generic
 
 # ===== Constants ============================================================
 
@@ -44,7 +46,7 @@ cd $KMS_BASE
 
 if [ 0 -ne $? ]
 then
-    echo ERROR  ./Import.sh $DST_FOLDER  failed - $?
+    echo ERROR  ./Import.sh $DST_FOLDER  failed
     exit 3
 fi
 
@@ -54,7 +56,7 @@ cd $OPEN_NET
 
 if [ 0 -ne $? ]
 then
-    echo ERROR  ./Import.sh $DST_FOLDER  failed - $?
+    echo ERROR  ./Import.sh $DST_FOLDER  failed
     exit 4
 fi
 

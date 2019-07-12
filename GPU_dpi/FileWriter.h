@@ -4,6 +4,8 @@
 // Product    GPU_dpi
 // File       FPU_dpi/FileWriter.h
 
+// CODE REVIEW  2019-07-12  KMS - Martin Dubois, ing.
+
 #pragma once
 
 // Includes
@@ -47,6 +49,10 @@ private:
     unsigned int mSize_byte;
 
     unsigned int mWrites;
+
+    #ifdef _KMS_LINUX_
+        int mHandle;
+    #endif
 
     #ifdef _KMS_WINDOWS_
         HANDLE mHandle;

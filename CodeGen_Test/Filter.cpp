@@ -12,6 +12,17 @@
 // ===== CodeGen_Test =======================================================
 #include "TestCase.h"
 
+// Constants
+/////////////////////////////////////////////////////////////////////////////
+
+#ifdef _KMS_LINUX_
+    #define OS_DEP "_Linux"
+#endif
+
+#ifdef _KMS_WINDOWS_
+    #define OS_DEP ""
+#endif
+
 // Test cases
 /////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +30,7 @@ static const TestCase TEST_CASES[] =
 {
     { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER       , "portrange 1-2"                                        , NULL, "Filter_00" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_FILTERED    , "ether[0] & 1 != 0"                                    , NULL, "Filter_01" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NEVER       , "host localhost"                                       , NULL, "Filter_02" },
+    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NEVER       , "host localhost"                                       , NULL, "Filter_02" OS_DEP },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip host localhost"                                    , NULL, "Filter_03" },
     { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_ALWAYS      , "ether proto 0x0800 and host www.kms-quebec.com"       , NULL, "Filter_04" },
     { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_FILTERED    , "ether host 01:02:03:04:05:06 and not host 192.168.0.1", NULL, "Filter_05" },
@@ -31,8 +42,8 @@ static const TestCase TEST_CASES[] =
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_FILTERED    , "ether[0:4] != 0x00000000"                             , NULL, "Filter_11" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NEVER       , "in_ether { TEXT \"Totot\" }"                          , NULL, "Filter_12" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "arp dst host 192.158.0.1"                             , NULL, "Filter_13" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "arp host localhost"                                   , NULL, "Filter_14" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "arp src host localhost"                               , NULL, "Filter_15" },
+    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "arp host localhost"                                   , NULL, "Filter_14" OS_DEP },
+    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "arp src host localhost"                               , NULL, "Filter_15" OS_DEP },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "dst net 192.158.0"                                    , NULL, "Filter_16" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "dst port 1"                                           , NULL, "Filter_17" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "dst portrange 1-2"                                    , NULL, "Filter_18" },
@@ -43,7 +54,7 @@ static const TestCase TEST_CASES[] =
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip proto 110"                                         , NULL, "Filter_23" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip src host 1.2.3.4"                                  , NULL, "Filter_24" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 dst host 1:2:3:4:5:6:7:8"                         , NULL, "Filter_25" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 host localhost"                                   , NULL, "Filter_26" },
+    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 host localhost"                                   , NULL, "Filter_26" OS_DEP },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 multicast"                                        , NULL, "Filter_27" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 proto 0x10"                                       , NULL, "Filter_28" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 src host 1:2:3:4:5:6:7:8"                         , NULL, "Filter_29" },
@@ -89,11 +100,11 @@ static const TestCase TEST_CASES[] =
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 net 01:02:03:04:05:06:07:08/25"                   , NULL, "Filter_69" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 net 01:02:03:04:05:06:07:08/16"                   , NULL, "Filter_70" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip6 net 01:02:03:04:05:06:07:08/8"                    , NULL, "Filter_71" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "dst host localhost"                                   , NULL, "Filter_72" },
+    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "dst host localhost"                                   , NULL, "Filter_72" OS_DEP },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "inbound"                                              , NULL, "Filter_73" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "multicast"                                            , NULL, "Filter_74" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "port 1 or port 3"                                     , NULL, "Filter_75" },
-    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "src host localhost"                                   , NULL, "Filter_76" },
+    { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "src host localhost"                                   , NULL, "Filter_76" OS_DEP },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "src port 1"                                           , NULL, "Filter_77" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "vlan"                                                 , NULL, "Filter_78" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "ip net 192.168.0.0/28"                                , NULL, "Filter_79" },
@@ -153,10 +164,14 @@ static const TestCase TEST_CASES[] =
 
 KMS_TEST_BEGIN(Filter_Base)
 {
-    WSADATA lData;
+    #ifdef _KMS_WINDOWS_
 
-    int lRet = WSAStartup(MAKEWORD(2, 2), &lData);
-    assert(0 == lRet);
+        WSADATA lData;
+
+        int lRet = WSAStartup(MAKEWORD(2, 2), &lData);
+        assert(0 == lRet);
+
+    #endif
 
     for (unsigned int i = 0; i < TEST_CASE_COUNT; i++)
     {
@@ -169,7 +184,9 @@ KMS_TEST_BEGIN(Filter_Base)
         KMS_TEST_ASSERT(TestCase_Verify(lTC, lF));
     }
 
-    lRet = WSACleanup();
-    assert(0 == lRet);
+    #ifdef _KMS_WINDOWS_
+        lRet = WSACleanup();
+        assert(0 == lRet);
+    #endif
 }
 KMS_TEST_END

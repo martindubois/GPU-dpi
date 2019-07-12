@@ -9,7 +9,7 @@
 
 #include "Component.h"
 
-// ===== Includes/OpenNet ===================================================
+// ===== Includes ===========================================================
 #include <GPU_dpi/System.h>
 
 // ===== GPU_dpi_Test =======================================================
@@ -17,6 +17,14 @@
 
 // Constants
 /////////////////////////////////////////////////////////////////////////////
+
+#ifdef _KMS_LINUX_
+    #define BUILD_LOG "/tmp/GPU_dpi_Test_BuildLog.txt"
+#endif
+
+#ifdef _KMS_WINDOWS_
+    #define BUILD_LOG "C:\\Temp\\GPU_dpi_Test_BuildLog.txt"
+#endif
 
 static const TestCase::Info TESTS[]
 {
@@ -139,10 +147,11 @@ KMS_TEST_BEGIN(Filter_SetupB)
         GPU_dpi::Status lStatus = lS0->Start();
         switch (lStatus)
         {
+        case GPU_dpi::STATUS_CUDA_ERROR    :
         case GPU_dpi::STATUS_INVALID_FILTER:
         case GPU_dpi::STATUS_OPEN_CL_ERROR :
             FILE * lFile;
-            if (0 == fopen_s(&lFile, "C:\\Temp\\GPU_dpi_Test_BuildLog.txt", "w"))
+            if (0 == fopen_s(&lFile, BUILD_LOG, "w"))
             {
                 GPU_dpi::Status lStatus = lS0->WriteBuildLog(lFile);
                 assert(GPU_dpi::STATUS_OK == lStatus);

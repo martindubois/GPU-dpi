@@ -10,9 +10,12 @@
 #include "Component.h"
 
 // ===== C ==================================================================
-#include <io.h>
 #include <memory.h>
 #include <string.h>
+
+#ifdef _KMS_WINDOWS_
+    #include <io.h>
+#endif
 
 // ===== GPU_dpi ============================================================
 #include "Code.h"

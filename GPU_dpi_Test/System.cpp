@@ -44,8 +44,11 @@ KMS_TEST_BEGIN(System_Base)
     KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_ADAPTER_INDEX, lS0->Adapter_ResetConfig(0));
 
     // ===== Adapter_SetConfig ==============================================
-    KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_REFERENCE    , lS0->Adapter_SetConfig(0, *reinterpret_cast<GPU_dpi::AdapterConfig *>(NULL)));
     KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_ADAPTER_INDEX, lS0->Adapter_SetConfig(0, lConfig));
+
+    #ifdef _KMS_WINDOWS_
+        KMS_TEST_COMPARE(GPU_dpi::STATUS_INVALID_REFERENCE, lS0->Adapter_SetConfig(0, *reinterpret_cast<GPU_dpi::AdapterConfig *>(NULL)));
+    #endif
 
     // ===== ConfigFile_Read ================================================
     KMS_TEST_COMPARE(GPU_dpi::STATUS_NOT_ALLOWED_NULL_ARGUMENT, lS0->ConfigFile_Read(NULL));

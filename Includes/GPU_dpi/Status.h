@@ -6,6 +6,8 @@
 /// \file       Includes/GPU_dpi/Status.h
 /// \brief      GPU_dpi::Status (SDK)
 
+// CODE REVIEW  2018-07-12  KMS - Martin Dubois, ing.
+
 #pragma once
 
 // Includes
@@ -40,7 +42,7 @@ namespace GPU_dpi
         STATUS_CODE_TOO_LONG                   ,
         STATUS_FILE_ERROR                      ,
         STATUS_INVALID_ADAPTER_INDEX           ,
-        STATUS_INVALID_BINARY_SEARCH_STRING    ,
+        STATUS_RESERVED_6                      ,
         STATUS_INVALID_BUTTON_INDEX            ,
         STATUS_INVALID_COMMAND_INDEX           ,
         STATUS_INVALID_CONFIG_FILE             ,
@@ -51,7 +53,7 @@ namespace GPU_dpi
         STATUS_INVALID_FILTER_TYPE             ,
         STATUS_INVALID_FORWARD_ADAPTER         ,
         STATUS_INVALID_FORWARD_TYPE            ,
-        STATUS_INVALID_INDEX                   ,
+        STATUS_RESERVED_17                     ,
         STATUS_INVALID_OUTPUT_FORMAT           ,
         STATUS_INVALID_OUTPUT_PACKET_SIZE      ,
         STATUS_INVALID_OUTPUT_TYPE             , // 20
@@ -60,8 +62,8 @@ namespace GPU_dpi
         STATUS_INVALID_PAGE_INDEX              ,
         STATUS_INVALID_PROCESSOR_INDEX         ,
         STATUS_INVALID_REFERENCE               ,
-        STATUS_INVALID_SEARCH_ELEMENT          ,
-        STATUS_INVALID_SEARCH_ELEMENT_TYPE     ,
+        STATUS_INVALID_RESERVED_26             ,
+        STATUS_INVALID_RESERVED_27             ,
         STATUS_INVALID_STATUS                  ,
         STATUS_IO_ERROR                        ,
         STATUS_NO_ACTIVE_ADAPTER               , // 30
@@ -82,12 +84,16 @@ namespace GPU_dpi
         STATUS_SYSTEM_STOPPING                 ,
         STATUS_UNEXPECTED_EXCEPTION_CODE       ,
         STATUS_UNEXPECTED_OPEN_NET_STATUS      ,
-        STATUS_UNKNOWN_EXCEPTION               ,
+        STATUS_RESERVED_48                     ,
         STATUS_UNSUPPORTED_OUTPUT_FORMAT       ,
         STATUS_USELESS_FILTER_CODE_OR_FILE_NAME, // 50
         STATUS_USELESS_OUTPUT_CALLBACK         ,
         STATUS_USELESS_OUTPUT_CALLBACK_CONTEXT ,
-        STATUS_USELESS_OUTPUT_FILE_NAME        , // 52
+        STATUS_USELESS_OUTPUT_FILE_NAME        , // 53
+        // 1.0.0
+
+        STATUS_ADAPTER_ALREADY_CONNECTED, // 54
+        STATUS_CUDA_ERROR               , // 55
 
         STATUS_QTY
     }

@@ -12,13 +12,25 @@
 #include "Component.h"
 
 // ===== C ==================================================================
-#include <io.h>
 #include <stdint.h>
 #include <string.h>
 
+#ifdef _KMS_LINUX_
+
+    #include <fcntl.h>
+
+    // ===== System =========================================================
+    #include <sys/stat.h>
+
+#endif
+
 #ifdef _KMS_WINDOWS_
+
+    #include <io.h>
+
     // ===== Windows ========================================================
     #include <Windows.h>
+
 #endif
 
 // ===== Import/Includes ====================================================
@@ -40,6 +52,17 @@
 #include "Utils.h"
 
 #include "System_Internal.h"
+
+// Constants
+/////////////////////////////////////////////////////////////////////////////
+
+#ifdef _KMS_LINUX_
+    #define DEBUG_LOG_FOLDER "/tmp/GPU-dpiDebugLog"
+#endif
+
+#ifdef _KMS_WINDOWS_
+    #define DEBUG_LOG_FOLDER "K:\\Dossiers_Actifs\\GPU-dpi\\DebugLog"
+#endif
 
 // Static function declarations
 /////////////////////////////////////////////////////////////////////////////
@@ -71,8 +94,10 @@ static void Processor_Config(OpenNet::Processor * aProcessor, const GPU_dpi::Ada
 
 // NOT TESTED  GPU_dpi.System_Internal.Error
 //             OpenNet::System::Create fails
-System_Internal::System_Internal() : mDebugLog("K:\\Dossiers_Actifs\\GPU-dpi\\DebugLog", "System"), mState(STATE_INIT)
+System_Internal::System_Internal() : mDebugLog( DEBUG_LOG_FOLDER, "System"), mState(STATE_INIT)
 {
+    memset( & mAdapter_Data, 0, sizeof( mAdapter_Data ) );
+
     for (unsigned int i = 0; i < ADAPTER_QTY; i++)
     {
         AdapterConfig_Reset(mAdapter_Configs + i);
@@ -1145,29 +1170,63 @@ char * ReadCodeFile(const char * aFileName, unsigned int * aSize_byte)
     assert(NULL != aFileName );
     assert(NULL != aSize_byte);
 
-    HANDLE lHandle = CreateFile(aFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
-    assert(INVALID_HANDLE_VALUE != lHandle);
+    unsigned int lInSize_byte;
 
-    LARGE_INTEGER lSize_byte;
+    #ifdef _KMS_LINUX_
 
-    BOOL lRetB = GetFileSizeEx(lHandle, &lSize_byte);
-    assert(lRetB);
+        int lHandle = open( aFileName, O_RDONLY );
+        assert( 0 <= lHandle );
 
-    unsigned int lInSize_byte = static_cast<unsigned int>(lSize_byte.QuadPart);
+        struct stat lStat;
+
+        int lRet = fstat( lHandle, & lStat );
+        assert( 0 == lRet );
+
+        lInSize_byte = lStat.st_size;
+
+    #endif
+
+    #ifdef _KMS_WINDOWS_
+
+        HANDLE lHandle = CreateFile(aFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, NULL);
+        assert(INVALID_HANDLE_VALUE != lHandle);
+
+        LARGE_INTEGER lSize_byte;
+
+        BOOL lRetB = GetFileSizeEx(lHandle, &lSize_byte);
+        assert(lRetB);
+
+        lInSize_byte = static_cast<unsigned int>(lSize_byte.QuadPart);
+
+    #endif
 
     char * lResult = new char[lInSize_byte];
     assert(NULL != lResult);
 
     lResult[lInSize_byte] = '\0';
 
-    DWORD lInfo_byte;
+    #ifdef _KMS_LINUX_
 
-    lRetB = ReadFile(lHandle, lResult, lInSize_byte, &lInfo_byte, NULL);
-    assert(lRetB                            );
-    assert(lSize_byte.QuadPart == lInfo_byte);
+        ssize_t lInfo_byte = read( lHandle, lResult, lInSize_byte );
+        assert( lInSize_byte == lInfo_byte );
 
-    lRetB = CloseHandle(lHandle);
-    assert(lRetB);
+        lRet = close( lHandle );
+        assert( 0 == lRet );
+
+    #endif
+
+    #ifdef _KMS_WINDOWS_
+
+        DWORD lInfo_byte;
+
+        lRetB = ReadFile(lHandle, lResult, lInSize_byte, &lInfo_byte, NULL);
+        assert(lRetB                            );
+        assert(lSize_byte.QuadPart == lInfo_byte);
+
+        lRetB = CloseHandle(lHandle);
+        assert(lRetB);
+
+    #endif
 
     (*aSize_byte) = lInSize_byte;
 

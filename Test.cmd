@@ -2,7 +2,7 @@
 
 rem Author     KMS - Martin Dubois, ing.
 rem Copyright  (C) 2019 KMS. All rights reserved.
-rem Product    OpenNet
+rem Product    GPU-dpi
 rem File       Test.cmd
 
 echo Executing  Test.cmd  ...
