@@ -21,6 +21,7 @@
 #endif
 
 // ===== Import/Includes ====================================================
+#include <KmsLib/Exception.h>
 #include <KmsLib/ThreadBase.h>
 #include <KmsTool.h>
 #include <OpenNet/Adapter.h>
@@ -42,7 +43,7 @@ static bool sRunning = true;
 
 static void Help();
 static void Info();
-static int  Run (const char * aFileName, bool aStatistics);
+static int  Run (const char * aFileName, bool lLog, bool aStatistics);
 static void Wait();
 
 // ===== Display ============================================================
@@ -60,6 +61,7 @@ int main(int aCount, const char * * aVector)
     KMS_TOOL_BANNER("GPU-dpi", "GPU-dpi_Run", VERSION_STR, VERSION_TYPE);
 
     const char * lFileName   = NULL ;
+    bool         lLog        = false;
     bool         lStatistics = false;
 
     for (int i = 1; i < aCount; i++)
@@ -69,7 +71,8 @@ int main(int aCount, const char * * aVector)
         if (0 == strcmp("help", aVector[i])) { Help(); return 0; }
         if (0 == strcmp("info", aVector[i])) { Info(); return 0; }
 
-        if (0 == strcmp("-s", aVector[i])) { lStatistics = true; }
+        if      (0 == strcmp("-l", aVector[i])) { lLog        = true; }
+        else if (0 == strcmp("-s", aVector[i])) { lStatistics = true; }
         else
         {
             if (NULL != lFileName)
@@ -88,7 +91,25 @@ int main(int aCount, const char * * aVector)
         return __LINE__;
     }
 
-    return Run(lFileName, lStatistics);
+    int lResult;
+
+    try
+    {
+        lResult = Run(lFileName, lLog, lStatistics);
+    }
+    catch ( KmsLib::Exception * eE )
+    {
+        fprintf( stderr, "UNEXPECTED EXCEPTION\n" );
+        eE->Write( stderr );
+        lResult = __LINE__;
+    }
+    catch ( ... )
+    {
+        fprintf( stderr, "UNKNOWN EXCEPTION\n" );
+        lResult = __LINE__;
+    }
+
+    return lResult;
 }
 
 // Static functions
@@ -97,11 +118,13 @@ int main(int aCount, const char * * aVector)
 void Help()
 {
     printf("GPU-dpi_Run -h\n");
+    printf("            -l\n");
     printf("            -?\n");
     printf("            help\n");
     printf("            info\n");
     printf("            {ConfigurationFileName}\n");
     printf("  -h    Display this help message\n");
+    printf("  -l    Display the build log\n");
     printf("  -?    Display this help message\n");
     printf("  help  Display this help message\n");
     printf("  info  Display system information\n");
@@ -134,6 +157,9 @@ void Info()
 }
 
 // aFileName [---;R--] The configuration file name
+// aLog
+//  false  Display the build log on error
+//  true   Always display the build log
 // aStatistics
 //  false  Do not display statistics
 //  true   Display statistics
@@ -141,7 +167,7 @@ void Info()
 // Return
 //      0  OK
 //  Ohter  Error
-int Run(const char * aFileName, bool aStatistics)
+int Run(const char * aFileName, bool aLog, bool aStatistics)
 {
     assert(NULL != aFileName);
 
@@ -157,6 +183,12 @@ int Run(const char * aFileName, bool aStatistics)
         lStatus = lSystem->Start();
         if (GPU_dpi::STATUS_OK == lStatus)
         {
+            if ( aLog )
+            {
+                lStatus = lSystem->WriteBuildLog(stdout);
+                assert(GPU_dpi::STATUS_OK == lStatus);
+            }
+
             Wait();
 
             lStatus = lSystem->Stop();

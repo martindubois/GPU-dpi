@@ -13,7 +13,7 @@ echo Excuting  Import.sh  ...
 # ===== Dependencies =========================================================
 
 KMS_BASE=~/Export/KmsBase/3.0.8_KI_Linux
-OPEN_NET=~/Export/OpenNet/1.0.8_Linux_4.15.0-54-generic
+OPEN_NET=~/Export/OpenNet/1.0.10_Linux_4.15.0-54-generic
 
 # ===== Constants ============================================================
 
