@@ -6,13 +6,15 @@
 # File       CreatePackages.sh
 # Usage      ./CreatePackages.sh
 
+# CODE REVIEW  2019-07-16  KMS - Martin Dubois, ing.
+
 echo Excuting  CreatePackages.sh  ...
 
 # ===== Version =============================================================
 
 KERNEL=$(uname -r)
 
-PACKAGE_VERSION=1.0-3
+PACKAGE_VERSION=1.0-4
 
 VERSION=1.0
 

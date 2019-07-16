@@ -7,12 +7,12 @@
 #include <OpenNetK/UDP.h>
 
 
-OPEN_NET_DEVICE unsigned short SwapUInt16( unsigned short aIn )
+unsigned short SwapUInt16( unsigned short aIn )
 {
     return ( ( aIn >> 8 ) | ( aIn << 8 ) );
 }
 
-OPEN_NET_DEVICE unsigned int ReadUInt32( OPEN_NET_GLOBAL unsigned short * aAddr )
+unsigned int ReadUInt32( OPEN_NET_GLOBAL unsigned short * aAddr )
 {
     return ( ( SwapUInt16( aAddr[ 0 ] ) << 16 ) | SwapUInt16( aAddr[ 1 ] ) );
 }

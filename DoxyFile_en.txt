@@ -6,6 +6,7 @@
 
 ENABLED_SECTIONS   = en
 GENERATE_LATEX     = NO
+HAVE_DOT           = NO
 HIDE_UNDOC_MEMBERS = YES
 INPUT              = Includes Includes/GPU_dpi
 OUTPUT_DIRECTORY   = doxygen_en

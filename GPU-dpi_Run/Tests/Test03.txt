@@ -1,3 +1,21 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       GPU-dpi_Run/Tests/Test03.txt
+
+Adapter 0
+	OutputFileName = /tmp/Data.pcap
+	ProfilingEnable = 1
+	BufferQty = 56
+	ProcessorIndex = 0
+	FilterType = OPEN_NET_FUNCTION
+	FilterFunctionName = FilterFunction
+	ForwardType = NEVER
+	OutputFormat = PCAP
+	OutputType = FILE
+	FilterCode =
+
 #include <OpenNetK/ARP.h>
 #include <OpenNetK/Ethernet.h>
 #include <OpenNetK/IPv4.h>
@@ -5,7 +23,6 @@
 #include <OpenNetK/RegEx.h>
 #include <OpenNetK/TCP.h>
 #include <OpenNetK/UDP.h>
-
 
 unsigned short SwapUInt16( unsigned short aIn )
 {
@@ -16,6 +33,16 @@ unsigned int ReadUInt32( OPEN_NET_GLOBAL unsigned short * aAddr )
 {
     return ( ( SwapUInt16( aAddr[ 0 ] ) << 16 ) | SwapUInt16( aAddr[ 1 ] ) );
 }
+
+/* static __constant__ const RegEx_State lA_States[] =
+{
+    { REG_EX_DIGIT, 3,   3, 0x0000 },
+    { '-', 1,   1, 0x0000 },
+    { REG_EX_DIGIT, 3,   3, 0x0000 },
+    { '-', 1,   1, 0x0000 },
+    { REG_EX_DIGIT, 4,   4, 0x0000 },
+    { REG_EX_OK, 0,   0, 0x0000 },
+}; */
 
 OPEN_NET_FUNCTION_DECLARE( FilterFunction )
 {
@@ -43,6 +70,28 @@ OPEN_NET_FUNCTION_DECLARE( FilterFunction )
         default : lIP = 0;
         }
 
+        const RegEx_State lA_States[] =
+        {
+            { REG_EX_DIGIT, 3,   3, 0x0000 },
+            { '-', 1,   1, 0x0000 },
+            { REG_EX_DIGIT, 3,   3, 0x0000 },
+            { '-', 1,   1, 0x0000 },
+            { REG_EX_DIGIT, 4,   4, 0x0000 },
+            { REG_EX_OK, 0,   0, 0x0000 },
+        };
+
+        /* __shared__ RegEx_State lA_States[ 6 ];
+
+        if ( 0 == OPEN_NET_PACKET_INDEX )
+        {
+            lA_States[ 0 ].mC = REG_EX_DIGIT; lA_States[ 0 ].mMin = 3; lA_States[ 0 ].mMax = 3; lA_States[ 0 ].mFlagAndLink = 0x0000;
+            lA_States[ 0 ].mC = '-'         ; lA_States[ 0 ].mMin = 1; lA_States[ 0 ].mMax = 1; lA_States[ 0 ].mFlagAndLink = 0x0000;
+            lA_States[ 0 ].mC = REG_EX_DIGIT; lA_States[ 0 ].mMin = 3; lA_States[ 0 ].mMax = 3; lA_States[ 0 ].mFlagAndLink = 0x0000;
+            lA_States[ 0 ].mC = '-'         ; lA_States[ 0 ].mMin = 1; lA_States[ 0 ].mMax = 1; lA_States[ 0 ].mFlagAndLink = 0x0000;
+            lA_States[ 0 ].mC = REG_EX_DIGIT; lA_States[ 0 ].mMin = 4; lA_States[ 0 ].mMax = 4; lA_States[ 0 ].mFlagAndLink = 0x0000;
+            lA_States[ 0 ].mC = REG_EX_OK   ; lA_States[ 0 ].mMin = 0; lA_States[ 0 ].mMax = 0; lA_States[ 0 ].mFlagAndLink = 0x0000;
+        } */
+
         int lR;
         lR = 0;
         if ( ( 0 != lIP ) && ( TCP_IP_PROTOCOL == lIP_Protocol ) )
@@ -52,16 +101,8 @@ OPEN_NET_FUNCTION_DECLARE( FilterFunction )
             if ( (                           16384 - 54 ) < lDataSize_byte ) { lDataSize_byte = (                           16384 - 54 ); }
             if ( ( aBufferHeader->mPacketSize_byte - 54 ) < lDataSize_byte ) { lDataSize_byte = ( aBufferHeader->mPacketSize_byte - 54 ); }
             unsigned char lA_Counters[ 6 ];
+
             RegEx lA_RegEx;
-            OPEN_NET_CONSTANT RegEx_State lA_States[] =
-            {
-                { REG_EX_DIGIT, 3,   3, 0x0000 },
-                { '-', 1,   1, 0x0000 },
-                { REG_EX_DIGIT, 3,   3, 0x0000 },
-                { '-', 1,   1, 0x0000 },
-                { REG_EX_DIGIT, 4,   4, 0x0000 },
-                { REG_EX_OK, 0,   0, 0x0000 },
-            };
             REG_EX_CREATE( & lA_RegEx, lA_States, lA_Counters );
             unsigned int i;
             for ( i = 0; ( i < lDataSize_byte ) && ( ! lR ); i ++ )
@@ -85,3 +126,5 @@ OPEN_NET_FUNCTION_DECLARE( FilterFunction )
 
     OPEN_NET_FUNCTION_END
 }
+
+END

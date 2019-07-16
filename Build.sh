@@ -6,6 +6,8 @@
 # File       Build.sh
 # Usage      ./Build.sh {Major.Minor.Build_Type}
 
+# CODE REVIEW  2019-07-16  KMS - Martin Dubois, ing.
+
 echo Excuting  Build.sh $1  ...
 
 # ===== Execution ===========================================================
@@ -24,7 +26,7 @@ if [ 0 != $? ] ; then
     exit 2
 fi
 
-./CreatePackage.sh
+./CreatePackages.sh
 if [ 0 != $? ] ; then
     echo ERROR  ./Test.sh  failed
     exit 3

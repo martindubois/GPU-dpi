@@ -1,8 +1,8 @@
 Package: kms-gpu-dpi
-Version: 1.0-3
+Version: 1.0-4
 Section: base
 Priority: optional
 Architecture: amd64
 Maintainer: KMS <gpu-dpi@kms-quebec.com>
 Description: GPU-dpi
- GPU-dpi 1.0.3
+ GPU-dpi 1.0.4

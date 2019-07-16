@@ -4,6 +4,6 @@ Copyright  (C) 2019 KMS. All rights reserved.
 Product    GPU-dpi
 File       GPU_dpi_Setup/_DocUser/ReadMe.txt
 
-1.0.3
+1.0.4
 
 1.0.2

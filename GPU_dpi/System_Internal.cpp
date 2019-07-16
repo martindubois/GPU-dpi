@@ -456,6 +456,8 @@ GPU_dpi::Status System_Internal::WriteBuildLog(FILE * aOut)
 
     for (std::list<std::string>::iterator lIt = mFilterErrors.begin(); lIt != mFilterErrors.end(); lIt++)
     {
+        assert( NULL != lIt->c_str() );
+
         fprintf(aOut, "\n\n========== Filter error %u ==========\n", lIndex);
         fprintf(aOut, "%s\n", lIt->c_str());
 
@@ -472,7 +474,10 @@ GPU_dpi::Status System_Internal::WriteBuildLog(FILE * aOut)
 
         // lKernel->Display(aOut);
 
-        fprintf(aOut, "%s", lKernel->GetBuildLog());
+        const char * lLog = lKernel->GetBuildLog();
+        assert( NULL != lLog );
+
+        fprintf(aOut, "%s", lLog );
     }
 
     return GPU_dpi::STATUS_OK;

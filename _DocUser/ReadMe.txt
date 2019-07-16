@@ -4,9 +4,9 @@ Copyright  (C) 2019 KMS. All rights reserved.
 Product    GPU-dpi
 File       _DocUser/ReadMe.txt
 
-1.0.3
+1.0.4
 
 - KNOWN ISSUES
-    - Regular expression are not working correclty with NVIDIA GPU
+    - Compiling CUDA code take very long when using regular expression
 
 1.0.2
