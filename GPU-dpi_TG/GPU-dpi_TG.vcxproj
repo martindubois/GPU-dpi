@@ -168,6 +168,7 @@
     <Text Include="Tests\0068.txt" />
     <Text Include="Tests\0069.txt" />
     <Text Include="Tests\0070.txt" />
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi_TG.ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

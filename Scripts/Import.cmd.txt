@@ -5,49 +5,39 @@
 # File       Scripts/Import.cmd.txt
 
 . Binaries
-. Includes
 . Libraries
 
 .
 	DoxyFile_en.txt
 	DoxyFile_fr.txt
 	RunDoxygen.cmd
-	ReadMe.txt
 
 Binaries/Debug_64
     GPU_dpi.dll
 	GPU_dpi_Extcap.exe
+	GPU_dpi_Run.exe
 	GPU_dpi_Setup.exe
-
-Binaries/Release_64
-    GPU-dpi.dll
-	GPU_dpi_Extcap.exe
-	GPU_dpi_Setup.exe
-
-GPU_dpi
-	ReadMe.txt
-
-GPU_dpi_Extcap
-	ReadMe.txt
-
-GPU_dpi_Setup
-	ReadMe.txt
-
-Includes/GPU-dpi
-	GPU-dpi.h
-	SetupTool.h
-	Status.h
-	System.h
-	Types.h
+	GPU_dpi_TG.exe
 
 Libraries/Debug_64
 	GPU-dpi.lib
 
-Libraries/Release_64
-	GPU-dpi.lib
-
 Tests/Debug_64
+    CodeGen_Test.exe
 	GPU_dpi_Test.exe
 
 Tests/Release_64
+    CodeGen_Test.exe
 	GPU_dpi_Test.exe
+
+# ===== File also in the installer ==========================================
+
+Binaries/Release_64
+    GPU-dpi.dll
+	GPU_dpi_Extcap.exe
+	GPU_dpi_Run.exe
+	GPU_dpi_Setup.exe
+	GPU_dpi_TG.exe
+
+Libraries/Release_64
+	GPU-dpi.lib

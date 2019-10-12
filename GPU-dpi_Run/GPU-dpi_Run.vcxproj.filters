@@ -32,7 +32,7 @@
     <Text Include="Tests\Test01.txt">
       <Filter>Tests</Filter>
     </Text>
-    <Text Include="_DocUser\ReadMe.txt">
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi_Run.ReadMe.txt">
       <Filter>_DocUser</Filter>
     </Text>
   </ItemGroup>

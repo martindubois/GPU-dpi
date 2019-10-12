@@ -173,7 +173,7 @@
     <ClInclude Include="Component.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="_DocUser\ReadMe.txt" />
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi_Extcap.ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

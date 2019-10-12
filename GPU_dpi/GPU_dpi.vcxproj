@@ -54,7 +54,7 @@
     <ResourceCompile Include="..\Common\Version.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="_DocUser\ReadMe.txt" />
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi.ReadMe.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

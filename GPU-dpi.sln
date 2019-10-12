@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Export.cmd = Export.cmd
 		Export.cmd.txt = Export.cmd.txt
 		Export.sh = Export.sh
+		Export.txt = Export.txt
 		GPU_dpi.iss = GPU_dpi.iss
 		Import.cmd = Import.cmd
 		Import.sh = Import.sh
@@ -51,7 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Procedures", "Procedures", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_DocUser", "_DocUser", "{B26D7009-644F-4549-80B5-8D607CD9E8C5}"
 	ProjectSection(SolutionItems) = preProject
-		_DocUser\ReadMe.txt = _DocUser\ReadMe.txt
+		_DocUser\GPU-dpi.ReadMe.txt = _DocUser\GPU-dpi.ReadMe.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{75AC51E9-04E9-4BB0-81A3-225A4B7A9DB3}"
@@ -67,6 +68,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{F765
 		Scripts\GPU_dpi_Extcap.cmd = Scripts\GPU_dpi_Extcap.cmd
 		Scripts\Import.cmd = Scripts\Import.cmd
 		Scripts\Import.cmd.txt = Scripts\Import.cmd.txt
+		Scripts\Import.txt = Scripts\Import.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPU_dpi", "GPU_dpi\GPU_dpi.vcxproj", "{F41F612D-F193-44C5-8A63-02A7532F4FA1}"

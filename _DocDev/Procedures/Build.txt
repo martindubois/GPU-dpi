@@ -16,17 +16,15 @@ Operating system   [ ] Ubuntu 18.04                            [ ] Windows 10
 
 Version            _____ . _____ . _____ . _____ - __________________________
 
-[ ] File "_DocUser/ReadMe.txt"
-[ ] File "GPU_dpi/_DocUser/ReadMe.txt"
-[ ] File "GPU_dpi_Extcap/_DocUser/ReadMe.txt"
-[ ] File "GPU-dpi_Run/_DocUser/ReadMe.txt"
-[ ] File "GPU_dpi_Setup/_DocUser/ReadMe.txt"
+[ ] File "_DocUser/GPU-dpi.ReadMe.txt"
+[ ] File "GPU_dpi/_DocUser/GPU-dpi.GPU-dpi.ReadMe.txt"
+[ ] File "GPU_dpi_Extcap/_DocUser/GPU-dpi.GPU-dpi_Extcap.ReadMe.txt"
+[ ] File "GPU-dpi_Run/_DocUser/GPU-dpi.GPU-dpi_Run.ReadMe.txt"
+[ ] File "GPU_dpi_Setup/_DocUser/GPU-dpi.GPU-dpi_Setup.ReadMe.txt"
+[ ] File "GPU_dpi_TG/_DocUser/GPU-dpi.GPU-dpi_TG.ReadMe.txt"
 
 ===== Ubuntu only ===========================================================
 [ ] File "CreatePackages.sh" - Edit the version
-
-Version            ______ . ______ - ______
-
 [ ] File "Scripts/control" - Edit the version
 [ ] File "Scripts/GPU-dpi_Setup.sh" - Edit the version if needed
 [ ] File "Scripts/postinst.sh" - Edit the version if needed

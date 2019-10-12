@@ -6,10 +6,13 @@ rem Product    GPU-dpi
 rem File       Export.cmd
 rem Usage      .\Export.cmd {Ma.Mi.Bu} {Type}
 
+rem CODE REVIEW  2019-07-26  KMS - Martin Dubois, ing.
+
 echo  Executing  Export.cmd %1 %2  ...
 
 rem ===== Initialization / Initialisation ===================================
 
+set EXPORT_TXT="Export.txt"
 set EXPORT_CMD_TXT="Export.cmd.txt"
 set KMS_COPY="C:\Software\KmsTools\KmsCopy.exe"
 
@@ -43,11 +46,18 @@ if not exist %KMS_COPY% (
 
 rem ===== Execution / Execution =============================================
 
+%KMS_COPY% . %DST% %EXPORT_TXT%
+if ERRORLEVEL 1 (
+    echo ERROR  %KMS_COPY% . %DST% %EXPORT_TXT%  failed - %ERRORLEVEL%
+	pause
+	exit /B 40
+)
+
 %KMS_COPY% . %DST% %EXPORT_CMD_TXT%
 if ERRORLEVEL 1 (
     echo ERROR  %KMS_COPY% . %DST% %EXPORT_CMD_TXT%  failed - %ERRORLEVEL%
 	pause
-	exit /B 4
+	exit /B 50
 )
 
 rem ===== End / Fin =========================================================

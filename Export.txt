@@ -1,0 +1,42 @@
+
+# Author     KMS - Martin Dubois, ing.
+# Copyright  (C) 2019 KMS. All rights reserved.
+# Product    GPU-dpi
+# File       Export.txt
+
+# CODE REVIEW  2019-07-26  KMS - Martin Dubois, ing.
+.
+	DoxyFile_en.txt
+	DoxyFile_fr.txt
+
+Scripts .
+	Import.txt
+
+# ===== Files also in the installer =========================================
+
+. Includes
+
+_DocUser .
+	GPU-dpi.ReadMe.txt
+
+GPU_dpi/_DocUser .
+	GPU-dpi.GPU-dpi.ReadMe.txt
+
+GPU_dpi_Extcap/_DocUser .
+	GPU-dpi.GPU-dpi_Extcap.ReadMe.txt
+
+GPU_dpi_Run/_DocUser .
+	GPU-dpi.GPU-dpi_Run.ReadMe.txt
+
+GPU_dpi_Setup/_DocUser .
+	GPU-dpi.GPU-dpi_Setup.ReadMe.txt
+
+GPU_dpi_TG/_DocUser .
+	GPU-dpi.GPU-dpi_TG.ReadMe.txt
+
+Includes/GPU_dpi
+	GPU_dpi.h
+	SetupTool.h
+	Status.h
+	System.h
+	Types.h

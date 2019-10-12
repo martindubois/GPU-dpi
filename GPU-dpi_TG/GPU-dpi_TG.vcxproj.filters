@@ -16,6 +16,9 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{8596405a-db12-49d0-b20b-019a4676789b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_DocUser">
+      <UniqueIdentifier>{7179e3b6-a2b2-4e80-8357-4d4d23ec55f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GPU-dpi_TG.cpp">
@@ -40,6 +43,9 @@
     </Text>
     <Text Include="Tests\0070.txt">
       <Filter>Tests</Filter>
+    </Text>
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi_TG.ReadMe.txt">
+      <Filter>_DocUser</Filter>
     </Text>
   </ItemGroup>
 </Project>

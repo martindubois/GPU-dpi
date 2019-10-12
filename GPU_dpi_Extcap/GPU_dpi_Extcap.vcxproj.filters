@@ -28,7 +28,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="_DocUser\ReadMe.txt">
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi_Extcap.ReadMe.txt">
       <Filter>_DocUser</Filter>
     </Text>
   </ItemGroup>

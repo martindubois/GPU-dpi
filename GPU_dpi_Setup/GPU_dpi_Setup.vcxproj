@@ -31,7 +31,7 @@
     <ClCompile Include="OSDep_Windows.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="_DocUser\ReadMe.txt" />
+    <Text Include="_DocUser\GPU-dpi.GPU-dpi_Setup.ReadMe.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

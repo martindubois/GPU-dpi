@@ -4,38 +4,18 @@
 # Product    GPU-dpi
 # File       Export.cmd.txt
 
+# CODE REVIEW  2017-07-26  KMS - Martin Dubois, ing.
+
 . Binaries
-. Includes
 . Libraries
 . Tests
 
 .
-	DoxyFile_en.txt
-	DoxyFile_fr.txt
 	RunDoxygen.cmd
-
-_DocUser .
-	ReadMe.txt
-
-Includes/GPU_dpi
-	GPU_dpi.h
-	SetupTool.h
-	Status.h
-	System.h
-	Types.h
 
 Installer
 # KmsVersion "GPU-dpi_" ".exe" 3
 	GPU-dpi_1.0.2.exe
-
-GPU_dpi/_DocUser GPU_dpi
-	ReadMe.txt
-
-GPU_dpi_Extcap/_DocUser GPU_dpi_Extcap
-	ReadMe.txt
-
-GPU_dpi_Setup/_DocUser GPU_dpi_Setup
-	ReadMe.txt
 
 Scripts .
 	Import.cmd
@@ -55,6 +35,12 @@ x64/Debug Tests/Debug_64
 	CodeGen_Test.exe
     GPU_dpi_Test.exe
 
+x64/Release Tests/Release_64
+	CodeGen_Test.exe
+    GPU_dpi_Test.exe
+
+# ===== Files also in the installer =========================================
+
 x64/Release Binaries/Release_64
     GPU_dpi.dll
 	GPU_dpi_Extcap.exe
@@ -64,7 +50,3 @@ x64/Release Binaries/Release_64
 
 x64/Release Libraries/Release_64
 	GPU_dpi.lib
-
-x64/Release Tests/Release_64
-	CodeGen_Test.exe
-    GPU_dpi_Test.exe
