@@ -12,6 +12,12 @@
 // ===== CodeGen_Test =======================================================
 #include "TestCase.h"
 
+// Static fonction declaration
+/////////////////////////////////////////////////////////////////////////////
+
+static bool Compare  (const TestCase & aTestCase, const char * aCode, unsigned int aCodeSize_byte);
+static void WriteFile(const char     * aFileName, const char * aCode, unsigned int aCodeSize_byte);
+
 // Functions
 /////////////////////////////////////////////////////////////////////////////
 
@@ -63,56 +69,7 @@ bool TestCase_Verify(const TestCase & aTestCase, Filter * aFilter)
 
         if (lResult)
         {
-            FILE * lFile     ;
-            char   lFileName[1024];
-            size_t lSize_byte;
-            int    lRet      ;
-
-            sprintf_s(lFileName, "CodeGen_Test" SLASH "Tests" SLASH "%s.c", aTestCase.mResultFile);
-
-            if (0 == fopen_s(&lFile, lFileName, "r"))
-            {
-                char * lBuffer = new char[lCS_byte + 1];
-                assert(NULL != lBuffer);
-
-                memset(lBuffer, 0, lCS_byte + 1);
-
-                lSize_byte = fread(lBuffer, 1, lCS_byte, lFile);
-                if (lCS_byte != lSize_byte)
-                {
-                    printf("TEST_ERROR  The result file is smaller than the generated code\n");
-                    lResult = false;
-                }
-
-                if (0 != strcmp(lBuffer, lC))
-                {
-                    printf("TEST ERROR  Generated code does not match\n");
-                    lResult = false;
-                }
-
-                delete[] lBuffer;
-
-                lRet = fclose(lFile);
-                assert(0 == lRet);
-            }
-            else
-            {
-                printf("TEST ERROR  Result file does not exist\n");
-                lResult = false;
-
-                if (0 == fopen_s(&lFile, lFileName, "w"))
-                {
-                    lSize_byte = fwrite(lC, 1, lCS_byte, lFile);
-                    assert(lCS_byte == lSize_byte);
-
-                    lRet = fclose(lFile);
-                    assert(0 == lRet);
-                }
-                else
-                {
-                    printf("ERROR  Cannot create the result file\n");
-                }
-            }
+            lResult = Compare(aTestCase, lC, lCS_byte);
         }
     }
     else
@@ -141,4 +98,90 @@ bool TestCase_Verify(const TestCase & aTestCase, Filter * aFilter)
     aFilter->Delete();
 
     return lResult;
+}
+
+// Static function
+/////////////////////////////////////////////////////////////////////////////
+
+bool Compare(const TestCase & aTestCase, const char * aCode, unsigned int aCodeSize_byte)
+{
+    assert(NULL != (&aTestCase)           );
+    assert(NULL !=   aTestCase.mResultFile);
+    assert(NULL !=   aCode                );
+    assert(   0 <    aCodeSize_byte       );
+
+    FILE * lFile     ;
+    char   lFileName[1024];
+    bool   lResult   ;
+    int    lRet      ;
+    size_t lSize_byte;
+
+    sprintf_s(lFileName, "CodeGen_Test" SLASH "Tests" SLASH "%s.c", aTestCase.mResultFile);
+
+    if (0 == fopen_s(&lFile, lFileName, "r"))
+    {
+        char * lBuffer = new char[aCodeSize_byte + 1];
+        assert(NULL != lBuffer);
+
+        memset(lBuffer, 0, aCodeSize_byte + 1);
+
+        lResult = true;
+
+        lSize_byte = fread(lBuffer, 1, aCodeSize_byte, lFile);
+        if (aCodeSize_byte != lSize_byte)
+        {
+            printf("TEST_ERROR  The result file is smaller than the generated code\n");
+            lResult = false;
+        }
+
+        if (0 != strcmp(lBuffer, aCode))
+        {
+            printf("TEST ERROR  Generated code does not match\n");
+            lResult = false;
+        }
+
+        delete[] lBuffer;
+
+        lRet = fclose(lFile);
+        assert(0 == lRet);
+
+        if (!lResult)
+        {
+            sprintf_s(lFileName, "CodeGen_Test" SLASH "Tests" SLASH "%s_ERROR.c", aTestCase.mResultFile);
+        }
+    }
+    else
+    {
+        printf("TEST ERROR  Result file does not exist\n");
+        lResult = false;
+    }
+
+    if (!lResult)
+    {
+        WriteFile(lFileName, aCode, aCodeSize_byte);
+    }
+
+    return lResult;
+}
+
+void WriteFile(const char * aFileName, const char * aCode, unsigned int aCodeSize_byte)
+{
+    assert(NULL != aFileName     );
+    assert(NULL != aCode         );
+    assert(   0 <  aCodeSize_byte);
+
+    FILE * lFile;
+
+    if (0 == fopen_s(&lFile, aFileName, "w"))
+    {
+        size_t lSize_byte = fwrite(aCode, 1, aCodeSize_byte, lFile);
+        assert(aCodeSize_byte == lSize_byte);
+
+        int lRet = fclose(lFile);
+        assert(0 == lRet);
+    }
+    else
+    {
+        printf("ERROR  Cannot create the %s file\n", aFileName);
+    }
 }

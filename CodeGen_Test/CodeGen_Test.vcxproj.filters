@@ -320,5 +320,8 @@
     <ClCompile Include="Tests\Filter_94.c">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\Filter_95.c">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

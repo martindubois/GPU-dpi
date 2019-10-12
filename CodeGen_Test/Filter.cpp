@@ -123,6 +123,7 @@ static const TestCase TEST_CASES[] =
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_ip { TEXT \"Totot\"; BIN \"a 0A 0\" 1 2 }"         , NULL, "Filter_92" },
     { GPU_dpi::OUTPUT_TYPE_DIRECT, GPU_dpi::FORWARD_TYPE_NOT_FILTERED, "in_udp { REGEX \"[a-d]*e\" }"                         , NULL, "Filter_93" },
     { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER       , "in_ether { BIN \"10 11 00 00 01 02 03 04 01 02 03\" }", NULL, "Filter_94" },
+    { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER       , "udp dst port 53 and in_ip { REGEX \"\\w{15,250}\" 20 }", NULL, "Filter_95" },
 
     { GPU_dpi::OUTPUT_TYPE_FILE  , GPU_dpi::FORWARD_TYPE_NEVER, "( portrange 1-2 )", NULL, "Filter_00" },
 

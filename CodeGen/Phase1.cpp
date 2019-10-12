@@ -225,7 +225,15 @@ const char * Phase1(TokenList * aIn, TokenList * aOut)
                         return lSeq.mErrorMessage;
                     }
 
-                    lT1 = lT;
+                    if (aOut->empty())
+                    {
+                        lT1 = lT;
+                    }
+                    else
+                    {
+                        aIn->push_front(lT);
+                        lT1 = aOut->back(); aOut->pop_back();
+                    }
 
                     break;
                 }
