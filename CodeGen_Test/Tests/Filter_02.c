@@ -12,9 +12,9 @@ unsigned short SwapUInt16( unsigned short aIn )
     return ( ( aIn >> 8 ) | ( aIn << 8 ) );
 }
 
-unsigned int SwapUInt32( unsigned int aIn )
+unsigned int ReadUInt32( OPEN_NET_GLOBAL unsigned short * aAddr )
 {
-    return ( ( aIn >> 24 ) | ( ( aIn >> 8 ) & 0x0000ff00 ) | ( ( aIn << 8 ) & 0x00ff0000 ) | ( aIn << 24 ) );
+    return ( ( SwapUInt16( aAddr[ 0 ] ) << 16 ) | SwapUInt16( aAddr[ 1 ] ) );
 }
 
 OPEN_NET_FUNCTION_DECLARE( FilterFunction )
