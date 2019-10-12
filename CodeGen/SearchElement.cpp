@@ -574,7 +574,7 @@ bool SearchElement::State_Add_7d(const char * aText, unsigned int aSize_byte, un
     {
         char lC = aText[*aOffset];
 
-        if (('0' < lC) && ('9' >= lC))
+        if (('0' <= lC) && ('9' >= lC))
         {
             lValue *= 10;
             lValue += lC - '0';
