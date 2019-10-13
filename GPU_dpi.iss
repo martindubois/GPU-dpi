@@ -14,13 +14,13 @@ AppName=GPU-dpi
 AppPublisher=KMS
 AppPublisherURL=http://www.kms-quebec.com
 AppSupportURL=http://www.kms-quebec.com
-AppVersion=1.0.2
+AppVersion=1.0.5
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 DefaultDirName={pf}\GPU-dpi
 LicenseFile=License.txt
 MinVersion=10.0
-OutputBaseFilename=GPU-dpi_1.0.2
+OutputBaseFilename=GPU-dpi_1.0.5
 OutputDir=Installer
 
 [Files]
@@ -29,7 +29,7 @@ Source: "GPU_dpi\_DocUser\GPU-dpi.GPU-dpi.ReadMe.txt"              ; DestDir: "{
 Source: "GPU_dpi_Extcap\_DocUser\GPU-dpi.GPU-dpi_Extcap.ReadMe.txt"; DestDir: "{app}"
 Source: "GPU-dpi_Run\_DocUser\GPU-dpi.GPU-dpi_Run.ReadMe.txt"      ; DestDir: "{app}"
 Source: "GPU_dpi_Setup\_DocUser\GPU-dpi.GPU-dpi_Setup.ReadMe.txt"  ; DestDir: "{app}"
-Source: "GPU_dpi_TG\_DocUser\GPU-dpi.GPU-dpi_TG.ReadMe.txt"        ; DestDir: "{app}"
+Source: "GPU-dpi_TG\_DocUser\GPU-dpi.GPU-dpi_TG.ReadMe.txt"        ; DestDir: "{app}"
 Source: "Import\Binaries\Release_64\OpenNet.dll"                   ; DestDir: "{app}"
 Source: "Import\Binaries\Release_64\OpenNet_Tool.exe"              ; DestDir: "{app}"
 Source: "Import\Drivers\Release_64\ONK_Hardware\onk_pro1000.cat"   ; DestDir: "{app}\Drivers\ONK_Hardware"
@@ -57,7 +57,7 @@ Source: "x64\Release\GPU_dpi.lib"                                  ; DestDir: "{
 Source: "x64\Release\GPU_dpi_Extcap.exe"                           ; DestDir: "{app}"
 Source: "x64\Release\GPU-dpi_Run.exe"                              ; DestDir: "{app}"
 Source: "x64\Release\GPU_dpi_Setup.exe"                            ; DestDir: "{app}"
-Source: "x64\Release\GPU_dpi_TG.exe"                               ; DestDir: "{app}"
+Source: "x64\Release\GPU-dpi_TG.exe"                               ; DestDir: "{app}"
 
 [Run]
 Filename: "{app}\GPU_dpi_Setup.exe"; Parameters: "install"

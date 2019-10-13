@@ -25,13 +25,13 @@ GPU_dpi/_DocUser .
 GPU_dpi_Extcap/_DocUser .
 	GPU-dpi.GPU-dpi_Extcap.ReadMe.txt
 
-GPU_dpi_Run/_DocUser .
+GPU-dpi_Run/_DocUser .
 	GPU-dpi.GPU-dpi_Run.ReadMe.txt
 
 GPU_dpi_Setup/_DocUser .
 	GPU-dpi.GPU-dpi_Setup.ReadMe.txt
 
-GPU_dpi_TG/_DocUser .
+GPU-dpi_TG/_DocUser .
 	GPU-dpi.GPU-dpi_TG.ReadMe.txt
 
 Includes/GPU_dpi
