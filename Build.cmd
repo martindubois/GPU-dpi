@@ -85,9 +85,9 @@ if ERRORLEVEL 1 (
 	exit /B 9
 )
 
-%SIGNTOOL_EXE% sign /sha1 %CERT_SHA% Installer/GPU-dpi_*.exe
+%SIGNTOOL_EXE% sign /fd sha256 /sha1 %CERT_SHA% /td sha256 /tr http://timestamp.digicert.com Installer/GPU-dpi_*.exe
 if ERRORLEVEL 1 (
-	echo ERROR  %SIGNTOOL_EXE% sign /sha1 %CERT_SHA% Installer/GPU-dpi_*.exe  failed - %ERRORLEVEL%
+	echo ERROR  %SIGNTOOL_EXE% sign /fd sha256 /sha1 %CERT_SHA% /td sha256 /tr http://timestamp.digicert.com Installer/GPU-dpi_*.exe  failed - %ERRORLEVEL%
 	pause
 	exit /B 10
 )
