@@ -69,7 +69,14 @@ cp Import/Includes/OpenNetK/RegEx.h                          Packages/$PACKAGE_N
 cp Import/Includes/OpenNetK/TCP.h                            Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/Types.h                          Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
 cp Import/Includes/OpenNetK/UDP.h                            Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/OpenNetK
+cp Import/KmsBase.KmsLib.ReadMe.txt                          Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp Import/KmsBase.ReadMe.txt                                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
 cp Import/Modules/ONK_Pro1000.ko                             Packages/$PACKAGE_NAME/lib/modules/$KERNEL/kernel/drivers/pci
+cp Import/OpenNet.ONK_Hardware.ReadMe.txt                    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp Import/OpenNet.ONK_Lib.ReadMe.txt                         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp Import/OpenNet.OpenNet.ReadMe.txt                         Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp Import/OpenNet.OpenNet_Tool.ReadMe.txt                    Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
+cp Import/OpenNet.ReadMe.txt                                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION
 cp Includes/GPU_dpi/*.h                                      Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/inc/GPU_dpi
 cp Scripts/GPU-dpi_Extcap.sh                                 Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin
 cp Scripts/GPU-dpi_Setup.sh                                  Packages/$PACKAGE_NAME/usr/local/GPU-dpi_$VERSION/bin

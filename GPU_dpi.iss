@@ -14,13 +14,13 @@ AppName=GPU-dpi
 AppPublisher=KMS
 AppPublisherURL=http://www.kms-quebec.com
 AppSupportURL=http://www.kms-quebec.com
-AppVersion=1.0.5
+AppVersion=1.0.6
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 DefaultDirName={pf}\GPU-dpi
 LicenseFile=License.txt
 MinVersion=10.0
-OutputBaseFilename=GPU-dpi_1.0.5
+OutputBaseFilename=GPU-dpi_1.0.6
 OutputDir=Installer
 
 [Files]
@@ -46,6 +46,13 @@ Source: "Import\Includes\OpenNetK\RegEx.h"                         ; DestDir: "{
 Source: "Import\Includes\OpenNetK\TCP.h"                           ; DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\Types.h"                         ; DestDir: "{app}\Includes\OpenNetK"
 Source: "Import\Includes\OpenNetK\UDP.h"                           ; DestDir: "{app}\Includes\OpenNetK"
+Source: "Import\KmsBase.KmsLib.ReadMe.txt"                         ; DestDir: "{app}"
+Source: "Import\KmsBase.ReadMe.txt"                                ; DestDir: "{app}"
+Source: "Import\OpenNet.ONK_Hardware.ReadMe.txt"                   ; DestDir: "{app}"
+Source: "Import\OpenNet.ONK_Lib.ReadMe.txt"                        ; DestDir: "{app}"
+Source: "Import\OpenNet.OpenNet.ReadMe.txt"                        ; DestDir: "{app}"
+Source: "Import\OpenNet.OpenNet_Tool.ReadMe.txt"                   ; DestDir: "{app}"
+Source: "Import\OpenNet.ReadMe.txt"                                ; DestDir: "{app}"
 Source: "Includes\GPU_dpi\GPU_dpi.h"                               ; DestDir: "{app}\Includes\GPU_dpi"
 Source: "Includes\GPU_dpi\SetupTool.h"                             ; DestDir: "{app}\Includes\GPU_dpi"
 Source: "Includes\GPU_dpi\Status.h"                                ; DestDir: "{app}\Includes\GPU_dpi"
